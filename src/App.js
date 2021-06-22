@@ -7,22 +7,36 @@ import { Header } from "./components/Header";
 import { Home } from "./components/Home";
 
 const App = () => {
+  const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState("");
 
   useEffect(() => {
-    let cleanupFunction = false;
+    // let cleanupFunction = false;
     if (localStorage.getItem("token")) {
       fetch("http://localhost:3001/auto_login", {
         headers: { Authenticate: localStorage.token },
       })
         .then((res) => res.json())
         .then((user) => {
-          if (!cleanupFunction) setUser(user);
+          setUser(user);
         });
     }
-    return () => {
-      cleanupFunction = false;
+    // return () => {
+    //   cleanupFunction = false;
+    // };
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/tasks`);
+        const result = await response.json();
+        setTasks(result);
+      } catch (e) {
+        alert(e);
+      }
     };
+    fetchData();
   }, []);
 
   return (
@@ -31,12 +45,16 @@ const App = () => {
         <Header user={user} setUser={setUser} />
         <div className="container">
           <Switch>
-            <Route exact path={"/"} component={() => <Home user={user} />} />
+            <Route
+              exact
+              path={"/"}
+              render={() => <Home user={user} tasks={tasks} />}
+            />
             <Route exact path={"/registration"} component={Registration} />
             <Route
               exact
               path={"/login"}
-              component={() => <Login setUser={setUser} />}
+              render={() => <Login setUser={setUser} />}
             />
           </Switch>
         </div>

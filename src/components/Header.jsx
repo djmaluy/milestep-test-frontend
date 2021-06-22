@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export const Header = ({ user, setUser }) => {
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem("token");
     setUser("");
   };
 
@@ -39,7 +39,6 @@ export const Header = ({ user, setUser }) => {
       <NavLink to="/" className="navbar-brand">
         Task management
       </NavLink>
-
       {menu}
     </nav>
   );
