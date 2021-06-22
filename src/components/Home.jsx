@@ -1,6 +1,9 @@
 import React from "react";
+import { AddTaskForm } from "./tasks/AddTaskForm";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
 
-export const Home = ({ user, tasks }) => {
+export const Home = ({ user, tasks, formik, handleSubmit }) => {
   return (
     <div>
       <h1 className="mt-4">
@@ -14,9 +17,7 @@ export const Home = ({ user, tasks }) => {
           "You are not logged in"
         )}
       </h1>
-      <button type="button" className="btn btn-primary">
-        Primary
-      </button>
+
       <div className="myTasks">
         <>
           <h2>All tasks</h2>
@@ -25,12 +26,21 @@ export const Home = ({ user, tasks }) => {
               return (
                 <li className="list-group-item col-5" key={task.id}>
                   {task.title}
+                  <ButtonGroup color="primary" size="small">
+                    <Button href="#text-buttons" color="primary">
+                      Edit
+                    </Button>
+                    <Button href="#text-buttons" color="primary">
+                      Delete
+                    </Button>
+                  </ButtonGroup>
                 </li>
               );
             })}
           </ul>
         </>
       </div>
+      <AddTaskForm handleSubmit={handleSubmit} formik={formik} />
     </div>
   );
 };
