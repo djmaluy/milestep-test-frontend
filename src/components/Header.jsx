@@ -6,7 +6,7 @@ export const Header = ({ user, setUser }) => {
     localStorage.removeItem("token");
     setUser("");
   };
-
+  
   let menu;
   if (user === "") {
     menu = (

@@ -9,9 +9,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import "./Tasks.css"
 
 
-export const EditTask = ({updateTaskHandler, ...props}) => {
+export const EditTask = ({updateTaskHandler }) => {
   const history = useHistory();
-  console.log(props);
   const { id, title, description, priority, due_date } = useLocation().state.task
   const [state, setState] = useState({id, title, description, priority, due_date});
 
@@ -77,9 +76,7 @@ export const EditTask = ({updateTaskHandler, ...props}) => {
                 name="due_date"
                 onChange={(e) => handleChange(e)}
                 value={state.due_date}
-                // InputLabelProps={{
-                //   shrink: true,
-                // }}
+                
               />
             </Grid>
             <button className="editButton">Update</button>

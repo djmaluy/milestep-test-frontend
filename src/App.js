@@ -11,10 +11,14 @@ import { EditTask } from "./components/tasks/EditTask";
 import { TaskDetail } from "./components/tasks/TaskDetail";
 
 const App = () => {
+  
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState("");
   const [open, setOpen] = useState(false);
+  const [sortedTasks, setSortedTasks] = useState([])
+  console.log(sortedTasks);
   
+ 
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -81,7 +85,7 @@ const App = () => {
       dueDate: getCurrentDate(),
     },
   });
-  
+
   const onDeleteTask = async (id) => {
     await api.delete(`/tasks/${id}`);
     fetchData();
@@ -97,6 +101,15 @@ const App = () => {
     );
     fetchData()
   };
+
+  useEffect(() => {
+    const sortTasks = () => {
+      const sorted = [...tasks].sort((a, b) => b.title - a.title);
+      setSortedTasks(sorted);
+    };
+    sortTasks()
+  }, [tasks]);
+
   return (
     <>
       <BrowserRouter>
@@ -109,7 +122,7 @@ const App = () => {
               render={() => (
                 <Home
                   user={user}
-                  tasks={tasks}
+                  tasks={sortedTasks}
                   handleSubmit={handleSubmit}
                   formik={formik}
                   handleClickOpen={handleClickOpen}
