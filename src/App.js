@@ -11,9 +11,9 @@ import api from "./api/api";
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // let cleanupFunction = false;
     if (localStorage.getItem("token")) {
       fetch("http://localhost:3001/auto_login", {
         headers: { Authenticate: localStorage.token },
@@ -23,24 +23,26 @@ const App = () => {
           setUser(user);
         });
     }
-    // return () => {
-    //   cleanupFunction = false;
-    // };
   }, []);
-
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/tasks`);
+      const result = await response.json();
+      setTasks(result);
+    } catch (e) {
+      alert(e);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/tasks`);
-        const result = await response.json();
-        setTasks(result);
-      } catch (e) {
-        alert(e);
-      }
-    };
     fetchData();
   }, []);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const getCurrentDate = () => {
     const now = new Date();
     return now.toISOString().slice(0, 10);
@@ -57,20 +59,12 @@ const App = () => {
       },
     };
     const response = await api.post(`/tasks`, request);
-    console.log(response);
-    // setTasks([...tasks, response.data]);
+    setTasks([...tasks, response.data]);
+    setOpen(false);
+    formik.values.title = "";
+    formik.values.description = "";
+    formik.values.due_date = ''
   };
-
-  // const addProductHandler = async (title, price, description) => {
-  //   const request = {
-  //     id: uuid(),
-  //     title,
-  //     price,
-  //     description,
-  //   };
-  //   const response = await api.post("/products", request);
-  //   setProductsData([...productsData, response.data]);
-  // };
 
   const formik = useFormik({
     initialValues: {
@@ -80,6 +74,11 @@ const App = () => {
       dueDate: getCurrentDate(),
     },
   });
+  const onDeleteTask = async (id) => {
+    await api.delete(`/tasks/${id}`);
+    fetchData();
+    
+  };
   return (
     <>
       <BrowserRouter>
@@ -95,6 +94,10 @@ const App = () => {
                   tasks={tasks}
                   handleSubmit={handleSubmit}
                   formik={formik}
+                  handleClickOpen={handleClickOpen}
+                  handleClose={handleClose}
+                  open={open}
+                  onDeleteTask={onDeleteTask}
                 />
               )}
             />

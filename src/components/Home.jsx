@@ -3,7 +3,16 @@ import { AddTaskForm } from "./tasks/AddTaskForm";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 
-export const Home = ({ user, tasks, formik, handleSubmit }) => {
+export const Home = ({
+  user,
+  tasks,
+  formik,
+  handleSubmit,
+  handleClickOpen,
+  handleClose,
+  open,
+  onDeleteTask
+}) => {
   return (
     <div>
       <h1 className="mt-4">
@@ -27,10 +36,10 @@ export const Home = ({ user, tasks, formik, handleSubmit }) => {
                 <li className="list-group-item col-5" key={task.id}>
                   {task.title}
                   <ButtonGroup color="primary" size="small">
-                    <Button href="#text-buttons" color="primary">
+                    <Button  color="primary">
                       Edit
                     </Button>
-                    <Button href="#text-buttons" color="primary">
+                    <Button  onClick={() => onDeleteTask(task.id)} color="primary">
                       Delete
                     </Button>
                   </ButtonGroup>
@@ -40,7 +49,14 @@ export const Home = ({ user, tasks, formik, handleSubmit }) => {
           </ul>
         </>
       </div>
-      <AddTaskForm handleSubmit={handleSubmit} formik={formik} />
+      <AddTaskForm
+        handleSubmit={handleSubmit}
+        formik={formik}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+        open={open}
+        
+      />
     </div>
   );
 };
