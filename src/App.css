@@ -48,3 +48,12 @@
 .links > li {
   margin-right: 25px;
 }
+.titleButton{
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  color: blue;
+}
+

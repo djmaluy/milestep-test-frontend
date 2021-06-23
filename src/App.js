@@ -7,11 +7,14 @@ import { Header } from "./components/Header";
 import { Home } from "./components/Home";
 import { useFormik } from "formik";
 import api from "./api/api";
+import { EditTask } from "./components/tasks/EditTask";
+import { TaskDetail } from "./components/tasks/TaskDetail";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState("");
   const [open, setOpen] = useState(false);
+  
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -36,17 +39,20 @@ const App = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
+  
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    
   };
+
   const getCurrentDate = () => {
     const now = new Date();
     return now.toISOString().slice(0, 10);
   };
+
   const handleSubmit = async () => {
     const { title, description, priority, dueDate } = formik.values;
     const request = {
@@ -66,6 +72,7 @@ const App = () => {
     formik.values.due_date = ''
   };
 
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -74,10 +81,21 @@ const App = () => {
       dueDate: getCurrentDate(),
     },
   });
+  
   const onDeleteTask = async (id) => {
     await api.delete(`/tasks/${id}`);
     fetchData();
-    
+  };
+
+  const updateTaskHandler = async (task) => {
+    const response = await api.put(`/tasks/${task.id}`, task);
+   
+    setTasks(
+      tasks.map((task) => {
+        return task.id === response.data.id ? { ...response.data } : task;
+      })
+    );
+    fetchData()
   };
   return (
     <>
@@ -98,6 +116,8 @@ const App = () => {
                   handleClose={handleClose}
                   open={open}
                   onDeleteTask={onDeleteTask}
+                  setOpen={setOpen}
+                  
                 />
               )}
             />
@@ -106,6 +126,17 @@ const App = () => {
               exact
               path={"/login"}
               render={() => <Login setUser={setUser} />}
+            />
+            <Route
+          path="/edit"
+          render={(props) => (
+            <EditTask {...props} updateTaskHandler={updateTaskHandler} formik={formik}/>
+          )}
+        />
+          <Route
+              exact
+              path={`/show`}
+              render={() => <TaskDetail tasks={tasks} />}
             />
           </Switch>
         </div>
