@@ -11,27 +11,20 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { Grid } from "@material-ui/core";
 
-
 export const AddTaskForm = ({
   handleSubmit,
   formik,
   handleClickOpen,
   handleClose,
   open,
-  
 }) => {
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Add task
       </Button>
-      <Dialog
-        style={{ minWidth: "60vw" }}
-        open={open}
-        onClose={handleClose}
-        
-      >
-        <DialogTitle >Add task</DialogTitle>
+      <Dialog style={{ minWidth: "60vw" }} open={open} onClose={handleClose}>
+        <DialogTitle>Add task</DialogTitle>
         <DialogContent>
           <Grid container direction="column" spacing={2}>
             <Grid item>

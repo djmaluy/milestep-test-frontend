@@ -15,7 +15,7 @@ const App = () => {
   const [user, setUser] = useState("");
   const [open, setOpen] = useState(false);
   const [sortedTasks, setSortedTasks] = useState([]);
-  console.log(sortedTasks);
+  console.log(user);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -28,6 +28,7 @@ const App = () => {
         });
     }
   }, []);
+
   const fetchData = async () => {
     try {
       const response = await fetch(`http://localhost:3001/tasks`);
@@ -116,7 +117,7 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Header user={user} setUser={setUser} />
+        <Header user={user} setUser={setUser} />{" "}
         <div className="container">
           <Switch>
             <Route
@@ -126,6 +127,7 @@ const App = () => {
                 <Home
                   user={user}
                   tasks={sortedTasks}
+                  setTasks={setTasks}
                   handleSubmit={handleSubmit}
                   formik={formik}
                   handleClickOpen={handleClickOpen}
@@ -133,17 +135,18 @@ const App = () => {
                   open={open}
                   onDeleteTask={onDeleteTask}
                   setOpen={setOpen}
+                  fetchData={fetchData}
                 />
               )}
             />
-            <Route exact path={"/registration"} component={Registration} />
+            <Route exact path={"/registration"} component={Registration} />{" "}
             <Route
               exact
               path={"/login"}
               render={() => <Login setUser={setUser} />}
             />
             <Route
-              path="/edit"
+              path="/edit/:id"
               render={(props) => (
                 <EditTask
                   {...props}
@@ -151,15 +154,15 @@ const App = () => {
                   formik={formik}
                 />
               )}
-            />
+            />{" "}
             <Route
               exact
               path={`/show`}
               render={() => <TaskDetail tasks={tasks} />}
             />
-          </Switch>
-        </div>
-      </BrowserRouter>
+          </Switch>{" "}
+        </div>{" "}
+      </BrowserRouter>{" "}
     </>
   );
 };
