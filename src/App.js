@@ -11,14 +11,11 @@ import { EditTask } from "./components/tasks/EditTask";
 import { TaskDetail } from "./components/tasks/TaskDetail";
 
 const App = () => {
-  
   const [tasks, setTasks] = useState([]);
   const [user, setUser] = useState("");
   const [open, setOpen] = useState(false);
-  const [sortedTasks, setSortedTasks] = useState([])
+  const [sortedTasks, setSortedTasks] = useState([]);
   console.log(sortedTasks);
-  
- 
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -43,13 +40,12 @@ const App = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
-    
   };
 
   const getCurrentDate = () => {
@@ -73,9 +69,8 @@ const App = () => {
     setOpen(false);
     formik.values.title = "";
     formik.values.description = "";
-    formik.values.due_date = ''
+    formik.values.due_date = "";
   };
-
 
   const formik = useFormik({
     initialValues: {
@@ -93,21 +88,29 @@ const App = () => {
 
   const updateTaskHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, task);
-   
+
     setTasks(
       tasks.map((task) => {
         return task.id === response.data.id ? { ...response.data } : task;
       })
     );
-    fetchData()
+    fetchData();
   };
 
   useEffect(() => {
     const sortTasks = () => {
-      const sorted = [...tasks].sort((a, b) => b.title - a.title);
+      const sorted = [...tasks].sort((a, b) => {
+        if (a.title > b.title) {
+          return 1;
+        }
+        if (a.title < b.title) {
+          return -1;
+        }
+        return 0;
+      });
       setSortedTasks(sorted);
     };
-    sortTasks()
+    sortTasks();
   }, [tasks]);
 
   return (
@@ -130,7 +133,6 @@ const App = () => {
                   open={open}
                   onDeleteTask={onDeleteTask}
                   setOpen={setOpen}
-                  
                 />
               )}
             />
@@ -141,12 +143,16 @@ const App = () => {
               render={() => <Login setUser={setUser} />}
             />
             <Route
-          path="/edit"
-          render={(props) => (
-            <EditTask {...props} updateTaskHandler={updateTaskHandler} formik={formik}/>
-          )}
-        />
-          <Route
+              path="/edit"
+              render={(props) => (
+                <EditTask
+                  {...props}
+                  updateTaskHandler={updateTaskHandler}
+                  formik={formik}
+                />
+              )}
+            />
+            <Route
               exact
               path={`/show`}
               render={() => <TaskDetail tasks={tasks} />}
