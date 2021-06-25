@@ -1,27 +1,29 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
 
-export const TaskRow = ({
+export const ActiveTaskRow = ({
   openModal,
   onDeleteTask,
-  tasks,
-  setTasks,
+  setActiveTasks,
   onCompleteHandler,
+  activeTasks,
 }) => {
   return (
     <>
-      {tasks.map((task) => {
+      {activeTasks.map((task) => {
         return (
-          <tr key={task.id} className="d-flex">
-            <td className="col-3">
+          <tr key={task.id}>
+            <td>
               <input
                 type="checkbox"
                 checked={task.select}
                 onChange={(e) => {
                   let value = e.target.checked;
-                  setTasks(
-                    tasks.map((sd) => {
+                  setActiveTasks(
+                    activeTasks.map((sd) => {
                       if (sd.id === task.id) {
                         sd.select = value;
                       }
@@ -32,25 +34,23 @@ export const TaskRow = ({
               />
             </td>
 
-            <td className="col-5">
+            <td colSpan="2">
               <button onClick={() => openModal(task)} className="titleButton">
                 {task.title}
               </button>
-              <button
-                type="button"
-                className="btn btn-success btn-sm"
+              <CheckCircleOutlinedIcon
+                className="completedButton"
                 onClick={() => onCompleteHandler(task)}
-              >
-                Complete
-              </button>
+              />
             </td>
-            <td className="col-4">
+            <td>
               <NavLink to={{ pathname: `/edit/${task.id}`, state: { task } }}>
-                <Button color="primary">Edit</Button>
+                <EditOutlinedIcon />
               </NavLink>
-              <Button onClick={() => onDeleteTask(task.id)} color="primary">
-                Delete
-              </Button>
+              <DeleteForeverIcon
+                onClick={() => onDeleteTask(task.id)}
+                className="deleteButton"
+              />
             </td>
           </tr>
         );

@@ -6,4 +6,4 @@
 
 User should be able to make a batch delete on the Home page
 
-- checkboxes next to each task, user checks some tasks and clicks button 'batch delete' which deletes selected tasks
+Few tests with Rspec (e.g. add a method `full name` to user model and add tests for it, add tests for validation rules)

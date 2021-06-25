@@ -84,15 +84,12 @@
 }
 .taskDetail__content {
   background: #d5f7f7;
-  /* margin-top: 80px; */
+
   box-shadow: 0 0 10px 0 rgba(0, 0, 97, 0.5);
   margin: auto;
   text-align: center;
 }
-.table-auto {
-  width: 50%;
-  margin-bottom: 20px;
-}
+
 .login {
   color: aliceblue;
   margin-top: 10px;
@@ -103,4 +100,76 @@
   margin-right: 8px;
   margin-top: 9px;
   color: aliceblue;
+}
+.deleteButton {
+  color: red;
+  cursor: pointer;
+}
+.completedButton {
+  color: green;
+  cursor: pointer;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  margin-top: 1px;
+  padding: 15px;
+}
+.headerTable {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+/* Styling table */
+table {
+  width: 550px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+  margin-bottom: 15px;
+  table-layout: fixed;
+}
+th {
+  padding: 10px 20px;
+  background: #56433d;
+  color: #f9c941;
+  border-right: 2px solid;
+  font-size: 0.9em;
+}
+th:first-child {
+  text-align: left;
+}
+
+td {
+  vertical-align: middle;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  border-top: 2px solid #56433d;
+  border-bottom: 2px solid #56433d;
+  border-right: 2px solid #56433d;
+  word-wrap: break-word;
+}
+td:first-child {
+  border-left: 2px solid #56433d;
+  border-right: 2px solid #56433d;
+  width: 19%;
+}
+td:nth-child(2) {
+  border-left: 2px solid #56433d;
+  border-right: 2px solid #56433d;
+  word-wrap: break-word;
+  overflow-x: hidden;
+  width: 50%;
+  max-width: 150px;
+}
+.tasksTables {
+  display: flex;
+  justify-content: space-between;
+}
+.completedTasks {
+  margin-top: 55px;
 }

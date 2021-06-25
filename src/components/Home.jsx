@@ -8,7 +8,6 @@ import { CompletedTasks } from "./tasks/CompletedTasks";
 import { ActiveTasks } from "./tasks/ActiveTasks";
 
 export const Home = ({
-  user,
   tasks,
   formik,
   handleSubmit,
@@ -16,7 +15,6 @@ export const Home = ({
   handleClose,
   open,
   onDeleteTask,
-  setOpen,
   setTasks,
   fetchData,
 }) => {
@@ -77,16 +75,22 @@ export const Home = ({
     });
 
     api
-      .delete(`/tasks/${ids}`)
+      .delete(`/tasks/`, {
+        ids: {
+          ids,
+        },
+      })
       .then((data) => {
         fetchData();
       })
       .catch((err) => alert(err));
   };
   return (
-    <div className="d-flex">
+    <div className="tasksTables container ">
       <div>
-        <h3>Active tasks</h3>
+        <div>
+          <h3>Active tasks</h3>
+        </div>
         <div className="d-flex">
           <button
             type="button"
@@ -97,6 +101,7 @@ export const Home = ({
           >
             Batch delete
           </button>
+
           <AddTaskForm
             handleSubmit={handleSubmit}
             formik={formik}
@@ -105,31 +110,28 @@ export const Home = ({
             open={open}
           />
         </div>
+
         <ActiveTasks
           openModal={openModal}
           onDeleteTask={onDeleteTask}
-          tasks={activeTasks}
-          setTasks={setTasks}
           deleteTasksById={deleteTasksById}
-          formik={formik}
-          handleSubmit={handleSubmit}
-          handleClickOpen={onCompleteHandler}
-          handleClose={handleClose}
           onCompleteHandler={onCompleteHandler}
+          setActiveTasks={setActiveTasks}
+          activeTasks={activeTasks}
         />
       </div>
       <div>
         <CompletedTasks
           openModal={openModal}
           onDeleteTask={onDeleteTask}
-          tasks={completedTasks}
-          setTasks={setTasks}
+          completedTasks={completedTasks}
+          setCompletedTasks={setCompletedTasks}
           deleteTasksById={deleteTasksById}
           onMooveToActiveHandler={onMooveToActiveHandler}
         />
       </div>
 
-      <div>
+      <>
         {showTask && (
           <Modal
             isOpen={true}
@@ -145,7 +147,7 @@ export const Home = ({
             </div>
           </Modal>
         )}
-      </div>
+      </>
     </div>
   );
 };
