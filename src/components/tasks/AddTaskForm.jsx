@@ -34,6 +34,7 @@ export const AddTaskForm = ({
                 onChange={formik.handleChange}
                 value={formik.values.title}
                 variant="outlined"
+                required
               />
             </Grid>
             <Grid item>

@@ -2,7 +2,13 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
-export const TaskRow = ({ openModal, onDeleteTask, tasks, setTasks }) => {
+export const TaskRow = ({
+  openModal,
+  onDeleteTask,
+  tasks,
+  setTasks,
+  onCompleteHandler,
+}) => {
   return (
     <>
       {tasks.map((task) => {
@@ -29,6 +35,13 @@ export const TaskRow = ({ openModal, onDeleteTask, tasks, setTasks }) => {
             <td className="col-5">
               <button onClick={() => openModal(task)} className="titleButton">
                 {task.title}
+              </button>
+              <button
+                type="button"
+                className="btn btn-success btn-sm"
+                onClick={() => onCompleteHandler(task)}
+              >
+                Complete
               </button>
             </td>
             <td className="col-4">

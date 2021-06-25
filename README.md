@@ -1,10 +1,6 @@
 1.2 User receives email with activation link after sign up
 
-- mark task as completed
-- make it active again if task is completed
-  2.1 User can manage only his own tasks
-
-  2.3 Basicaly there should be two lists, one is active tasks, another one is completed. By marking task as completed a particular task moves to appropriate list.
+2.1 User can manage only his own tasks
 
 - due date should be a future date
 

@@ -93,3 +93,14 @@
   width: 50%;
   margin-bottom: 20px;
 }
+.login {
+  color: aliceblue;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.avatar {
+  align-items: center;
+  margin-right: 8px;
+  margin-top: 9px;
+  color: aliceblue;
+}

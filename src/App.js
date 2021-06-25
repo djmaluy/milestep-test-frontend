@@ -15,7 +15,6 @@ const App = () => {
   const [user, setUser] = useState("");
   const [open, setOpen] = useState(false);
   const [sortedTasks, setSortedTasks] = useState([]);
-  console.log(user);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -100,6 +99,7 @@ const App = () => {
 
   useEffect(() => {
     const sortTasks = () => {
+      // a[field] > b[field] ? 1 : -1
       const sorted = [...tasks].sort((a, b) => {
         if (a.title > b.title) {
           return 1;
@@ -115,55 +115,51 @@ const App = () => {
   }, [tasks]);
 
   return (
-    <>
-      <BrowserRouter>
-        <Header user={user} setUser={setUser} />{" "}
-        <div className="container">
-          <Switch>
-            <Route
-              exact
-              path={"/"}
-              render={() => (
-                <Home
-                  user={user}
-                  tasks={sortedTasks}
-                  setTasks={setTasks}
-                  handleSubmit={handleSubmit}
-                  formik={formik}
-                  handleClickOpen={handleClickOpen}
-                  handleClose={handleClose}
-                  open={open}
-                  onDeleteTask={onDeleteTask}
-                  setOpen={setOpen}
-                  fetchData={fetchData}
-                />
-              )}
+    <BrowserRouter>
+      <Header user={user} setUser={setUser} />
+      <Switch>
+        <Route
+          exact
+          path={"/"}
+          render={() => (
+            <Home
+              user={user}
+              tasks={sortedTasks}
+              setTasks={setTasks}
+              handleSubmit={handleSubmit}
+              formik={formik}
+              handleClickOpen={handleClickOpen}
+              handleClose={handleClose}
+              open={open}
+              onDeleteTask={onDeleteTask}
+              setOpen={setOpen}
+              fetchData={fetchData}
             />
-            <Route exact path={"/registration"} component={Registration} />{" "}
-            <Route
-              exact
-              path={"/login"}
-              render={() => <Login setUser={setUser} />}
+          )}
+        />
+        <Route exact path={"/registration"} component={Registration} />
+        <Route
+          exact
+          path={"/login"}
+          render={() => <Login setUser={setUser} />}
+        />
+        <Route
+          path="/edit/:id"
+          render={(props) => (
+            <EditTask
+              {...props}
+              updateTaskHandler={updateTaskHandler}
+              formik={formik}
             />
-            <Route
-              path="/edit/:id"
-              render={(props) => (
-                <EditTask
-                  {...props}
-                  updateTaskHandler={updateTaskHandler}
-                  formik={formik}
-                />
-              )}
-            />{" "}
-            <Route
-              exact
-              path={`/show`}
-              render={() => <TaskDetail tasks={tasks} />}
-            />
-          </Switch>{" "}
-        </div>{" "}
-      </BrowserRouter>{" "}
-    </>
+          )}
+        />
+        <Route
+          exact
+          path={`/show`}
+          render={() => <TaskDetail tasks={tasks} />}
+        />
+      </Switch>
+    </BrowserRouter>
   );
 };
 

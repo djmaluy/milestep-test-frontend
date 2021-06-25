@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AddTaskForm } from "./tasks/AddTaskForm";
 import Button from "@material-ui/core/Button";
 import Modal from "react-modal";
 import { TaskDetail } from "./tasks/TaskDetail";
-import { TaskRow } from "./tasks/TaskRow";
 import api from "../api/api";
-
-// import { CompletedTasks } from "./tasks/CompletedTasks";
+import { CompletedTasks } from "./tasks/CompletedTasks";
+import { ActiveTasks } from "./tasks/ActiveTasks";
 
 export const Home = ({
   user,
@@ -21,8 +20,47 @@ export const Home = ({
   setTasks,
   fetchData,
 }) => {
-  console.log(tasks);
   const [showTask, setShowTask] = useState(null);
+  const [completedTasks, setCompletedTasks] = useState([]);
+  const [activeTasks, setActiveTasks] = useState([]);
+
+  const getCompletedTasks = () => {
+    const result = tasks.filter((task) => {
+      return task.is_done === true;
+    });
+    setCompletedTasks(result);
+  };
+  const getActiveTasks = () => {
+    const result = tasks.filter((task) => {
+      return task.is_done === false;
+    });
+    setActiveTasks(result);
+  };
+
+  useEffect(() => {
+    getCompletedTasks();
+    getActiveTasks();
+  }, [tasks]);
+
+  const onCompleteHandler = async (task) => {
+    const response = await api.put(`/tasks/${task.id}`, { is_done: true });
+
+    setTasks(
+      tasks.map((task) => {
+        return task.id === response.data.id ? { ...response.data } : task;
+      })
+    );
+    fetchData();
+  };
+  const onMooveToActiveHandler = async (task) => {
+    const response = await api.put(`/tasks/${task.id}`, { is_done: false });
+    setTasks(
+      tasks.map((task) => {
+        return task.id === response.data.id ? { ...response.data } : task;
+      })
+    );
+    fetchData();
+  };
 
   const openModal = (task) => {
     setShowTask(task);
@@ -37,7 +75,7 @@ export const Home = ({
         ids.push(d.id);
       }
     });
-    console.log(ids);
+
     api
       .delete(`/tasks/${ids}`)
       .then((data) => {
@@ -46,75 +84,51 @@ export const Home = ({
       .catch((err) => alert(err));
   };
   return (
-    <div>
-      <h1 className="mt-4">
-        {user ? (
-          <>
-            <div className="text-center">
-              Hello, {user.first_name} {user.last_name}
-            </div>
-          </>
-        ) : (
-          "You are not logged in"
-        )}
-      </h1>
-
-      <h3>Active tasks</h3>
-      <button
-        type="button"
-        className="btn btn-danger  mb-3"
-        onClick={() => {
-          deleteTasksById();
-        }}
-      >
-        Batch delete
-      </button>
-      <div className="d-flex">
-        <table className="table table-bordered table-auto">
-          <thead>
-            <tr className="d-flex">
-              <th className="col-3">
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    let value = e.target.checked;
-                    setTasks(
-                      tasks.map((d) => {
-                        d.select = value;
-                        return d;
-                      })
-                    );
-                  }}
-                />
-                <span>check all/uncheck all</span>
-              </th>
-              <th className="col-5">Title</th>
-            </tr>
-          </thead>
-          <tbody>
-            <TaskRow
-              openModal={openModal}
-              onDeleteTask={onDeleteTask}
-              tasks={tasks}
-              setTasks={setTasks}
-            />
-          </tbody>
-        </table>
-        {/* <CompletedTasks
+    <div className="d-flex">
+      <div>
+        <h3>Active tasks</h3>
+        <div className="d-flex">
+          <button
+            type="button"
+            className="btn btn-danger  mb-3"
+            onClick={() => {
+              deleteTasksById();
+            }}
+          >
+            Batch delete
+          </button>
+          <AddTaskForm
+            handleSubmit={handleSubmit}
+            formik={formik}
+            handleClickOpen={handleClickOpen}
+            handleClose={handleClose}
+            open={open}
+          />
+        </div>
+        <ActiveTasks
           openModal={openModal}
           onDeleteTask={onDeleteTask}
-          tasks={tasks}
+          tasks={activeTasks}
           setTasks={setTasks}
           deleteTasksById={deleteTasksById}
-        /> */}
+          formik={formik}
+          handleSubmit={handleSubmit}
+          handleClickOpen={onCompleteHandler}
+          handleClose={handleClose}
+          onCompleteHandler={onCompleteHandler}
+        />
       </div>
-      <AddTaskForm
-        handleSubmit={handleSubmit}
-        formik={formik}
-        handleClickOpen={handleClickOpen}
-        handleClose={handleClose}
-        open={open}
-      />
+      <div>
+        <CompletedTasks
+          openModal={openModal}
+          onDeleteTask={onDeleteTask}
+          tasks={completedTasks}
+          setTasks={setTasks}
+          deleteTasksById={deleteTasksById}
+          onMooveToActiveHandler={onMooveToActiveHandler}
+        />
+      </div>
+
       <div>
         {showTask && (
           <Modal
