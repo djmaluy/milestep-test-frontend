@@ -1,10 +1,11 @@
-import { SET_ACTIVE_TASKS } from "./actionTypes";
 import {
   FETCHING_SUCCESS,
   SET_SORTED_TASKS,
   FETCHING_FAIL,
   START_FETCHING,
   SET_COMPLETED_TASKS,
+  SET_ACTIVE_TASKS,
+  SET_HOVER,
 } from "./actionTypes";
 
 const initialState = {
@@ -53,6 +54,12 @@ export const TasksReducer = (state = initialState, action) => {
       return {
         ...state,
         activeTasks: action.activeTasks,
+      };
+    }
+    case SET_HOVER: {
+      return {
+        ...state,
+        isHovered: !state.isHovered,
       };
     }
     default:

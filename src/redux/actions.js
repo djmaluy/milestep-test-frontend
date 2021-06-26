@@ -5,6 +5,7 @@ import {
   SET_SORTED_TASKS,
   SET_COMPLETED_TASKS,
   SET_ACTIVE_TASKS,
+  SET_HOVER,
 } from "./actionTypes";
 
 export const fetchData = () => async (dispatch) => {
@@ -20,18 +21,6 @@ export const fetchData = () => async (dispatch) => {
   }
 };
 
-// export const isFavourite = (id) => (dispatch, getState) => {
-//   const users = getState().users.map((user) => {
-//     if (user.id === id) {
-//       user.favourite = !user.favourite;
-//     }
-//     return user;
-//   });
-//   dispatch({ type: IS_FAVOURITE, users });
-// };
-
-// export const changeView = (view) => (dispatch) =>
-//   dispatch({ type: VIEW, view });
 export const getSortedData = () => (dispatch, getState) => {
   const sortedTasks = getState().tasks.sort((a, b) =>
     a.title > b.title ? 1 : -1
@@ -52,19 +41,7 @@ export const getActiveData = () => (dispatch, getState) => {
   });
   dispatch({ type: SET_ACTIVE_TASKS, activeTasks });
 };
-// ===================================
-// const getActiveTasks = () => {
-//   const result = tasks.filter((task) => {
-//     return task.is_done === false;
-//   });
-//   setActiveTasks(result);
-// };
 
-// export const search = (str) => (dispatch, getState) => {
-//   const user = getState().users.filter((user) => {
-//     const substrs = user.name.split(" ");
-//     return substrs.find((substr) => substr.toLowerCase() === str.toLowerCase());
-//   });
-//   if (!user.length) return;
-//   dispatch({ type: SEARCH, user });
-// };
+export const changeHover = () => (dispatch) => {
+  dispatch({ type: SET_HOVER });
+};

@@ -10,3 +10,6 @@ export const getCompletedTasks = (state) => {
 export const getActiveTasks = (state) => {
   return state.activeTasks;
 };
+export const getIsHovered = (state) => {
+  return state.isHovered;
+};

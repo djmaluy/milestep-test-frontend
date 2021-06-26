@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 import { CompletedTaskRow } from "./CompletedTaskRow";
 import { useDispatch, useSelector } from "react-redux";
-import { getCompletedTasks, getSortedTasks } from "../../redux/tasksSelector";
-import { getCompletedData } from "../../redux/actions";
+import {
+  getCompletedTasks,
+  getSortedTasks,
+} from "../../../redux/tasksSelector";
+import { getCompletedData } from "../../../redux/actions";
 
 export const CompletedTasks = ({
   openModal,
   onDeleteTask,
   onMooveToActiveHandler,
-  setIsHovered,
-  isHovered,
 }) => {
   const dispatch = useDispatch();
 
@@ -53,8 +54,6 @@ export const CompletedTasks = ({
             onDeleteTask={onDeleteTask}
             completedTasks={completedTasks}
             onMooveToActiveHandler={onMooveToActiveHandler}
-            setIsHovered={setIsHovered}
-            isHovered={isHovered}
           />
         </tbody>
       </table>

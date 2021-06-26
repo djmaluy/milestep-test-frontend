@@ -1,10 +1,12 @@
 import React from "react";
 import { AddTaskForm } from "./tasks/AddTaskForm";
 import api from "../api/api";
-import { CompletedTasks } from "./tasks/CompletedTasks";
-import { ActiveTasks } from "./tasks/ActiveTasks";
+import { CompletedTasks } from "./tasks/completedTasks/CompletedTasks";
+import { ActiveTasks } from "./tasks/activeTasks/ActiveTasks";
 import { AddTaskModal } from "./AddTaskModal";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchData } from "../redux/actions";
 
 export const Home = ({
   sortedTasks,
@@ -15,28 +17,31 @@ export const Home = ({
   open,
   onDeleteTask,
   setTasks,
-  fetchData,
 }) => {
   const [showTask, setShowTask] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useDispatch();
 
   const onCompleteHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, { is_done: true });
 
-    setTasks(
-      sortedTasks.map((task) => {
-        return task.id === response.data.id ? { ...response.data } : task;
-      })
+    dispatch(
+      fetchData(
+        sortedTasks.map((task) => {
+          return task.id === response.data.id ? { ...response.data } : task;
+        })
+      )
     );
     fetchData();
   };
 
   const onMooveToActiveHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, { is_done: false });
-    setTasks(
-      sortedTasks.map((task) => {
-        return task.id === response.data.id ? { ...response.data } : task;
-      })
+    dispatch(
+      fetchData(
+        sortedTasks.map((task) => {
+          return task.id === response.data.id ? { ...response.data } : task;
+        })
+      )
     );
     fetchData();
   };
@@ -97,8 +102,6 @@ export const Home = ({
           onDeleteTask={onDeleteTask}
           deleteTasksById={deleteTasksById}
           onCompleteHandler={onCompleteHandler}
-          isHovered={isHovered}
-          setIsHovered={setIsHovered}
         />
       </div>
       <div>
@@ -107,8 +110,6 @@ export const Home = ({
           onDeleteTask={onDeleteTask}
           deleteTasksById={deleteTasksById}
           onMooveToActiveHandler={onMooveToActiveHandler}
-          isHovered={isHovered}
-          setIsHovered={setIsHovered}
         />
       </div>
 

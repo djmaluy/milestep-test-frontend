@@ -4,3 +4,5 @@ export const FETCHING_FAIL = "FETCHING_FAIL";
 export const SET_ACTIVE_TASKS = "SET_ACTIVE_TASKS";
 export const SET_SORTED_TASKS = "SET_SORTED_TASKS";
 export const SET_COMPLETED_TASKS = "SET_COMPLETED_TASKS";
+export const SET_HOVER = "SET_HOVER";
+export const UPDATE_TASK = "UPDATE_TASK";

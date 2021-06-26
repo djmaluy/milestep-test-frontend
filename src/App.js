@@ -110,7 +110,6 @@ const App = () => {
             <Home
               user={user}
               sortedTasks={sortedTasks}
-              // setTasks={setTasks}
               handleSubmit={handleSubmit}
               formik={formik}
               handleClickOpen={handleClickOpen}
