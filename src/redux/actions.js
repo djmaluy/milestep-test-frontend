@@ -5,13 +5,12 @@ import {
   SET_SORTED_TASKS,
   SET_COMPLETED_TASKS,
   SET_ACTIVE_TASKS,
-  SET_HOVER,
 } from "./actionTypes";
 
 export const fetchData = () => async (dispatch) => {
   try {
     dispatch({ type: START_FETCHING });
-    const response = await fetch(`http://localhost:3001/tasks`);
+    const response = await fetch(`http://localhost:3000/tasks`);
     if (!response.ok) throw new Error("Some error occured");
     const tasks = await response.json();
     if (!tasks.length) throw new Error("no data");
@@ -40,8 +39,4 @@ export const getActiveData = () => (dispatch, getState) => {
     return task.is_done === false;
   });
   dispatch({ type: SET_ACTIVE_TASKS, activeTasks });
-};
-
-export const changeHover = () => (dispatch) => {
-  dispatch({ type: SET_HOVER });
 };

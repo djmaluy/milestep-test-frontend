@@ -11,6 +11,7 @@ export const CompletedTasks = ({
   openModal,
   onDeleteTask,
   onMooveToActiveHandler,
+  setIsChecked,
 }) => {
   const dispatch = useDispatch();
 
@@ -19,7 +20,7 @@ export const CompletedTasks = ({
 
   useEffect(() => {
     dispatch(getCompletedData());
-  }, [sortedTasks]);
+  }, [sortedTasks, dispatch]);
 
   return (
     <div className="completedTasks">
@@ -32,13 +33,11 @@ export const CompletedTasks = ({
                 type="checkbox"
                 onChange={(e) => {
                   let value = e.target.checked;
-                  dispatch(
-                    getCompletedData(
-                      completedTasks.map((d) => {
-                        d.select = value;
-                        return d;
-                      })
-                    )
+                  setIsChecked(
+                    completedTasks.map((d) => {
+                      d.select = value;
+                      return d;
+                    })
                   );
                 }}
               />
@@ -54,6 +53,7 @@ export const CompletedTasks = ({
             onDeleteTask={onDeleteTask}
             completedTasks={completedTasks}
             onMooveToActiveHandler={onMooveToActiveHandler}
+            setIsChecked={setIsChecked}
           />
         </tbody>
       </table>

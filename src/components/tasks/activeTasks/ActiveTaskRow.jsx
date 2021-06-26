@@ -1,6 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { getCompletedData } from "../../../redux/actions";
+
 import { ActiveTasksButtons } from "./ActiveTasksButtons";
 
 export const ActiveTaskRow = ({
@@ -8,9 +7,8 @@ export const ActiveTaskRow = ({
   onDeleteTask,
   onCompleteHandler,
   activeTasks,
+  setIsChecked,
 }) => {
-  const dispatch = useDispatch();
-
   return (
     <>
       {activeTasks.map((task) => {
@@ -22,15 +20,13 @@ export const ActiveTaskRow = ({
                 checked={task.select}
                 onChange={(e) => {
                   let value = e.target.checked;
-                  dispatch(
-                    getCompletedData(
-                      activeTasks.map((sd) => {
-                        if (sd.id === task.id) {
-                          sd.select = value;
-                        }
-                        return sd;
-                      })
-                    )
+                  setIsChecked(
+                    activeTasks.map((sd) => {
+                      if (sd.id === task.id) {
+                        sd.select = value;
+                      }
+                      return sd;
+                    })
                   );
                 }}
               />

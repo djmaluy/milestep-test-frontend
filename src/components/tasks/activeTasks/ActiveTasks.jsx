@@ -5,7 +5,12 @@ import { getActiveTasks, getSortedTasks } from "../../../redux/tasksSelector";
 import { getActiveData } from "../../../redux/actions";
 import { CheckAllActiveTasks } from "./CheckAllActiveTasks";
 
-export const ActiveTasks = ({ openModal, onDeleteTask, onCompleteHandler }) => {
+export const ActiveTasks = ({
+  openModal,
+  onDeleteTask,
+  onCompleteHandler,
+  setIsChecked,
+}) => {
   const dispatch = useDispatch();
 
   const activeTasks = useSelector(getActiveTasks);
@@ -13,12 +18,15 @@ export const ActiveTasks = ({ openModal, onDeleteTask, onCompleteHandler }) => {
 
   useEffect(() => {
     dispatch(getActiveData());
-  }, [sortedTasks]);
+  }, [sortedTasks, dispatch]);
   return (
     <table>
       <thead>
         <tr>
-          <CheckAllActiveTasks activeTasks={activeTasks} />
+          <CheckAllActiveTasks
+            activeTasks={activeTasks}
+            setIsChecked={setIsChecked}
+          />
           <th colSpan="2">Title</th>
         </tr>
       </thead>
@@ -28,6 +36,7 @@ export const ActiveTasks = ({ openModal, onDeleteTask, onCompleteHandler }) => {
           onDeleteTask={onDeleteTask}
           activeTasks={activeTasks}
           onCompleteHandler={onCompleteHandler}
+          setIsChecked={setIsChecked}
         />
       </tbody>
     </table>

@@ -1,22 +1,18 @@
 import React from "react";
-import { getActiveData } from "../../../redux/actions";
-import { useDispatch } from "react-redux";
 
-export const CheckAllActiveTasks = ({ activeTasks }) => {
-  const dispatch = useDispatch();
+export const CheckAllActiveTasks = ({ activeTasks, setIsChecked }) => {
   return (
     <th>
       <input
         type="checkbox"
         onChange={(e) => {
           let value = e.target.checked;
-          dispatch(
-            getActiveData(
-              activeTasks.map((d) => {
-                d.select = value;
-                return d;
-              })
-            )
+
+          setIsChecked(
+            activeTasks.map((d) => {
+              d.select = value;
+              return d;
+            })
           );
         }}
       />

@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
-import { TaskDetail } from "./tasks/TaskDetail";
+import { TaskDetail } from "../components/tasks/TaskDetail";
 import Button from "@material-ui/core/Button";
 
 export const AddTaskModal = ({ showTask, closeModal }) => {

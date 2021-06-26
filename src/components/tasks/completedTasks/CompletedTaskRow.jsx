@@ -8,6 +8,7 @@ export const CompletedTaskRow = ({
   onDeleteTask,
   onMooveToActiveHandler,
   completedTasks,
+  setIsChecked,
 }) => {
   return (
     <>
@@ -17,6 +18,7 @@ export const CompletedTaskRow = ({
             <CheckAllCompletedTasks
               task={task}
               completedTasks={completedTasks}
+              setIsChecked={setIsChecked}
             />
             <CompletedTasksButtons
               openModal={openModal}

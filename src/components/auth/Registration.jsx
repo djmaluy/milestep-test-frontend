@@ -23,7 +23,7 @@ export const Registration = () => {
     };
 
     axios
-      .post("http://localhost:3001/users", data)
+      .post("http://localhost:3000/users", data)
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         setRedirect(true);

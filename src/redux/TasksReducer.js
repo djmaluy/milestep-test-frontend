@@ -5,18 +5,15 @@ import {
   START_FETCHING,
   SET_COMPLETED_TASKS,
   SET_ACTIVE_TASKS,
-  SET_HOVER,
 } from "./actionTypes";
 
 const initialState = {
   loading: false,
   tasks: [],
   sortedTasks: [],
-  user: "",
   completedTasks: [],
   activeTasks: [],
   error: null,
-  isHovered: false,
 };
 
 export const TasksReducer = (state = initialState, action) => {
@@ -56,12 +53,7 @@ export const TasksReducer = (state = initialState, action) => {
         activeTasks: action.activeTasks,
       };
     }
-    case SET_HOVER: {
-      return {
-        ...state,
-        isHovered: !state.isHovered,
-      };
-    }
+
     default:
       return state;
   }

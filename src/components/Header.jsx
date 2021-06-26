@@ -5,7 +5,7 @@ import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 export const Header = ({ user, setUser }) => {
   const logout = () => {
     localStorage.removeItem("token");
-    setUser("");
+    setUser(null);
   };
 
   let menu;

@@ -23,7 +23,7 @@ const App = () => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      fetch("http://localhost:3001/auto_login", {
+      fetch("http://localhost:3000/auto_login", {
         headers: { Authenticate: localStorage.token },
       })
         .then((res) => res.json())
@@ -35,7 +35,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchData());
-  }, []);
+  }, [dispatch]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -78,7 +78,11 @@ const App = () => {
   });
 
   const onDeleteTask = async (id) => {
-    await api.delete(`/tasks/${id}`);
+    await api.delete(`/tasks/`, {
+      data: {
+        ids: [id],
+      },
+    });
     dispatch(fetchData());
   };
 
@@ -97,7 +101,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getSortedData());
-  }, [tasks]);
+  }, [tasks, dispatch]);
 
   return (
     <BrowserRouter>
