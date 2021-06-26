@@ -29,7 +29,6 @@ export const Header = ({ user, setUser }) => {
       <ul className="navbar-nav links ">
         <li className="d-flex ">
           <PersonOutlineIcon className="avatar" />
-
           <span className="login">
             {user.first_name} {user.last_name}
           </span>

@@ -4,10 +4,11 @@ import { ActiveTaskRow } from "./ActiveTaskRow";
 export const ActiveTasks = ({
   openModal,
   onDeleteTask,
-
   onCompleteHandler,
   activeTasks,
   setActiveTasks,
+  isHovered,
+  setIsHovered,
 }) => {
   return (
     <table>
@@ -29,7 +30,7 @@ export const ActiveTasks = ({
             <span>Check all</span>
           </th>
           <th colSpan="2">Title</th>
-          <th>Actions</th>
+          {/* <th>Actions</th> */}
         </tr>
       </thead>
       <tbody>
@@ -39,6 +40,8 @@ export const ActiveTasks = ({
           activeTasks={activeTasks}
           onCompleteHandler={onCompleteHandler}
           setActiveTasks={setActiveTasks}
+          isHovered={isHovered}
+          setIsHovered={setIsHovered}
         />
       </tbody>
     </table>

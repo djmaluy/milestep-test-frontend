@@ -56,6 +56,17 @@
   overflow: hidden;
   color: blue;
 }
+.deleteEditButtons {
+  position: absolute;
+  bottom: 0;
+  left: 15px;
+  top: 2px;
+  right: 0;
+}
+
+.hoveredButton {
+  position: relative;
+}
 .ReactModal__Overlay {
   z-index: 99;
   position: absolute;
@@ -162,9 +173,6 @@ td:nth-child(2) {
   border-left: 2px solid #56433d;
   border-right: 2px solid #56433d;
   word-wrap: break-word;
-  overflow-x: hidden;
-  width: 50%;
-  max-width: 150px;
 }
 .tasksTables {
   display: flex;

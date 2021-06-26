@@ -10,6 +10,8 @@ export const ActiveTaskRow = ({
   setActiveTasks,
   onCompleteHandler,
   activeTasks,
+  isHovered,
+  setIsHovered,
 }) => {
   return (
     <>
@@ -34,22 +36,32 @@ export const ActiveTaskRow = ({
               />
             </td>
 
-            <td colSpan="2">
-              <button onClick={() => openModal(task)} className="titleButton">
+            <td colSpan="2" className="hoveredButton">
+              <button
+                onClick={() => openModal(task)}
+                className="titleButton"
+                onMouseOver={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
                 {task.title}
+
+                {isHovered && (
+                  <>
+                    <NavLink
+                      to={{ pathname: `/edit/${task.id}`, state: { task } }}
+                    >
+                      <EditOutlinedIcon />
+                    </NavLink>
+                    <DeleteForeverIcon
+                      onClick={() => onDeleteTask(task.id)}
+                      className="deleteButton"
+                    />
+                  </>
+                )}
               </button>
               <CheckCircleOutlinedIcon
                 className="completedButton"
                 onClick={() => onCompleteHandler(task)}
-              />
-            </td>
-            <td>
-              <NavLink to={{ pathname: `/edit/${task.id}`, state: { task } }}>
-                <EditOutlinedIcon />
-              </NavLink>
-              <DeleteForeverIcon
-                onClick={() => onDeleteTask(task.id)}
-                className="deleteButton"
               />
             </td>
           </tr>

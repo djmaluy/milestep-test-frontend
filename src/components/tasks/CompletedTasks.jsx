@@ -8,6 +8,8 @@ export const CompletedTasks = ({
   setCompletedTasks,
   completedTasks,
   onMooveToActiveHandler,
+  setIsHovered,
+  isHovered,
 }) => {
   return (
     <div className="completedTasks">
@@ -42,6 +44,8 @@ export const CompletedTasks = ({
             setCompletedTasks={setCompletedTasks}
             completedTasks={completedTasks}
             onMooveToActiveHandler={onMooveToActiveHandler}
+            setIsHovered={setIsHovered}
+            isHovered={isHovered}
           />
         </tbody>
       </table>

@@ -21,6 +21,7 @@ export const Home = ({
   const [showTask, setShowTask] = useState(null);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
+  const [isHovered, setIsHovered] = useState(false);
 
   const getCompletedTasks = () => {
     const result = tasks.filter((task) => {
@@ -73,7 +74,7 @@ export const Home = ({
         ids.push(d.id);
       }
     });
-
+    console.log(ids);
     api
       .delete(`/tasks/`, {
         ids: {
@@ -118,6 +119,8 @@ export const Home = ({
           onCompleteHandler={onCompleteHandler}
           setActiveTasks={setActiveTasks}
           activeTasks={activeTasks}
+          isHovered={isHovered}
+          setIsHovered={setIsHovered}
         />
       </div>
       <div>
@@ -128,6 +131,8 @@ export const Home = ({
           setCompletedTasks={setCompletedTasks}
           deleteTasksById={deleteTasksById}
           onMooveToActiveHandler={onMooveToActiveHandler}
+          isHovered={isHovered}
+          setIsHovered={setIsHovered}
         />
       </div>
 
