@@ -9,12 +9,17 @@ import { useFormik } from "formik";
 import api from "./api/api";
 import { EditTask } from "./components/tasks/EditTask";
 import { TaskDetail } from "./components/tasks/TaskDetail";
+import { useDispatch, useSelector } from "react-redux";
+import { getTasks, getSortedTasks } from "./redux/tasksSelector";
+import { fetchData, getSortedData } from "./redux/actions";
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const tasks = useSelector(getTasks);
+  const sortedTasks = useSelector(getSortedTasks);
+
   const [user, setUser] = useState("");
   const [open, setOpen] = useState(false);
-  const [sortedTasks, setSortedTasks] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -28,17 +33,8 @@ const App = () => {
     }
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`http://localhost:3001/tasks`);
-      const result = await response.json();
-      setTasks(result);
-    } catch (e) {
-      alert(e);
-    }
-  };
   useEffect(() => {
-    fetchData();
+    dispatch(fetchData());
   }, []);
 
   const handleClickOpen = () => {
@@ -65,7 +61,7 @@ const App = () => {
       },
     };
     const response = await api.post(`/tasks`, request);
-    setTasks([...tasks, response.data]);
+    dispatch(fetchData([...tasks, response.data]));
     setOpen(false);
     formik.values.title = "";
     formik.values.description = "";
@@ -83,35 +79,24 @@ const App = () => {
 
   const onDeleteTask = async (id) => {
     await api.delete(`/tasks/${id}`);
-    fetchData();
+    dispatch(fetchData());
   };
 
   const updateTaskHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, task);
 
-    setTasks(
-      tasks.map((task) => {
-        return task.id === response.data.id ? { ...response.data } : task;
-      })
+    dispatch(
+      fetchData(
+        tasks.map((task) => {
+          return task.id === response.data.id ? { ...response.data } : task;
+        })
+      )
     );
     fetchData();
   };
 
   useEffect(() => {
-    const sortTasks = () => {
-      // a[field] > b[field] ? 1 : -1
-      const sorted = [...tasks].sort((a, b) => {
-        if (a.title > b.title) {
-          return 1;
-        }
-        if (a.title < b.title) {
-          return -1;
-        }
-        return 0;
-      });
-      setSortedTasks(sorted);
-    };
-    sortTasks();
+    dispatch(getSortedData());
   }, [tasks]);
 
   return (
@@ -124,8 +109,8 @@ const App = () => {
           render={() => (
             <Home
               user={user}
-              tasks={sortedTasks}
-              setTasks={setTasks}
+              sortedTasks={sortedTasks}
+              // setTasks={setTasks}
               handleSubmit={handleSubmit}
               formik={formik}
               handleClickOpen={handleClickOpen}

@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CompletedTaskRow } from "./CompletedTaskRow";
+import { useDispatch, useSelector } from "react-redux";
+import { getCompletedTasks, getSortedTasks } from "../../redux/tasksSelector";
+import { getCompletedData } from "../../redux/actions";
 
 export const CompletedTasks = ({
   openModal,
   onDeleteTask,
-  tasks,
-  setCompletedTasks,
-  completedTasks,
   onMooveToActiveHandler,
   setIsHovered,
   isHovered,
 }) => {
+  const dispatch = useDispatch();
+
+  const completedTasks = useSelector(getCompletedTasks);
+  const sortedTasks = useSelector(getSortedTasks);
+
+  useEffect(() => {
+    dispatch(getCompletedData());
+  }, [sortedTasks]);
+
   return (
     <div className="completedTasks">
       <h3>Completed tasks</h3>
@@ -22,11 +31,13 @@ export const CompletedTasks = ({
                 type="checkbox"
                 onChange={(e) => {
                   let value = e.target.checked;
-                  setCompletedTasks(
-                    completedTasks.map((d) => {
-                      d.select = value;
-                      return d;
-                    })
+                  dispatch(
+                    getCompletedData(
+                      completedTasks.map((d) => {
+                        d.select = value;
+                        return d;
+                      })
+                    )
                   );
                 }}
               />
@@ -40,8 +51,6 @@ export const CompletedTasks = ({
           <CompletedTaskRow
             openModal={openModal}
             onDeleteTask={onDeleteTask}
-            tasks={tasks}
-            setCompletedTasks={setCompletedTasks}
             completedTasks={completedTasks}
             onMooveToActiveHandler={onMooveToActiveHandler}
             setIsHovered={setIsHovered}

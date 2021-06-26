@@ -3,16 +3,20 @@ import { NavLink } from "react-router-dom";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
+import { useDispatch } from "react-redux";
+
+import { getCompletedData } from "../../redux/actions";
 
 export const ActiveTaskRow = ({
   openModal,
   onDeleteTask,
-  setActiveTasks,
   onCompleteHandler,
-  activeTasks,
   isHovered,
   setIsHovered,
+  activeTasks,
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <>
       {activeTasks.map((task) => {
@@ -24,13 +28,15 @@ export const ActiveTaskRow = ({
                 checked={task.select}
                 onChange={(e) => {
                   let value = e.target.checked;
-                  setActiveTasks(
-                    activeTasks.map((sd) => {
-                      if (sd.id === task.id) {
-                        sd.select = value;
-                      }
-                      return sd;
-                    })
+                  dispatch(
+                    getCompletedData(
+                      activeTasks.map((sd) => {
+                        if (sd.id === task.id) {
+                          sd.select = value;
+                        }
+                        return sd;
+                      })
+                    )
                   );
                 }}
               />

@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ActiveTaskRow } from "./ActiveTaskRow";
+import { useDispatch, useSelector } from "react-redux";
+import { getActiveTasks, getSortedTasks } from "../../redux/tasksSelector";
+import { getActiveData } from "../../redux/actions";
 
 export const ActiveTasks = ({
   openModal,
   onDeleteTask,
   onCompleteHandler,
-  activeTasks,
-  setActiveTasks,
   isHovered,
   setIsHovered,
 }) => {
+  const dispatch = useDispatch();
+
+  const activeTasks = useSelector(getActiveTasks);
+  const sortedTasks = useSelector(getSortedTasks);
+
+  useEffect(() => {
+    dispatch(getActiveData());
+  }, [sortedTasks]);
   return (
     <table>
       <thead>
@@ -19,11 +28,13 @@ export const ActiveTasks = ({
               type="checkbox"
               onChange={(e) => {
                 let value = e.target.checked;
-                setActiveTasks(
-                  activeTasks.map((d) => {
-                    d.select = value;
-                    return d;
-                  })
+                dispatch(
+                  getActiveData(
+                    activeTasks.map((d) => {
+                      d.select = value;
+                      return d;
+                    })
+                  )
                 );
               }}
             />
@@ -39,7 +50,6 @@ export const ActiveTasks = ({
           onDeleteTask={onDeleteTask}
           activeTasks={activeTasks}
           onCompleteHandler={onCompleteHandler}
-          setActiveTasks={setActiveTasks}
           isHovered={isHovered}
           setIsHovered={setIsHovered}
         />

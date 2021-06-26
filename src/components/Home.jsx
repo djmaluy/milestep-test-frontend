@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AddTaskForm } from "./tasks/AddTaskForm";
-import Button from "@material-ui/core/Button";
-import Modal from "react-modal";
-import { TaskDetail } from "./tasks/TaskDetail";
 import api from "../api/api";
 import { CompletedTasks } from "./tasks/CompletedTasks";
 import { ActiveTasks } from "./tasks/ActiveTasks";
+import { AddTaskModal } from "./AddTaskModal";
+import { useState } from "react";
 
 export const Home = ({
-  tasks,
+  sortedTasks,
   formik,
   handleSubmit,
   handleClickOpen,
@@ -19,42 +18,23 @@ export const Home = ({
   fetchData,
 }) => {
   const [showTask, setShowTask] = useState(null);
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [activeTasks, setActiveTasks] = useState([]);
   const [isHovered, setIsHovered] = useState(false);
-
-  const getCompletedTasks = () => {
-    const result = tasks.filter((task) => {
-      return task.is_done === true;
-    });
-    setCompletedTasks(result);
-  };
-  const getActiveTasks = () => {
-    const result = tasks.filter((task) => {
-      return task.is_done === false;
-    });
-    setActiveTasks(result);
-  };
-
-  useEffect(() => {
-    getCompletedTasks();
-    getActiveTasks();
-  }, [tasks]);
 
   const onCompleteHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, { is_done: true });
 
     setTasks(
-      tasks.map((task) => {
+      sortedTasks.map((task) => {
         return task.id === response.data.id ? { ...response.data } : task;
       })
     );
     fetchData();
   };
+
   const onMooveToActiveHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, { is_done: false });
     setTasks(
-      tasks.map((task) => {
+      sortedTasks.map((task) => {
         return task.id === response.data.id ? { ...response.data } : task;
       })
     );
@@ -69,7 +49,7 @@ export const Home = ({
   };
   const deleteTasksById = () => {
     const ids = [];
-    tasks.forEach((d) => {
+    sortedTasks.forEach((d) => {
       if (d.select) {
         ids.push(d.id);
       }
@@ -117,8 +97,6 @@ export const Home = ({
           onDeleteTask={onDeleteTask}
           deleteTasksById={deleteTasksById}
           onCompleteHandler={onCompleteHandler}
-          setActiveTasks={setActiveTasks}
-          activeTasks={activeTasks}
           isHovered={isHovered}
           setIsHovered={setIsHovered}
         />
@@ -127,8 +105,6 @@ export const Home = ({
         <CompletedTasks
           openModal={openModal}
           onDeleteTask={onDeleteTask}
-          completedTasks={completedTasks}
-          setCompletedTasks={setCompletedTasks}
           deleteTasksById={deleteTasksById}
           onMooveToActiveHandler={onMooveToActiveHandler}
           isHovered={isHovered}
@@ -138,19 +114,7 @@ export const Home = ({
 
       <>
         {showTask && (
-          <Modal
-            isOpen={true}
-            onRequestClose={closeModal}
-            ariaHideApp={false}
-            className="ReactModal__Overlay"
-          >
-            <div className="ReactModal__Content">
-              <Button className="close-modal" onClick={closeModal}>
-                X
-              </Button>
-              <TaskDetail showTask={showTask} />
-            </div>
-          </Modal>
+          <AddTaskModal showTask={showTask} closeModal={closeModal} />
         )}
       </>
     </div>

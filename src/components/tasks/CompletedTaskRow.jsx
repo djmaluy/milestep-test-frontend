@@ -3,16 +3,20 @@ import { NavLink } from "react-router-dom";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Button from "@material-ui/core/Button";
+import { useDispatch } from "react-redux";
+
+import { getCompletedData } from "../../redux/actions";
 
 export const CompletedTaskRow = ({
   openModal,
   onDeleteTask,
-  completedTasks,
-  setCompletedTasks,
   onMooveToActiveHandler,
   setIsHovered,
   isHovered,
+  completedTasks,
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <>
       {completedTasks.map((task) => {
@@ -24,18 +28,19 @@ export const CompletedTaskRow = ({
                 checked={task.select}
                 onChange={(e) => {
                   let value = e.target.checked;
-                  setCompletedTasks(
-                    completedTasks.map((sd) => {
-                      if (sd.id === task.id) {
-                        sd.select = value;
-                      }
-                      return sd;
-                    })
+                  dispatch(
+                    getCompletedData(
+                      completedTasks.map((sd) => {
+                        if (sd.id === task.id) {
+                          sd.select = value;
+                        }
+                        return sd;
+                      })
+                    )
                   );
                 }}
               />
             </td>
-
             <td colSpan="2" className="hoveredButton">
               <button
                 onClick={() => openModal(task)}
