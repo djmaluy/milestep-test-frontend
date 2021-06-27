@@ -34,7 +34,7 @@ export const AddTaskForm = ({
                 onChange={formik.handleChange}
                 value={formik.values.title}
                 variant="outlined"
-                required
+                required={true}
               />
             </Grid>
             <Grid item>
@@ -69,8 +69,8 @@ export const AddTaskForm = ({
                 name="dueDate"
                 onChange={formik.handleChange}
                 value={formik.values.dueDate}
-                InputLabelProps={{
-                  shrink: true,
+                InputProps={{
+                  inputProps: { min: formik.values.dueDate },
                 }}
               />
             </Grid>

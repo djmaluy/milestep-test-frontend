@@ -14,9 +14,10 @@ const initialState = {
   completedTasks: [],
   activeTasks: [],
   error: null,
+  checked: false,
 };
 
-export const TasksReducer = (state = initialState, action) => {
+export const tasksReducer = (state = initialState, action) => {
   switch (action.type) {
     case START_FETCHING:
       return {

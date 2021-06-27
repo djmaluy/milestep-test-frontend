@@ -1,15 +1,12 @@
 export const getTasks = (state) => {
-  return state.tasks;
+  return state.tasksReducer.tasks;
 };
 export const getSortedTasks = (state) => {
-  return state.sortedTasks;
+  return state.tasksReducer.sortedTasks;
 };
 export const getCompletedTasks = (state) => {
-  return state.completedTasks;
+  return state.tasksReducer.completedTasks;
 };
 export const getActiveTasks = (state) => {
-  return state.activeTasks;
-};
-export const getIsHovered = (state) => {
-  return state.isHovered;
+  return state.tasksReducer.activeTasks;
 };
