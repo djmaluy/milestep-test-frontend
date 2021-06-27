@@ -2,9 +2,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import { Login } from "./components/auth/Login";
 import { Registration } from "./components/auth/Registration";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { Header } from "./components/Header";
-import { Home } from "./components/Home";
 import { useFormik } from "formik";
 import api from "./api/api";
 import { EditTask } from "./components/tasks/EditTask";
@@ -12,6 +11,10 @@ import { TaskDetail } from "./components/tasks/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks, getSortedTasks } from "./redux/tasksSelector";
 import { fetchData, getSortedData } from "./redux/actions";
+
+const HomeContainerWithSuspense = React.lazy(() =>
+  import("./components/containers/HomeContainer")
+);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -107,24 +110,27 @@ const App = () => {
     <BrowserRouter>
       <Header user={user} setUser={setUser} />
       <Switch>
-        <Route
-          exact
-          path={"/"}
-          render={() => (
-            <Home
-              user={user}
-              sortedTasks={sortedTasks}
-              handleSubmit={handleSubmit}
-              formik={formik}
-              handleClickOpen={handleClickOpen}
-              handleClose={handleClose}
-              open={open}
-              onDeleteTask={onDeleteTask}
-              setOpen={setOpen}
-              fetchData={fetchData}
-            />
-          )}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Route
+            exact
+            path={"/"}
+            render={() => (
+              <HomeContainerWithSuspense
+                user={user}
+                sortedTasks={sortedTasks}
+                handleSubmit={handleSubmit}
+                formik={formik}
+                handleClickOpen={handleClickOpen}
+                handleClose={handleClose}
+                open={open}
+                onDeleteTask={onDeleteTask}
+                setOpen={setOpen}
+                fetchData={fetchData}
+              />
+            )}
+          />
+        </Suspense>
+
         <Route exact path={"/registration"} component={Registration} />
         <Route
           exact

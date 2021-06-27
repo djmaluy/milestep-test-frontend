@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
-import api from "../api/api";
-import { AddTaskModal } from "../modal/AddTaskModal";
+import api from "../../api/api";
+import { AddTaskModal } from "../../modal/AddTaskModal";
 import { useDispatch } from "react-redux";
-import { fetchData, getActiveData, getCompletedData } from "../redux/actions";
-import { getActiveTasks, getCompletedTasks } from "../redux/tasksSelector";
+import {
+  fetchData,
+  getActiveData,
+  getCompletedData,
+} from "../../redux/actions";
+import { getActiveTasks, getCompletedTasks } from "../../redux/tasksSelector";
 import { useSelector } from "react-redux";
-import { ActiveTasks } from "./tasks/ActiveTasks";
-import { CompletedTasks } from "./tasks/CompletedTasks";
-import { HomePageButtons } from "./HomePageButtons";
+import { ActiveTasks } from "../tasks/ActiveTasks";
+import { CompletedTasks } from "../tasks/CompletedTasks";
+import { HomePageButtons } from "../HomePageButtons";
 
-export const Home = ({
+const HomeContainer = ({
   sortedTasks,
   formik,
   handleSubmit,
@@ -139,3 +143,5 @@ export const Home = ({
     </>
   );
 };
+
+export default HomeContainer;
