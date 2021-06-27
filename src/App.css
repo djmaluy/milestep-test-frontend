@@ -48,21 +48,52 @@
 .links > li {
   margin-right: 25px;
 }
+.home__title {
+  text-align: center;
+  margin-top: 25px;
+}
+.home__checkAll {
+  margin-top: 5px;
+  margin-left: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.home__checkAll-text {
+  margin-left: 5px;
+}
 .titleButton {
   background-color: Transparent;
   background-repeat: no-repeat;
   border: none;
   cursor: pointer;
   overflow: hidden;
-  color: blue;
+  color: rgb(76, 148, 182);
+  font-size: 25px;
+  font-weight: 600;
+}
+.list__title {
+  text-align: center;
 }
 .hoveredButton:hover .deleteEditButtons {
-  display: block;
+  display: inline-block;
 }
 .deleteEditButtons {
   display: none;
 }
 
+.card-body__inner--title:hover {
+  font-weight: 500;
+  color: blue;
+}
+.card-body__inner {
+  display: flex;
+
+  align-items: center;
+  padding: 30px 10px;
+}
+.card-body__inner:hover .deleteEditButtons {
+  display: flex;
+}
 .ReactModal__Overlay {
   z-index: 99;
   position: absolute;
@@ -131,47 +162,8 @@
   margin-top: 25px;
 }
 
-/* Styling table */
-table {
-  width: 550px;
-  font-family: "Open Sans", sans-serif;
-  font-weight: bold;
-  margin-bottom: 15px;
-  table-layout: fixed;
-}
-th {
-  padding: 10px 20px;
-  background: #56433d;
-  color: #f9c941;
-  border-right: 2px solid;
-  font-size: 0.9em;
-}
-th:first-child {
-  text-align: left;
-}
-
-td {
-  vertical-align: middle;
-  padding: 10px;
-  font-size: 14px;
-  text-align: center;
-  border-top: 2px solid #56433d;
-  border-bottom: 2px solid #56433d;
-  border-right: 2px solid #56433d;
-  word-wrap: break-word;
-}
-td:first-child {
-  border-left: 2px solid #56433d;
-  border-right: 2px solid #56433d;
-  width: 19%;
-}
-td:nth-child(2) {
-  border-left: 2px solid #56433d;
-  border-right: 2px solid #56433d;
-  word-wrap: break-word;
-}
 .tasksTables {
-  display: flex;
+  /* display: flex; */
   justify-content: space-between;
 }
 .completedTasks {

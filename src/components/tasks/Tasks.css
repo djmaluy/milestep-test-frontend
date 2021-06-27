@@ -18,7 +18,7 @@
 .editForm > h3 {
   text-align: center;
 }
-.editButton{
+.editButton {
   max-width: 100px;
   border-radius: 5px;
   background: #5a84d8;
@@ -27,8 +27,23 @@
   font-size: 16px;
   cursor: pointer;
   margin-top: 15px;
-  margin: 0 auto
+  margin: 0 auto;
 }
 .editButton:hover {
   background: #245ed1;
+}
+.list__header {
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid #245ed1;
+  padding: 15px;
+  border-radius: 5px;
+  width: 500px;
+}
+.list__header_title {
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: #13161d;
 }

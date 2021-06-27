@@ -9,7 +9,7 @@ export const Header = ({ user, setUser }) => {
   };
 
   let menu;
-  if (user === "") {
+  if (!user === "") {
     menu = (
       <ul className="navbar-nav links">
         <li className="nav-item ">

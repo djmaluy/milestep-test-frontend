@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { AddTaskForm } from "./tasks/AddTaskForm";
+import React, { useState, useEffect } from "react";
 import api from "../api/api";
-import { CompletedTasks } from "./tasks/completedTasks/CompletedTasks";
-import { ActiveTasks } from "./tasks/activeTasks/ActiveTasks";
 import { AddTaskModal } from "../modal/AddTaskModal";
 import { useDispatch } from "react-redux";
-import { fetchData } from "../redux/actions";
+import { fetchData, getActiveData, getCompletedData } from "../redux/actions";
+import { getActiveTasks, getCompletedTasks } from "../redux/tasksSelector";
+import { useSelector } from "react-redux";
+import { ActiveTasks } from "./tasks/ActiveTasks";
+import { CompletedTasks } from "./tasks/CompletedTasks";
+import { HomePageButtons } from "./HomePageButtons";
 
 export const Home = ({
   sortedTasks,
@@ -17,8 +19,11 @@ export const Home = ({
   onDeleteTask,
 }) => {
   const [showTask, setShowTask] = useState(null);
-  const [isChecked, setIsChecked] = useState(false);
-  console.log(isChecked);
+  const [, setIsChecked] = useState(false);
+
+  const activeTasks = useSelector(getActiveTasks);
+  const completedTasks = useSelector(getCompletedTasks);
+
   const dispatch = useDispatch();
 
   const onCompleteHandler = async (task) => {
@@ -45,6 +50,11 @@ export const Home = ({
     );
     fetchData();
   };
+
+  useEffect(() => {
+    dispatch(getActiveData());
+    dispatch(getCompletedData());
+  }, [sortedTasks, dispatch]);
 
   const openModal = (task) => {
     setShowTask(task);
@@ -74,53 +84,57 @@ export const Home = ({
   return (
     <>
       <div className="tasksTables container ">
+        <h1 className="home__title">Task management system</h1>
         <div>
-          <div>
-            <h3>Active tasks</h3>
-          </div>
           <div className="d-flex">
-            <button
-              type="button"
-              className="btn btn-danger  mb-3"
-              onClick={() => {
-                deleteTasksById();
-              }}
-            >
-              Batch delete
-            </button>
-
-            <AddTaskForm
+            <HomePageButtons
+              deleteTasksById={deleteTasksById}
               handleSubmit={handleSubmit}
-              formik={formik}
               handleClickOpen={handleClickOpen}
               handleClose={handleClose}
               open={open}
+              formik={formik}
+              activeTasks={activeTasks}
+              setIsChecked={setIsChecked}
             />
           </div>
-
-          <ActiveTasks
-            openModal={openModal}
-            onDeleteTask={onDeleteTask}
-            deleteTasksById={deleteTasksById}
-            onCompleteHandler={onCompleteHandler}
-            setIsChecked={setIsChecked}
-          />
         </div>
-        <div>
-          <CompletedTasks
-            openModal={openModal}
-            onDeleteTask={onDeleteTask}
-            deleteTasksById={deleteTasksById}
-            onMooveToActiveHandler={onMooveToActiveHandler}
-            setIsChecked={setIsChecked}
-          />
-        </div>
-
         <>
           {showTask && (
             <AddTaskModal showTask={showTask} closeModal={closeModal} />
           )}
         </>
+        <div className="row">
+          <div className="col-sm-6">
+            <h3 className="list__title">Active tasks</h3>
+            {activeTasks.map((task) => {
+              return (
+                <ActiveTasks
+                  key={task.id}
+                  task={task}
+                  setIsChecked={setIsChecked}
+                  activeTasks={activeTasks}
+                  openModal={openModal}
+                  onCompleteHandler={onCompleteHandler}
+                  onDeleteTask={onDeleteTask}
+                />
+              );
+            })}
+          </div>
+          <div className="col-sm-6">
+            <h3 className="list__title">Completed tasks</h3>
+            {completedTasks.map((task) => {
+              return (
+                <CompletedTasks
+                  key={task.id}
+                  task={task}
+                  openModal={openModal}
+                  onMooveToActiveHandler={onMooveToActiveHandler}
+                />
+              );
+            })}
+          </div>
+        </div>
       </div>
     </>
   );
