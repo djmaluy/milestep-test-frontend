@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 
-export const Registration = () => {
+export const Registration = React.memo(() => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
@@ -91,4 +91,4 @@ export const Registration = () => {
       </form>
     </div>
   );
-};
+});

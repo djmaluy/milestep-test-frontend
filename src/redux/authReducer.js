@@ -1,6 +1,6 @@
-import {} from "./actionTypes";
-
-const initialState = {};
+const initialState = {
+  user: "",
+};
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
