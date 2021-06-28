@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 
-export const CompletedTasks = ({ task, openModal, onMooveToActiveHandler }) => {
+export const CompletedTasks = memo(({ task, openModal, onToggleStatus }) => {
   return (
     <div className="card" key={task.id}>
       <div className="card-body card-body__inner ">
@@ -11,11 +11,11 @@ export const CompletedTasks = ({ task, openModal, onMooveToActiveHandler }) => {
         <button
           type="button"
           className="btn btn-success btn-sm"
-          onClick={() => onMooveToActiveHandler(task)}
+          onClick={() => onToggleStatus(task, false)}
         >
           To active
         </button>
       </div>
     </div>
   );
-};
+});

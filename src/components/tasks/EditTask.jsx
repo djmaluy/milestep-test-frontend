@@ -7,11 +7,13 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import "./Tasks.css";
+import { useCallback } from "react";
 
-export const EditTask = ({ updateTaskHandler }) => {
+export const EditTask = React.memo(({ updateTaskHandler, formik }) => {
   const history = useHistory();
   const { id, title, description, priority, due_date } =
     useLocation().state.task;
+  const menuItems = [1, 2, 3, 4, 5];
   const [state, setState] = useState({
     id,
     title,
@@ -20,11 +22,14 @@ export const EditTask = ({ updateTaskHandler }) => {
     due_date,
   });
 
-  const editTask = (e) => {
-    e.preventDefault();
-    updateTaskHandler(state);
-    history.push("/");
-  };
+  const editTask = useCallback(
+    (e) => {
+      e.preventDefault();
+      updateTaskHandler(state);
+      history.push("/");
+    },
+    [state, history, updateTaskHandler]
+  );
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -66,11 +71,13 @@ export const EditTask = ({ updateTaskHandler }) => {
               onChange={(e) => handleChange(e)}
               value={state.priority}
             >
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
+              {menuItems.map((item) => {
+                return (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
         </Grid>
@@ -81,10 +88,13 @@ export const EditTask = ({ updateTaskHandler }) => {
             name="due_date"
             onChange={(e) => handleChange(e)}
             value={state.due_date}
+            InputProps={{
+              inputProps: { min: formik.values.dueDate },
+            }}
           />
         </Grid>
         <button className="editButton">Update</button>
       </Grid>
     </form>
   );
-};
+});
