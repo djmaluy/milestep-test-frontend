@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 
-export const Login = ({ setUser }) => {
+export const Login = React.memo(({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -18,12 +18,14 @@ export const Login = ({ setUser }) => {
       }),
     })
       .then((res) => res.json())
+
       .then((data) => {
         localStorage.setItem("token", data.token);
         setRedirect(true);
         setUser(data.user);
       });
   };
+
   if (redirect) {
     return <Redirect to="/" />;
   }
@@ -56,4 +58,4 @@ export const Login = ({ setUser }) => {
       </form>
     </div>
   );
-};
+});

@@ -24,18 +24,29 @@ const App = () => {
   const [user, setUser] = useState("");
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
+  // getting current user after every refreshing page
+  const getCurrenUser = async () => {
     if (localStorage.getItem("token")) {
-      fetch("http://localhost:3000/auto_login", {
-        headers: { Authenticate: localStorage.token },
+      await fetch("http://localhost:3000/login", {
+        headers: {
+          Authenticate: localStorage.token,
+        },
       })
         .then((res) => res.json())
-        .then((user) => {
-          setUser(user);
+        .then((data) => {
+          setUser(data);
         });
     }
-  }, []);
+  };
 
+  useEffect(() => {
+    getCurrenUser();
+  }, [setUser]);
+  // logout from system
+  const logout = async () => {
+    localStorage.clear();
+    setUser("");
+  };
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
@@ -51,11 +62,12 @@ const App = () => {
     const now = new Date();
     return now.toISOString().slice(0, 10);
   };
-
+  // getting data from AddTaskForm and sending to database
   const handleSubmit = async () => {
     const { title, description, priority, dueDate } = formik.values;
     const request = {
       task: {
+        user_id: user.id,
         title,
         description,
         priority,
@@ -79,7 +91,7 @@ const App = () => {
       dueDate: getCurrentDate(),
     },
   });
-
+  //deleting only one task
   const onDeleteTask = async (id) => {
     await api.delete(`/tasks/`, {
       data: {
@@ -88,7 +100,7 @@ const App = () => {
     });
     dispatch(fetchData());
   };
-
+  //Updating task
   const updateTaskHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, task);
 
@@ -107,10 +119,10 @@ const App = () => {
   }, [tasks, dispatch]);
 
   return (
-    <BrowserRouter>
-      <Header user={user} setUser={setUser} />
-      <Switch>
-        <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
+      <BrowserRouter>
+        <Header user={user} setUser={setUser} logout={logout} />
+        <Switch>
           <Route
             exact
             path={"/"}
@@ -129,31 +141,30 @@ const App = () => {
               />
             )}
           />
-        </Suspense>
-
-        <Route exact path={"/registration"} component={Registration} />
-        <Route
-          exact
-          path={"/login"}
-          render={() => <Login setUser={setUser} />}
-        />
-        <Route
-          path="/edit/:id"
-          render={(props) => (
-            <EditTask
-              {...props}
-              updateTaskHandler={updateTaskHandler}
-              formik={formik}
-            />
-          )}
-        />
-        <Route
-          exact
-          path={`/show`}
-          render={() => <TaskDetail tasks={tasks} />}
-        />
-      </Switch>
-    </BrowserRouter>
+          <Route exact path={"/registration"} component={Registration} />
+          <Route
+            exact
+            path={"/login"}
+            render={() => <Login setUser={setUser} />}
+          />
+          <Route
+            path="/edit/:id"
+            render={(props) => (
+              <EditTask
+                {...props}
+                updateTaskHandler={updateTaskHandler}
+                formik={formik}
+              />
+            )}
+          />
+          <Route
+            exact
+            path={`/show`}
+            render={() => <TaskDetail tasks={tasks} />}
+          />
+        </Switch>
+      </BrowserRouter>
+    </Suspense>
   );
 };
 

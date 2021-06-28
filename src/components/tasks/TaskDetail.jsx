@@ -3,7 +3,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
-export const TaskDetail = ({ showTask }) => {
+export const TaskDetail = React.memo(({ showTask }) => {
   return (
     <Card key={showTask.id} className="taskDetail">
       <CardContent className="taskDetail__content">
@@ -38,4 +38,4 @@ export const TaskDetail = ({ showTask }) => {
       </CardContent>
     </Card>
   );
-};
+});
