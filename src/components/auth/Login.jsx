@@ -1,38 +1,21 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "../../redux/actions";
 
-export const Login = React.memo(({ setUser }) => {
+export const Login = ({ user }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [redirect, setRedirect] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const dispatch = useDispatch();
+
+  const onHandleSubmit = (e) => {
     e.preventDefault();
-
-    await fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-
-      .then((data) => {
-        localStorage.setItem("token", data.token);
-        setRedirect(true);
-        setUser(data.user);
-      });
+    dispatch(fetchUser(email, password));
   };
-
-  if (redirect) {
-    return <Redirect to="/" />;
-  }
   return (
     <div className="text-center">
       <h1 className="h3 mb-1 font-weight-normal">Please Log in</h1>
-      <form onSubmit={handleSubmit} className="form-signin">
+      <form onSubmit={onHandleSubmit} className="form-signin">
         <input
           type="email"
           name="email"
@@ -51,11 +34,10 @@ export const Login = React.memo(({ setUser }) => {
           className="form-control"
           required
         />
-
         <button className="btn btn-lg btn-primary btn-block mt-3" type="submit">
           Login
         </button>
       </form>
     </div>
   );
-});
+};

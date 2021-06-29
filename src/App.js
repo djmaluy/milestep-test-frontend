@@ -10,7 +10,15 @@ import { EditTask } from "./components/tasks/EditTask";
 import { TaskDetail } from "./components/tasks/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks, getSortedTasks } from "./redux/tasksSelector";
-import { fetchData, getSortedData } from "./redux/actions";
+import {
+  fetchData,
+  getSortedData,
+  fetchUser,
+  getCurrentUser,
+} from "./redux/actions";
+// import { useHistory } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
+import { getUser } from "./redux/authSelector";
 
 const HomeContainerWithSuspense = React.lazy(() =>
   import("./components/containers/HomeContainer")
@@ -21,32 +29,29 @@ const App = () => {
   const tasks = useSelector(getTasks);
   const sortedTasks = useSelector(getSortedTasks);
 
-  const [user, setUser] = useState("");
   const [open, setOpen] = useState(false);
+  // const [user, setUser] = useState(null);
+  // const [email, setEmail] = useState("");
+  // const [redirect, setRedirect] = useState(false);
+  // const [password, setPassword] = useState("");
+  // const user = useSelector(getUser);
 
-  // getting current user after every refreshing page
-  const getCurrenUser = async () => {
-    if (localStorage.getItem("token")) {
-      await fetch("http://localhost:3000/login", {
-        headers: {
-          Authenticate: localStorage.token,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setUser(data);
-        });
-    }
-  };
+  const currentUser = useSelector(getUser);
+  console.log(currentUser);
+  // const history = useHistory();
 
+  // // logout from system
+  // const logout = async () => {
+  //   localStorage.clear();
+  //   setUser("");
+  // };
   useEffect(() => {
-    getCurrenUser();
-  }, [setUser]);
-  // logout from system
-  const logout = async () => {
-    localStorage.clear();
-    setUser("");
-  };
+    getCurrentUser();
+  }, []);
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
+
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
@@ -67,7 +72,6 @@ const App = () => {
     const { title, description, priority, dueDate } = formik.values;
     const request = {
       task: {
-        user_id: user.id,
         title,
         description,
         priority,
@@ -103,7 +107,6 @@ const App = () => {
   //Updating task
   const updateTaskHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, task);
-
     dispatch(
       fetchData(
         tasks.map((task) => {
@@ -121,14 +124,14 @@ const App = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <BrowserRouter>
-        <Header user={user} setUser={setUser} logout={logout} />
+        <Header user={currentUser} />
         <Switch>
           <Route
             exact
             path={"/"}
             render={() => (
               <HomeContainerWithSuspense
-                user={user}
+                user={currentUser}
                 sortedTasks={sortedTasks}
                 handleSubmit={handleSubmit}
                 formik={formik}
@@ -145,7 +148,7 @@ const App = () => {
           <Route
             exact
             path={"/login"}
-            render={() => <Login setUser={setUser} />}
+            render={() => <Login user={currentUser} />}
           />
           <Route
             path="/edit/:id"

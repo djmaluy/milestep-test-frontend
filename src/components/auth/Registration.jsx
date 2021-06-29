@@ -10,6 +10,9 @@ export const Registration = React.memo(() => {
   const [lastName, setLastName] = useState("");
   const [redirect, setRedirect] = useState(false);
 
+  const [user, setUser] = useState(null);
+  console.log(user);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -23,9 +26,9 @@ export const Registration = React.memo(() => {
     };
 
     axios
-      .post("http://localhost:3000/users", data)
+      .post("http://localhost:3000/sessions", data)
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
+        setUser(res);
         setRedirect(true);
       })
       .catch((error) => {

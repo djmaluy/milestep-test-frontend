@@ -2,4 +2,7 @@ export const FETCHING_SUCCESS = "FETCHING_SUCCESS";
 export const SET_ACTIVE_TASKS = "SET_ACTIVE_TASKS";
 export const SET_SORTED_TASKS = "SET_SORTED_TASKS";
 export const SET_COMPLETED_TASKS = "SET_COMPLETED_TASKS";
+
+// Auth types
 export const SET_USER = "SET_USER";
+export const SET_CURRENT_USER = "SET_CURRENT_USER";

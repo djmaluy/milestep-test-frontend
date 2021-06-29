@@ -25,9 +25,7 @@ export const Header = ({ user, logout }) => {
         <ul className="navbar-nav links ">
           <li className="d-flex ">
             <PersonOutlineIcon className="avatar" />
-            <span className="login">
-              {user.first_name} {user.last_name}
-            </span>
+            <span className="login">{user.current_user.data.email}</span>
           </li>
           <li className="nav-item ">
             <NavLink to="/login" onClick={logout} className="nav-link">
