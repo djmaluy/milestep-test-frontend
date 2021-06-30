@@ -3,15 +3,14 @@ import {
   SET_SORTED_TASKS,
   SET_COMPLETED_TASKS,
   SET_ACTIVE_TASKS,
+  CLEAR_ENTITY,
 } from "./actionTypes";
 
 const initialState = {
-  loading: false,
   tasks: [],
   sortedTasks: [],
   completedTasks: [],
   activeTasks: [],
-  error: null,
   checked: false,
 };
 
@@ -41,6 +40,9 @@ export const tasksReducer = (state = initialState, action) => {
         ...state,
         activeTasks: action.activeTasks,
       };
+    }
+    case CLEAR_ENTITY: {
+      return initialState;
     }
 
     default:

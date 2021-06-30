@@ -21,7 +21,7 @@ const HomeContainer = ({
   handleClose,
   open,
   onDeleteTask,
-  user,
+  current_user,
 }) => {
   const [showTask, setShowTask] = useState(null);
   const [, setIsChecked] = useState(false);
@@ -77,7 +77,7 @@ const HomeContainer = ({
     <>
       <div className="tasksTables container ">
         <h1 className="home__title">Task management system</h1>
-        {user ? (
+        {current_user ? (
           <>
             <div>
               <div className="d-flex">
@@ -93,7 +93,6 @@ const HomeContainer = ({
                 />
               </div>
             </div>
-
             <div className="row">
               <div className="col-sm-6">
                 <h3 className="list__title">Active tasks</h3>

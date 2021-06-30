@@ -6,34 +6,35 @@ import {
   SET_ACTIVE_TASKS,
   SET_USER,
   SET_CURRENT_USER,
+  CLEAR_ENTITY,
 } from "./actionTypes";
 
-export const fetchUser = (email, password) => async (dispatch) => {
-  const user = await api.post("/sessions", {
+export const login = (email, password) => async (dispatch) => {
+  const response = await api.post("/sessions", {
     body: {
       email,
       password,
     },
   });
+  const user = response.data;
   dispatch({ type: SET_USER, user });
 };
 
 export const getCurrentUser = () => async (dispatch) => {
-  const user = await api.get("/current_user");
+  const response = await api.get("/current_user");
 
+  const user = response.data;
   dispatch({ type: SET_CURRENT_USER, user });
+};
+export const clearEntity = () => (dispatch) => {
+  dispatch({ type: CLEAR_ENTITY });
 };
 //fetching tasks from api
 export const fetchData = () => async (dispatch) => {
-  try {
-    const response = await fetch(`http://localhost:3000/tasks`);
-    if (!response.ok) throw new Error("Some error occured");
-    const tasks = await response.json();
+  const response = await api.get(`/tasks`);
 
-    dispatch({ type: FETCHING_SUCCESS, tasks });
-  } catch (error) {
-    console.log(error);
-  }
+  const tasks = await response.data;
+  dispatch({ type: FETCHING_SUCCESS, tasks });
 };
 
 // sorting data

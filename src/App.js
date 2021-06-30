@@ -13,12 +13,11 @@ import { getTasks, getSortedTasks } from "./redux/tasksSelector";
 import {
   fetchData,
   getSortedData,
-  fetchUser,
   getCurrentUser,
+  clearEntity,
 } from "./redux/actions";
-// import { useHistory } from "react-router-dom";
-// import { Redirect } from "react-router-dom";
 import { getUser } from "./redux/authSelector";
+import { PageNotFound } from "./components/pageNotFound/PageNotFound";
 
 const HomeContainerWithSuspense = React.lazy(() =>
   import("./components/containers/HomeContainer")
@@ -28,33 +27,25 @@ const App = () => {
   const dispatch = useDispatch();
   const tasks = useSelector(getTasks);
   const sortedTasks = useSelector(getSortedTasks);
-
   const [open, setOpen] = useState(false);
-  // const [user, setUser] = useState(null);
-  // const [email, setEmail] = useState("");
-  // const [redirect, setRedirect] = useState(false);
-  // const [password, setPassword] = useState("");
-  // const user = useSelector(getUser);
+  const current_user = useSelector(getUser);
 
-  const currentUser = useSelector(getUser);
-  console.log(currentUser);
-  // const history = useHistory();
-
-  // // logout from system
-  // const logout = async () => {
-  //   localStorage.clear();
-  //   setUser("");
-  // };
   useEffect(() => {
-    getCurrentUser();
-  }, []);
-  useEffect(() => {
-    dispatch(fetchUser());
+    dispatch(getCurrentUser());
   }, []);
 
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getSortedData());
+  }, [tasks, dispatch]);
+
+  const logout = async () => {
+    await api.delete("/sessions");
+    dispatch(clearEntity());
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -117,21 +108,17 @@ const App = () => {
     fetchData();
   };
 
-  useEffect(() => {
-    dispatch(getSortedData());
-  }, [tasks, dispatch]);
-
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="loadingSuspense">Loading...</div>}>
       <BrowserRouter>
-        <Header user={currentUser} />
+        <Header current_user={current_user} logout={logout} />
         <Switch>
           <Route
             exact
             path={"/"}
             render={() => (
               <HomeContainerWithSuspense
-                user={currentUser}
+                current_user={current_user}
                 sortedTasks={sortedTasks}
                 handleSubmit={handleSubmit}
                 formik={formik}
@@ -148,7 +135,7 @@ const App = () => {
           <Route
             exact
             path={"/login"}
-            render={() => <Login user={currentUser} />}
+            render={() => <Login current_user={current_user} />}
           />
           <Route
             path="/edit/:id"
@@ -165,6 +152,7 @@ const App = () => {
             path={`/show`}
             render={() => <TaskDetail tasks={tasks} />}
           />
+          <Route component={PageNotFound} />
         </Switch>
       </BrowserRouter>
     </Suspense>

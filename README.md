@@ -1,5 +1,35 @@
-1.2 User receives email with activation link after sign up
+### Installation:
 
-2.1 User can manage only his own tasks
+- **To clone the project**
 
-Few tests with Rspec (e.g. add a method `full name` to user model and add tests for it, add tests for validation rules)
+```
+git@github.com:djmaluy/milestep-test-task.git
+git@github.com:djmaluy/milestep-test-frontend.git
+```
+
+- **Go to the folder**
+
+```
+cd milestep-test-task  and execute the command:
+
+bundle install
+rails s
+```
+
+- **Go to the folder**
+
+```
+cd milestep-test-frontend  and execute the command:
+
+npm install
+
+```
+
+### Run the application:
+
+- **For quick application run use this command**
+
+```
+npm start
+
+```

@@ -1,4 +1,4 @@
-import { SET_USER, SET_CURRENT_USER } from "./actionTypes";
+import { SET_USER, SET_CURRENT_USER, CLEAR_ENTITY } from "./actionTypes";
 
 const initialState = {
   user: {
@@ -18,7 +18,10 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         current_user: action.user,
       };
-
+    case CLEAR_ENTITY:
+      return {
+        initialState,
+      };
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Redirect } from "react-router-dom";
+import api from "../../api/api";
 
 export const Registration = React.memo(() => {
   const [email, setEmail] = useState("");
@@ -9,9 +9,7 @@ export const Registration = React.memo(() => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [redirect, setRedirect] = useState(false);
-
-  const [user, setUser] = useState(null);
-  console.log(user);
+  const [, setUser] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,8 +23,8 @@ export const Registration = React.memo(() => {
       },
     };
 
-    axios
-      .post("http://localhost:3000/sessions", data)
+    api
+      .post("/users", data)
       .then((res) => {
         setUser(res);
         setRedirect(true);
