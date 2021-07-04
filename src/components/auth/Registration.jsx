@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
 import api from "../../api/api";
 
 export const Registration = React.memo(() => {
@@ -8,8 +7,6 @@ export const Registration = React.memo(() => {
   const [password_confirmation, setPassword_confirmation] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [redirect, setRedirect] = useState(false);
-  const [, setUser] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,16 +23,12 @@ export const Registration = React.memo(() => {
     api
       .post("/users", data)
       .then((res) => {
-        setUser(res);
-        setRedirect(true);
+        alert("Check your email, please");
       })
       .catch((error) => {
         console.log("registration error", error);
       });
   };
-  if (redirect) {
-    return <Redirect to="/login" />;
-  }
 
   return (
     <div className="text-center">

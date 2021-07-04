@@ -18,6 +18,7 @@ import {
 } from "./redux/actions";
 import { getUser } from "./redux/authSelector";
 import { PageNotFound } from "./components/pageNotFound/PageNotFound";
+import { ConfirmEmail } from "./components/ConfirmEmail";
 
 const HomeContainerWithSuspense = React.lazy(() =>
   import("./components/containers/HomeContainer")
@@ -28,11 +29,11 @@ const App = () => {
   const tasks = useSelector(getTasks);
   const sortedTasks = useSelector(getSortedTasks);
   const [open, setOpen] = useState(false);
-  const current_user = useSelector(getUser);
+  const currentUser = useSelector(getUser);
 
   useEffect(() => {
     dispatch(getCurrentUser());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchData());
@@ -111,14 +112,14 @@ const App = () => {
   return (
     <Suspense fallback={<div className="loadingSuspense">Loading...</div>}>
       <BrowserRouter>
-        <Header current_user={current_user} logout={logout} />
+        <Header current_user={currentUser} logout={logout} />
         <Switch>
           <Route
             exact
             path={"/"}
             render={() => (
               <HomeContainerWithSuspense
-                current_user={current_user}
+                current_user={currentUser}
                 sortedTasks={sortedTasks}
                 handleSubmit={handleSubmit}
                 formik={formik}
@@ -135,7 +136,7 @@ const App = () => {
           <Route
             exact
             path={"/login"}
-            render={() => <Login current_user={current_user} />}
+            render={() => <Login current_user={currentUser} />}
           />
           <Route
             path="/edit/:id"
@@ -151,6 +152,10 @@ const App = () => {
             exact
             path={`/show`}
             render={() => <TaskDetail tasks={tasks} />}
+          />
+          <Route
+            path="/confirmation_email"
+            render={(props) => <ConfirmEmail {...props} />}
           />
           <Route component={PageNotFound} />
         </Switch>

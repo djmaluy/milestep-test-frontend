@@ -7,3 +7,4 @@ export const SET_COMPLETED_TASKS = "SET_COMPLETED_TASKS";
 export const SET_USER = "SET_USER";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const CLEAR_ENTITY = "CLEAR_ENTITY";
+export const CONFIRM_EMAIL = "CONFIRM_EMAIL";

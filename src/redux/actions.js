@@ -7,6 +7,7 @@ import {
   SET_USER,
   SET_CURRENT_USER,
   CLEAR_ENTITY,
+  CONFIRM_EMAIL,
 } from "./actionTypes";
 
 export const login = (email, password) => async (dispatch) => {
@@ -17,7 +18,11 @@ export const login = (email, password) => async (dispatch) => {
     },
   });
   const user = response.data;
-  dispatch({ type: SET_USER, user });
+  if (user.email_confirmed === true) {
+    dispatch({ type: SET_USER, user });
+  } else {
+    alert("Check your email and confirm your account");
+  }
 };
 
 export const getCurrentUser = () => async (dispatch) => {
@@ -25,6 +30,15 @@ export const getCurrentUser = () => async (dispatch) => {
 
   const user = response.data;
   dispatch({ type: SET_CURRENT_USER, user });
+};
+
+export const confirmEmail = (token) => async (dispatch) => {
+  const response = await api.post("/confirm_email", {
+    user: {
+      token: token,
+    },
+  });
+  dispatch({ type: CONFIRM_EMAIL, response });
 };
 export const clearEntity = () => (dispatch) => {
   dispatch({ type: CLEAR_ENTITY });
@@ -34,6 +48,7 @@ export const fetchData = () => async (dispatch) => {
   const response = await api.get(`/tasks`);
 
   const tasks = await response.data;
+
   dispatch({ type: FETCHING_SUCCESS, tasks });
 };
 
