@@ -49,7 +49,7 @@ export const fetchData = () => async (dispatch) => {
     const response = await api.get(`/tasks`);
     const tasks = await response.data;
     dispatch({ type: FETCHING_SUCCESS, tasks });
-  }catch(error) => {
+  }catch(error){
     console.log(tasks.error)
   }
 };
