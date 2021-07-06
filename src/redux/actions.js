@@ -45,17 +45,19 @@ export const clearEntity = () => (dispatch) => {
 };
 //fetching tasks from api
 export const fetchData = () => async (dispatch) => {
-  const response = await api.get(`/tasks`);
-
-  const tasks = await response.data;
-
-  dispatch({ type: FETCHING_SUCCESS, tasks });
+  try{
+    const response = await api.get(`/tasks`);
+    const tasks = await response.data;
+    dispatch({ type: FETCHING_SUCCESS, tasks });
+  }catch(error) => {
+    console.log(tasks.error)
+  }
 };
 
 // sorting data
 export const getSortedData = () => (dispatch, getState) => {
   const tasks = getState().tasksReducer.tasks;
-  if(tasks){
+  if(tasks.length >= 1){
     const sortedTasks = tasks.sort((a, b) =>
       a.title > b.title ? 1 : -1
     );
