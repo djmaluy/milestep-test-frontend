@@ -48,7 +48,11 @@ export const fetchData = () => async (dispatch) => {
   try{
     const response = await api.get(`/tasks`);
     const tasks = await response.data;
-    dispatch({ type: FETCHING_SUCCESS, tasks });
+    if (response.status === 500) {
+      console.log("Something went wrong");
+    }else {
+      dispatch({ type: FETCHING_SUCCESS, tasks });
+    }
   }catch(error){
     console.log(error)
   }
