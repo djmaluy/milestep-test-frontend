@@ -18,7 +18,7 @@ export const login = (email, password) => async (dispatch) => {
     },
   });
   const user = response.data;
-  if (user.email_confirmed === true) {
+  if (user.email_confirmed === false) {
     dispatch({ type: SET_USER, user });
   } else {
     alert("Check your email and confirm your account");
