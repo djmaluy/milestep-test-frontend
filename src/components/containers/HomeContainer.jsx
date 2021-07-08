@@ -40,7 +40,7 @@ const HomeContainer = ({
         })
       )
     );
-    fetchData();
+    
   };
 
   useEffect(() => {

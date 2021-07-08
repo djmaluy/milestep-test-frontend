@@ -30,7 +30,7 @@ const App = () => {
   const sortedTasks = useSelector(getSortedTasks);
   const [open, setOpen] = useState(false);
   const currentUser = useSelector(getUser);
-  console.log("currentUser", currentUser)
+
 
   useEffect(() => {
     dispatch(getCurrentUser());
@@ -38,7 +38,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchData());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     dispatch(getSortedData());
@@ -107,7 +107,7 @@ const App = () => {
         })
       )
     );
-    fetchData();
+    dispatch(fetchData());
   };
 
   return (

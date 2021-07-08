@@ -57,15 +57,12 @@ export const fetchData = () => async (dispatch) => {
 // sorting data
 export const getSortedData = () => (dispatch, getState) => {
   const tasks = getState().tasksReducer.tasks;
-  if(tasks.length >= 1){
+
     const sortedTasks = tasks.sort((a, b) =>
       a.title > b.title ? 1 : -1
     );
     dispatch({ type: SET_SORTED_TASKS, sortedTasks });
-  }
-  else{
-    console.log("no data")
-  }
+
 };
 // getting only completed tasks
 export const getCompletedData = () => (dispatch, getState) => {
