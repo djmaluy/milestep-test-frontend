@@ -30,6 +30,7 @@ const App = () => {
   const sortedTasks = useSelector(getSortedTasks);
   const [open, setOpen] = useState(false);
   const currentUser = useSelector(getUser);
+  
 
 
   useEffect(() => {
