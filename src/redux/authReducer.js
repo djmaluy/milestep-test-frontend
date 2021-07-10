@@ -23,8 +23,7 @@ export const authReducer = (state = initialState, action) => {
       };
     case CLEAR_ENTITY:
       return {
-        ...state,
-        current_user: null,
+        initialState,
       };
     case CONFIRM_EMAIL:
       return {
