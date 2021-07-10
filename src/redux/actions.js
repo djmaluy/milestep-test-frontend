@@ -1,4 +1,5 @@
 import api from "../api/api";
+// import { toastrError } from "../services/helpers/toastr";
 import {
   FETCHING_SUCCESS,
   SET_SORTED_TASKS,
@@ -11,26 +12,33 @@ import {
 } from "./actionTypes";
 
 export const login = (email, password) => async (dispatch) => {
-  const response = await api.post("/sessions", {
-    body: {
-      email,
-      password,
-    },
-  });
-  const user = response.data;
-  if (user.email_confirmed === true) {
-    dispatch({ type: SET_USER, user });
-
-  } else {
-    alert("Check your email and confirm your account");
+  try {
+    const response = await api.post("/sessions", {
+      body: {
+        email,
+        password,
+      },
+    });
+    const user = response.data;
+    if (user.email_confirmed === true) {
+      dispatch({ type: SET_USER, user });
+    } else {
+      alert("Check your email and confirm your account");
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 };
 
 export const getCurrentUser = () => async (dispatch) => {
-  const response = await api.get("/current_user");
+  try {
+    const response = await api.get("/current_user");
 
-  const user = response.data;
-  dispatch({ type: SET_CURRENT_USER, user });
+    const user = response.data;
+    dispatch({ type: SET_CURRENT_USER, user });
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 export const confirmEmail = (token) => async (dispatch) => {
@@ -46,24 +54,25 @@ export const clearEntity = () => (dispatch) => {
 };
 //fetching tasks from api
 export const fetchData = () => async (dispatch) => {
-  try{
+  try {
     const response = await api.get(`/tasks`);
     const tasks = await response.data;
     dispatch({ type: FETCHING_SUCCESS, tasks });
-  }catch(error){
-    console.log(error.message)
+  } catch (error) {
+    console.log(error.message);
   }
 };
 
 // sorting data
 export const getSortedData = () => (dispatch, getState) => {
-  const tasks = getState().tasksReducer.tasks;
+  try {
+    const tasks = getState().tasksReducer.tasks;
 
-    const sortedTasks = tasks.sort((a, b) =>
-      a.title > b.title ? 1 : -1
-    );
+    const sortedTasks = tasks.sort((a, b) => (a.title > b.title ? 1 : -1));
     dispatch({ type: SET_SORTED_TASKS, sortedTasks });
-
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 // getting only completed tasks
 export const getCompletedData = () => (dispatch, getState) => {
