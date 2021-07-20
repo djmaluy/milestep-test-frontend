@@ -10,15 +10,11 @@ import { EditTask } from "./components/tasks/EditTask";
 import { TaskDetail } from "./components/tasks/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks, getSortedTasks } from "./redux/tasksSelector";
-import {
-  fetchData,
-  getSortedData,
-  getCurrentUser,
-  clearEntity,
-} from "./redux/actions";
 import { getUser } from "./redux/authSelector";
 import { PageNotFound } from "./components/pageNotFound/PageNotFound";
 import { ConfirmEmail } from "./components/ConfirmEmail";
+import { clearEntityAC, getCurrentUserAC } from "./store/actions/user.actions";
+import { tasksActions } from "./store/actions/tasks.actions";
 
 const HomeContainerWithSuspense = React.lazy(() =>
   import("./components/containers/HomeContainer")
@@ -32,20 +28,20 @@ const App = () => {
   const currentUser = useSelector(getUser);
 
   useEffect(() => {
-    dispatch(getCurrentUser());
+    dispatch(getCurrentUserAC());
   }, []);
 
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(tasksActions.fetchingTasksAC());
   }, []);
 
   useEffect(() => {
-    dispatch(getSortedData());
+    dispatch(tasksActions.getSortedTasksAC());
   }, [tasks, dispatch]);
 
   const logout = async () => {
     await api.delete("/sessions");
-    dispatch(clearEntity());
+    dispatch(clearEntityAC());
   };
 
   const handleClickOpen = () => {
@@ -72,7 +68,7 @@ const App = () => {
       },
     };
     const response = await api.post(`/tasks`, request);
-    dispatch(fetchData([...tasks, response.data]));
+    dispatch(tasksActions.fetchingTasksAC([...tasks, response.data]));
     setOpen(false);
     formik.values.title = "";
     formik.values.description = "";
@@ -94,19 +90,19 @@ const App = () => {
         ids: [id],
       },
     });
-    dispatch(fetchData());
+    dispatch(tasksActions.fetchingTasksAC());
   };
   //Updating task
   const updateTaskHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, task);
     dispatch(
-      fetchData(
+      tasksActions.fetchingTasksAC(
         tasks.map((task) => {
           return task.id === response.data.id ? { ...response.data } : task;
         })
       )
     );
-    dispatch(fetchData());
+    dispatch(tasksActions.fetchingTasksAC());
   };
 
   return (
@@ -128,7 +124,7 @@ const App = () => {
                 open={open}
                 onDeleteTask={onDeleteTask}
                 setOpen={setOpen}
-                fetchData={fetchData}
+                fetchData={tasksActions.fetchingTasksAC}
               />
             )}
           />

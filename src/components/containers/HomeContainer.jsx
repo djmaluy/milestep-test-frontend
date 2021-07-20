@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-  fetchData,
-  getActiveData,
-  getCompletedData,
-} from "../../redux/actions";
 import { getActiveTasks, getCompletedTasks } from "../../redux/tasksSelector";
 import { useSelector } from "react-redux";
 import { ActiveTasks } from "../tasks/ActiveTasks";
@@ -12,6 +7,7 @@ import { CompletedTasks } from "../tasks/CompletedTasks";
 import { HomePageButtons } from "../HomePageButtons";
 import { AddTaskModal } from "../../modal/AddTaskModal";
 import api from "../../api/api";
+import { tasksActions } from "../../store/actions/tasks.actions";
 
 const HomeContainer = ({
   sortedTasks,
@@ -34,18 +30,17 @@ const HomeContainer = ({
   const onToggleStatus = async (task, value) => {
     const response = await api.put(`/tasks/${task.id}`, { is_done: value });
     dispatch(
-      fetchData(
+      tasksActions.fetchingTasksAC(
         sortedTasks.map((task) => {
           return task.id === response.data.id ? { ...response.data } : task;
         })
       )
     );
-    
   };
 
   useEffect(() => {
-    dispatch(getActiveData());
-    dispatch(getCompletedData());
+    dispatch(tasksActions.getActiveTasksAC());
+    dispatch(tasksActions.getCompletedTasksAC());
   }, [sortedTasks, dispatch]);
 
   const openModal = (task) => {
@@ -69,7 +64,7 @@ const HomeContainer = ({
         },
       })
       .then((data) => {
-        dispatch(fetchData());
+        dispatch(tasksActions.fetchingTasksAC());
       })
       .catch((err) => alert(err));
   };

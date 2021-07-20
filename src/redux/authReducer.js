@@ -14,7 +14,7 @@ export const authReducer = (state = initialState, action) => {
     case SET_USER:
       return {
         ...state,
-        current_user: { ...state, current_user: action.user },
+        current_user: action.user,
       };
     case SET_CURRENT_USER:
       return {

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { fetchData, login } from "../../redux/actions";
+import { tasksActions } from "../../store/actions/tasks.actions";
+
+import { loginAC } from "../../store/actions/user.actions";
 
 export const Login = ({ current_user }) => {
   const [email, setEmail] = useState("");
@@ -13,12 +15,12 @@ export const Login = ({ current_user }) => {
     if (current_user) {
       history.push("/");
     }
-    dispatch(fetchData());
+    dispatch(tasksActions.fetchingTasksAC());
   }, [current_user, history, dispatch]);
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    dispatch(loginAC(email, password));
   };
 
   return (

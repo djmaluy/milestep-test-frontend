@@ -20,7 +20,6 @@ export const tasksReducer = (state = initialState, action) => {
       return {
         ...state,
         tasks: action.tasks,
-        loading: false,
       };
 
     case SET_SORTED_TASKS: {
