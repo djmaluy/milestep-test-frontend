@@ -1,9 +1,4 @@
-import {
-  SET_USER,
-  SET_CURRENT_USER,
-  CLEAR_ENTITY,
-  CONFIRM_EMAIL,
-} from "./actionTypes";
+import { userConstants } from "../constants/user.constants";
 
 const initialState = {
   current_user: null,
@@ -11,21 +6,21 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_USER:
+    case userConstants.SET_USER:
       return {
         ...state,
         current_user: action.user,
       };
-    case SET_CURRENT_USER:
+    case userConstants.SET_CURRENT_USER:
       return {
         ...state,
         current_user: action.user,
       };
-    case CLEAR_ENTITY:
+    case userConstants.CLEAR_ENTITY:
       return {
         initialState,
       };
-    case CONFIRM_EMAIL:
+    case userConstants.CONFIRM_EMAIL:
       return {
         ...state,
       };
