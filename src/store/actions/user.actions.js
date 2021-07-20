@@ -1,17 +1,14 @@
-import {
-  CONFIRM_EMAIL_SUCCESS,
-  GET_CURRENT_USER,
-  LOGIN,
-  LOGOUT,
-} from "../../redux/actionTypes";
+import { userConstants } from "../../constants/user.constants";
 
 export const loginAC = (email, password) => ({
-  type: LOGIN,
+  type: userConstants.LOGIN,
   payload: { email, password },
 });
-export const getCurrentUserAC = () => ({ type: GET_CURRENT_USER });
-export const clearEntityAC = () => ({ type: LOGOUT });
+export const getCurrentUserAC = () => ({
+  type: userConstants.GET_CURRENT_USER,
+});
+export const clearEntityAC = () => ({ type: userConstants.LOGOUT });
 export const confirmEmailAC = (token) => ({
-  type: CONFIRM_EMAIL_SUCCESS,
+  type: userConstants.CONFIRM_EMAIL_SUCCESS,
   token,
 });

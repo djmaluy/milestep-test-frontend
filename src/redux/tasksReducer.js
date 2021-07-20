@@ -1,10 +1,5 @@
-import {
-  FETCHING_SUCCESS,
-  SET_SORTED_TASKS,
-  SET_COMPLETED_TASKS,
-  SET_ACTIVE_TASKS,
-  CLEAR_ENTITY,
-} from "./actionTypes";
+import { tasksConstants } from "../constants/tasks.constants";
+import { userConstants } from "../constants/user.constants";
 
 const initialState = {
   tasks: [],
@@ -16,31 +11,31 @@ const initialState = {
 
 export const tasksReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCHING_SUCCESS:
+    case tasksConstants.FETCHING_SUCCESS:
       return {
         ...state,
         tasks: action.tasks,
       };
 
-    case SET_SORTED_TASKS: {
+    case tasksConstants.SET_SORTED_TASKS: {
       return {
         ...state,
         sortedTasks: action.sortedTasks,
       };
     }
-    case SET_COMPLETED_TASKS: {
+    case tasksConstants.SET_COMPLETED_TASKS: {
       return {
         ...state,
         completedTasks: action.completedTasks,
       };
     }
-    case SET_ACTIVE_TASKS: {
+    case tasksConstants.SET_ACTIVE_TASKS: {
       return {
         ...state,
         activeTasks: action.activeTasks,
       };
     }
-    case CLEAR_ENTITY: {
+    case userConstants.CLEAR_ENTITY: {
       return initialState;
     }
 
