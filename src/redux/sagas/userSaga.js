@@ -1,29 +1,35 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import api from "../../api/api";
-import { userConstants } from "../../constants/user.constants";
 import { createSession, getCurrentUser } from "../../services/session";
+import {
+  clearEntitySuccess,
+  fetchCurrentUser,
+  setConfirmEmail,
+  setUser,
+} from "../../store/routines";
 
 export function* login(payload) {
   try {
+    yield put(setUser.request());
     const response = yield call(createSession, payload.payload);
     const user = response.data;
-
     if (user.email_confirmed === true) {
-      yield put({ type: userConstants.SET_USER, user });
+      yield put(setUser.success(user));
     } else {
       alert("Check your email and confirm your account");
     }
   } catch (error) {
-    console.log(error.message);
+    yield put(setUser.failure(error.message));
   }
 }
 export function* setCurrentUser() {
   try {
+    yield put(setUser.request());
     const response = yield call(getCurrentUser);
     const user = response.data;
-    yield put({ type: userConstants.SET_CURRENT_USER, user });
+    yield put(fetchCurrentUser.success(user));
   } catch (error) {
-    console.log(error.message);
+    yield put(fetchCurrentUser.failure(error.message));
   }
 }
 export function* confirmEmail(token) {
@@ -34,15 +40,15 @@ export function* confirmEmail(token) {
       },
     })
   );
-  yield put({ type: userConstants.CONFIRM_EMAIL, response });
+  yield put(setConfirmEmail.success(response));
 }
 export function* clearEntity() {
-  yield put({ type: userConstants.CLEAR_ENTITY });
+  yield put(clearEntitySuccess.success());
 }
 
 export default function* userSagas() {
-  yield takeLatest(userConstants.LOGIN, login);
-  yield takeLatest(userConstants.GET_CURRENT_USER, setCurrentUser);
-  yield takeLatest(userConstants.CONFIRM_EMAIL_SUCCESS, confirmEmail);
-  yield takeLatest(userConstants.LOGOUT, clearEntity);
+  yield takeLatest(setUser.TRIGGER, login);
+  yield takeLatest(fetchCurrentUser.TRIGGER, setCurrentUser);
+  yield takeLatest(setConfirmEmail.TRIGGER, confirmEmail);
+  yield takeLatest(clearEntitySuccess.TRIGGER, clearEntity);
 }

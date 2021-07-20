@@ -1,24 +1,29 @@
 import { put, takeLatest, select, call } from "redux-saga/effects";
-import { tasksConstants } from "../../constants/tasks.constants";
 import { fetchTasksFromApi } from "../../services/tasks";
+import {
+  fetchTasks,
+  setCompletedTasks,
+  setActiveTasks,
+  setSortedTasks,
+} from "../../store/routines";
 import { getTasks } from "../tasksSelector";
 
 export function* fetchData() {
   try {
+    yield put(fetchTasks.request());
     const response = yield call(fetchTasksFromApi);
-    const tasks = response.data;
-    yield put({ type: tasksConstants.FETCHING_SUCCESS, tasks });
+    yield put(fetchTasks.success(response.data));
   } catch (error) {
-    console.log(error.message);
+    yield put(fetchTasks.failure(error.message));
   }
 }
 export function* getSortedData() {
   try {
     const tasks = yield select(getTasks);
     const sortedTasks = tasks.sort((a, b) => (a.title > b.title ? 1 : -1));
-    yield put({ type: tasksConstants.SET_SORTED_TASKS, sortedTasks });
+    yield put(setSortedTasks.success(sortedTasks));
   } catch (error) {
-    console.log(error.message);
+    yield put(setSortedTasks.failure(error.message));
   }
 }
 export function* getCompletedData() {
@@ -26,19 +31,20 @@ export function* getCompletedData() {
   const completedTasks = tasks.filter((task) => {
     return task.is_done === true;
   });
-  yield put({ type: tasksConstants.SET_COMPLETED_TASKS, completedTasks });
+  yield put(setCompletedTasks.success(completedTasks));
 }
 export function* getActiveData() {
   const tasks = yield select(getTasks);
   const activeTasks = tasks.filter((task) => {
     return task.is_done === false;
   });
-  yield put({ type: tasksConstants.SET_ACTIVE_TASKS, activeTasks });
+
+  yield put(setActiveTasks.success(activeTasks));
 }
 
 export default function* tasksSagas() {
-  yield takeLatest(tasksConstants.FETCHING_TASKS_SUCCESS, fetchData);
-  yield takeLatest(tasksConstants.GET_SORTED_TASKS_SUCCESS, getSortedData);
-  yield takeLatest(tasksConstants.GET_COMPLETED_TASKS, getCompletedData);
-  yield takeLatest(tasksConstants.GET_ACTIVE_TASKS, getActiveData);
+  yield takeLatest(fetchTasks.TRIGGER, fetchData);
+  yield takeLatest(setSortedTasks.TRIGGER, getSortedData);
+  yield takeLatest(setCompletedTasks.TRIGGER, getCompletedData);
+  yield takeLatest(setActiveTasks.TRIGGER, getActiveData);
 }

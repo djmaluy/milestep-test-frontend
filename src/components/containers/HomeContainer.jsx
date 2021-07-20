@@ -7,7 +7,11 @@ import { CompletedTasks } from "../tasks/CompletedTasks";
 import { HomePageButtons } from "../HomePageButtons";
 import { AddTaskModal } from "../../modal/AddTaskModal";
 import api from "../../api/api";
-import { tasksActions } from "../../store/actions/tasks.actions";
+import {
+  fetchTasks,
+  setActiveTasks,
+  setCompletedTasks,
+} from "../../store/routines";
 
 const HomeContainer = ({
   sortedTasks,
@@ -30,7 +34,7 @@ const HomeContainer = ({
   const onToggleStatus = async (task, value) => {
     const response = await api.put(`/tasks/${task.id}`, { is_done: value });
     dispatch(
-      tasksActions.fetchingTasksAC(
+      fetchTasks(
         sortedTasks.map((task) => {
           return task.id === response.data.id ? { ...response.data } : task;
         })
@@ -39,8 +43,8 @@ const HomeContainer = ({
   };
 
   useEffect(() => {
-    dispatch(tasksActions.getActiveTasksAC());
-    dispatch(tasksActions.getCompletedTasksAC());
+    dispatch(setActiveTasks());
+    dispatch(setCompletedTasks());
   }, [sortedTasks, dispatch]);
 
   const openModal = (task) => {
@@ -64,7 +68,7 @@ const HomeContainer = ({
         },
       })
       .then((data) => {
-        dispatch(tasksActions.fetchingTasksAC());
+        dispatch(fetchTasks());
       })
       .catch((err) => alert(err));
   };

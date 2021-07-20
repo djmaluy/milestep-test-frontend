@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { confirmEmailAC } from "../store/actions/user.actions";
+import { setConfirmEmail } from "../store/routines";
 
 export const ConfirmEmail = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ export const ConfirmEmail = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(confirmEmailAC(token));
+      dispatch(setConfirmEmail({ token }));
       history.push("/login");
     }
   }, [token, history, dispatch]);

@@ -13,8 +13,12 @@ import { getTasks, getSortedTasks } from "./redux/tasksSelector";
 import { getUser } from "./redux/authSelector";
 import { PageNotFound } from "./components/pageNotFound/PageNotFound";
 import { ConfirmEmail } from "./components/ConfirmEmail";
-import { clearEntityAC, getCurrentUserAC } from "./store/actions/user.actions";
-import { tasksActions } from "./store/actions/tasks.actions";
+import {
+  clearEntitySuccess,
+  fetchCurrentUser,
+  fetchTasks,
+  setSortedTasks,
+} from "./store/routines";
 
 const HomeContainerWithSuspense = React.lazy(() =>
   import("./components/containers/HomeContainer")
@@ -28,20 +32,22 @@ const App = () => {
   const currentUser = useSelector(getUser);
 
   useEffect(() => {
-    dispatch(getCurrentUserAC());
+    dispatch(fetchCurrentUser());
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    dispatch(tasksActions.fetchingTasksAC());
+    dispatch(fetchTasks());
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    dispatch(tasksActions.getSortedTasksAC());
+    dispatch(setSortedTasks());
   }, [tasks, dispatch]);
 
   const logout = async () => {
     await api.delete("/sessions");
-    dispatch(clearEntityAC());
+    dispatch(clearEntitySuccess());
   };
 
   const handleClickOpen = () => {
@@ -68,7 +74,7 @@ const App = () => {
       },
     };
     const response = await api.post(`/tasks`, request);
-    dispatch(tasksActions.fetchingTasksAC([...tasks, response.data]));
+    dispatch(fetchTasks([...tasks, response.data]));
     setOpen(false);
     formik.values.title = "";
     formik.values.description = "";
@@ -90,25 +96,25 @@ const App = () => {
         ids: [id],
       },
     });
-    dispatch(tasksActions.fetchingTasksAC());
+    dispatch(fetchTasks());
   };
   //Updating task
   const updateTaskHandler = async (task) => {
     const response = await api.put(`/tasks/${task.id}`, task);
     dispatch(
-      tasksActions.fetchingTasksAC(
+      fetchTasks(
         tasks.map((task) => {
           return task.id === response.data.id ? { ...response.data } : task;
         })
       )
     );
-    dispatch(tasksActions.fetchingTasksAC());
+    dispatch(fetchTasks());
   };
 
   return (
     <Suspense fallback={<div className="loadingSuspense">Loading...</div>}>
       <BrowserRouter>
-        <Header current_user={currentUser} logout={logout} />
+        <Header currentUser={currentUser} logout={logout} />
         <Switch>
           <Route
             exact
@@ -124,7 +130,7 @@ const App = () => {
                 open={open}
                 onDeleteTask={onDeleteTask}
                 setOpen={setOpen}
-                fetchData={tasksActions.fetchingTasksAC}
+                fetchData={fetchTasks}
               />
             )}
           />

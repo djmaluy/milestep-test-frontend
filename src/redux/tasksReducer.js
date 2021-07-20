@@ -1,5 +1,10 @@
-import { tasksConstants } from "../constants/tasks.constants";
-import { userConstants } from "../constants/user.constants";
+import {
+  clearEntitySuccess,
+  fetchTasks,
+  setActiveTasks,
+  setCompletedTasks,
+  setSortedTasks,
+} from "../store/routines";
 
 const initialState = {
   tasks: [],
@@ -7,37 +12,52 @@ const initialState = {
   completedTasks: [],
   activeTasks: [],
   checked: false,
+  loading: false,
+  error: "",
 };
 
 export const tasksReducer = (state = initialState, action) => {
   switch (action.type) {
-    case tasksConstants.FETCHING_SUCCESS:
+    case fetchTasks.TRIGGER:
       return {
         ...state,
-        tasks: action.tasks,
+        loading: true,
+      };
+    case fetchTasks.SUCCESS:
+      return {
+        ...state,
+        tasks: action.payload,
+      };
+    case fetchTasks.FAILURE:
+      return {
+        ...state,
+        error: action.payload,
       };
 
-    case tasksConstants.SET_SORTED_TASKS: {
+    case setSortedTasks.SUCCESS:
       return {
         ...state,
-        sortedTasks: action.sortedTasks,
+        sortedTasks: action.payload,
       };
-    }
-    case tasksConstants.SET_COMPLETED_TASKS: {
+    case setSortedTasks.FAILURE:
       return {
         ...state,
-        completedTasks: action.completedTasks,
+        error: action.payload,
       };
-    }
-    case tasksConstants.SET_ACTIVE_TASKS: {
+    case setCompletedTasks.SUCCESS:
       return {
         ...state,
-        activeTasks: action.activeTasks,
+        completedTasks: action.payload,
       };
-    }
-    case userConstants.CLEAR_ENTITY: {
+
+    case setActiveTasks.SUCCESS:
+      return {
+        ...state,
+        activeTasks: action.payload,
+      };
+
+    case clearEntitySuccess.SUCCESS:
       return initialState;
-    }
 
     default:
       return state;
