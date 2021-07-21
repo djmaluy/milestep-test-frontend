@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import api from "../../api/api";
+import api from "../api/api";
+import { checkEmail } from "../App";
 
 export const Registration = React.memo(() => {
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ export const Registration = React.memo(() => {
     api
       .post("/users", data)
       .then((res) => {
-        alert("Check your email, please");
+        checkEmail();
       })
       .catch((error) => {
         console.log("registration error", error);

@@ -1,44 +1,55 @@
-import { put, takeLatest, select, call } from "redux-saga/effects";
-import { tasksConstants } from "../../constants/tasks.constants";
-import { fetchTasksFromApi } from "../../services/tasks";
-import { getTasks } from "../tasksSelector";
+import { put, takeLatest, call } from "redux-saga/effects";
+import {
+  deleteTaskById,
+  fetchAllTasks,
+  updateTaskById,
+} from "../../services/tasks";
+import {
+  // deleteMoreTasks,
+  deleteTask,
+  fetchTasks,
+  updateTask,
+} from "../../store/routines";
 
 export function* fetchData() {
   try {
-    const response = yield call(fetchTasksFromApi);
-    const tasks = response.data;
-    yield put({ type: tasksConstants.FETCHING_SUCCESS, tasks });
+    yield put(fetchTasks.request());
+    const response = yield call(fetchAllTasks);
+    yield put(fetchTasks.success(response.data));
   } catch (error) {
-    console.log(error.message);
+    yield put(fetchTasks.failure(error.message));
   }
-}
-export function* getSortedData() {
-  try {
-    const tasks = yield select(getTasks);
-    const sortedTasks = tasks.sort((a, b) => (a.title > b.title ? 1 : -1));
-    yield put({ type: tasksConstants.SET_SORTED_TASKS, sortedTasks });
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-export function* getCompletedData() {
-  const tasks = yield select(getTasks);
-  const completedTasks = tasks.filter((task) => {
-    return task.is_done === true;
-  });
-  yield put({ type: tasksConstants.SET_COMPLETED_TASKS, completedTasks });
-}
-export function* getActiveData() {
-  const tasks = yield select(getTasks);
-  const activeTasks = tasks.filter((task) => {
-    return task.is_done === false;
-  });
-  yield put({ type: tasksConstants.SET_ACTIVE_TASKS, activeTasks });
 }
 
+export function* setUpdatedTask({ payload }) {
+  try {
+    const response = yield call(updateTaskById, payload);
+    yield put(updateTask.success(response.data));
+    yield put(fetchTasks.trigger());
+  } catch (error) {
+    yield put(updateTask.failure(error.message));
+  }
+}
+
+export function* deleteOneTask({ payload }) {
+  try {
+    yield call(deleteTaskById, payload);
+    yield put(fetchTasks.trigger());
+  } catch (error) {
+    yield put(deleteTask.failure(error.message));
+  }
+}
+
+// export function* deleteButchTasks() {
+//   try {
+//   } catch (error) {
+//     yield put(deleteMoreTasks.failure(error.message));
+//   }
+// }
+
 export default function* tasksSagas() {
-  yield takeLatest(tasksConstants.FETCHING_TASKS_SUCCESS, fetchData);
-  yield takeLatest(tasksConstants.GET_SORTED_TASKS_SUCCESS, getSortedData);
-  yield takeLatest(tasksConstants.GET_COMPLETED_TASKS, getCompletedData);
-  yield takeLatest(tasksConstants.GET_ACTIVE_TASKS, getActiveData);
+  yield takeLatest(fetchTasks.TRIGGER, fetchData);
+  yield takeLatest(deleteTask.TRIGGER, deleteOneTask);
+  yield takeLatest(updateTask.TRIGGER, setUpdatedTask);
+  // yield takeLatest(deleteMoreTasks.TRIGGER, deleteButchTasks);
 }

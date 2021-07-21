@@ -1,26 +1,50 @@
-import { userConstants } from "../constants/user.constants";
+import {
+  clearEntity,
+  fetchCurrentUser,
+  setConfirmEmail,
+  setUser,
+} from "../store/routines";
 
 const initialState = {
   current_user: null,
+  error: "",
+  loading: false,
 };
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case userConstants.SET_USER:
+    case setUser.TRIGGER:
       return {
         ...state,
-        current_user: action.user,
+        loading: true,
       };
-    case userConstants.SET_CURRENT_USER:
+    case setUser.SUCCESS:
       return {
         ...state,
-        current_user: action.user,
+        current_user: action.payload,
+        loading: false,
       };
-    case userConstants.CLEAR_ENTITY:
+    case fetchCurrentUser.SUCCESS:
+      return {
+        ...state,
+        current_user: action.payload,
+        loading: false,
+      };
+
+    case setUser.FAILURE:
+    case fetchCurrentUser.FAILURE:
+    case setConfirmEmail.FAILURE: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    }
+    case clearEntity.SUCCESS:
       return {
         initialState,
       };
-    case userConstants.CONFIRM_EMAIL:
+    case setConfirmEmail.SUCCESS:
       return {
         ...state,
       };

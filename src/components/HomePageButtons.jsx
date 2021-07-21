@@ -3,7 +3,7 @@ import { AddTaskForm } from "./tasks/AddTaskForm";
 
 export const HomePageButtons = React.memo(
   ({
-    deleteTasksById,
+    deleteTasksByIds,
     handleSubmit,
     formik,
     handleClickOpen,
@@ -18,7 +18,7 @@ export const HomePageButtons = React.memo(
           type="button"
           className="btn btn-danger  mb-3"
           onClick={() => {
-            deleteTasksById();
+            deleteTasksByIds();
           }}
         >
           Batch delete
