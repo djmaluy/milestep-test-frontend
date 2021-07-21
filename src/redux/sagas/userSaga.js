@@ -1,22 +1,26 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import api from "../../api/api";
-import { createSession, getCurrentUser } from "../../services/session";
+import { confirmAccount } from "../../App";
 import {
-  clearEntitySuccess,
+  createSession,
+  deleteSession,
+  getCurrentUser,
+} from "../../services/session";
+import {
+  clearEntity,
   fetchCurrentUser,
+  logoutUser,
   setConfirmEmail,
   setUser,
 } from "../../store/routines";
 
-export function* login(payload) {
+export function* login({ payload }) {
   try {
-    yield put(setUser.request());
-    const response = yield call(createSession, payload.payload);
+    const response = yield call(createSession, payload);
     const user = response.data;
     if (user.email_confirmed === true) {
       yield put(setUser.success(user));
     } else {
-      alert("Check your email and confirm your account");
+      confirmAccount();
     }
   } catch (error) {
     yield put(setUser.failure(error.message));
@@ -24,7 +28,6 @@ export function* login(payload) {
 }
 export function* setCurrentUser() {
   try {
-    yield put(setUser.request());
     const response = yield call(getCurrentUser);
     const user = response.data;
     yield put(fetchCurrentUser.success(user));
@@ -32,23 +35,23 @@ export function* setCurrentUser() {
     yield put(fetchCurrentUser.failure(error.message));
   }
 }
-export function* confirmEmail(token) {
-  const response = yield call(
-    api.post("/confirm_email", {
-      user: {
-        token: token,
-      },
-    })
-  );
-  yield put(setConfirmEmail.success(response));
+export function* confirmEmail({ payload }) {
+  try {
+    const response = yield call(confirmAccount, payload);
+    yield put(setConfirmEmail.success(response));
+  } catch (error) {
+    yield put(setConfirmEmail.failure(error.message));
+  }
 }
-export function* clearEntity() {
-  yield put(clearEntitySuccess.success());
+
+export function* logout() {
+  yield call(deleteSession);
+  yield put(clearEntity.success());
 }
 
 export default function* userSagas() {
   yield takeLatest(setUser.TRIGGER, login);
   yield takeLatest(fetchCurrentUser.TRIGGER, setCurrentUser);
+  yield takeLatest(logoutUser.TRIGGER, logout);
   yield takeLatest(setConfirmEmail.TRIGGER, confirmEmail);
-  yield takeLatest(clearEntitySuccess.TRIGGER, clearEntity);
 }

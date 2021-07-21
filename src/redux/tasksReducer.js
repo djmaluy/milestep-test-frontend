@@ -1,16 +1,12 @@
 import {
-  clearEntitySuccess,
+  clearEntity,
+  deleteTask,
   fetchTasks,
-  setActiveTasks,
-  setCompletedTasks,
-  setSortedTasks,
+  updateTask,
 } from "../store/routines";
 
 const initialState = {
   tasks: [],
-  sortedTasks: [],
-  completedTasks: [],
-  activeTasks: [],
   checked: false,
   loading: false,
   error: "",
@@ -27,36 +23,29 @@ export const tasksReducer = (state = initialState, action) => {
       return {
         ...state,
         tasks: action.payload,
+        loading: false,
       };
     case fetchTasks.FAILURE:
+    case updateTask.FAILURE:
+    case deleteTask.FAILURE: {
       return {
         ...state,
+        loading: false,
         error: action.payload,
       };
-
-    case setSortedTasks.SUCCESS:
+    }
+    case updateTask.SUCCESS:
       return {
         ...state,
-        sortedTasks: action.payload,
+        tasks: state.tasks.map((task) => {
+          return task.id === action.payload.id ? { ...action.payload } : task;
+        }),
       };
-    case setSortedTasks.FAILURE:
+    case deleteTask.SUCCESS:
       return {
         ...state,
-        error: action.payload,
       };
-    case setCompletedTasks.SUCCESS:
-      return {
-        ...state,
-        completedTasks: action.payload,
-      };
-
-    case setActiveTasks.SUCCESS:
-      return {
-        ...state,
-        activeTasks: action.payload,
-      };
-
-    case clearEntitySuccess.SUCCESS:
+    case clearEntity.SUCCESS:
       return initialState;
 
     default:

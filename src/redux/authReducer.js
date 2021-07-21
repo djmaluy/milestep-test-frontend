@@ -1,5 +1,5 @@
 import {
-  clearEntitySuccess,
+  clearEntity,
   fetchCurrentUser,
   setConfirmEmail,
   setUser,
@@ -22,23 +22,25 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         current_user: action.payload,
+        loading: false,
       };
     case fetchCurrentUser.SUCCESS:
       return {
         ...state,
         current_user: action.payload,
+        loading: false,
       };
+
     case setUser.FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-      };
     case fetchCurrentUser.FAILURE:
+    case setConfirmEmail.FAILURE: {
       return {
         ...state,
+        loading: false,
         error: action.payload,
       };
-    case clearEntitySuccess.SUCCESS:
+    }
+    case clearEntity.SUCCESS:
       return {
         initialState,
       };

@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import { Login } from "./components/auth/Login";
-import { Registration } from "./components/auth/Registration";
 import React, { useEffect, useState, Suspense } from "react";
 import { Header } from "./components/Header";
 import { useFormik } from "formik";
@@ -9,46 +8,43 @@ import api from "./api/api";
 import { EditTask } from "./components/tasks/EditTask";
 import { TaskDetail } from "./components/tasks/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
-import { getTasks, getSortedTasks } from "./redux/tasksSelector";
+import { getTasks } from "./redux/tasksSelector";
 import { getUser } from "./redux/authSelector";
-import { PageNotFound } from "./components/pageNotFound/PageNotFound";
-import { ConfirmEmail } from "./components/ConfirmEmail";
+import { PageNotFound } from "./pages/PageNotFound";
+import { HomeContainer } from "./components/containers/HomeContainer";
+import { ConfirmEmail } from "./pages/ConfirmEmail";
 import {
-  clearEntitySuccess,
+  deleteTask,
   fetchCurrentUser,
   fetchTasks,
-  setSortedTasks,
+  logoutUser,
+  updateTask,
 } from "./store/routines";
+import { routes } from "./constants/routes";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Registration } from "./pages/Registration";
 
-const HomeContainerWithSuspense = React.lazy(() =>
-  import("./components/containers/HomeContainer")
-);
+export const checkEmail = () =>
+  toast.success("Successfully register. Check your email please");
+export const confirmAccount = () =>
+  toast.warn("Check your email and confirm your account");
 
 const App = () => {
   const dispatch = useDispatch();
   const tasks = useSelector(getTasks);
-  const sortedTasks = useSelector(getSortedTasks);
   const [open, setOpen] = useState(false);
   const currentUser = useSelector(getUser);
 
   useEffect(() => {
-    dispatch(fetchCurrentUser());
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     dispatch(fetchTasks());
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setSortedTasks());
-  }, [tasks, dispatch]);
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
-  const logout = async () => {
-    await api.delete("/sessions");
-    dispatch(clearEntitySuccess());
-  };
+  const logout = () => dispatch(logoutUser());
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -90,25 +86,12 @@ const App = () => {
     },
   });
   //deleting only one task
-  const onDeleteTask = async (id) => {
-    await api.delete(`/tasks/`, {
-      data: {
-        ids: [id],
-      },
-    });
-    dispatch(fetchTasks());
+  const onDeleteTask = (id) => {
+    dispatch(deleteTask(id));
   };
   //Updating task
-  const updateTaskHandler = async (task) => {
-    const response = await api.put(`/tasks/${task.id}`, task);
-    dispatch(
-      fetchTasks(
-        tasks.map((task) => {
-          return task.id === response.data.id ? { ...response.data } : task;
-        })
-      )
-    );
-    dispatch(fetchTasks());
+  const updateTaskHandler = (task) => {
+    dispatch(updateTask(task));
   };
 
   return (
@@ -118,11 +101,11 @@ const App = () => {
         <Switch>
           <Route
             exact
-            path={"/"}
+            path={routes.ROOT}
             render={() => (
-              <HomeContainerWithSuspense
+              <HomeContainer
                 current_user={currentUser}
-                sortedTasks={sortedTasks}
+                tasks={tasks}
                 handleSubmit={handleSubmit}
                 formik={formik}
                 handleClickOpen={handleClickOpen}
@@ -134,31 +117,24 @@ const App = () => {
               />
             )}
           />
-          <Route exact path={"/registration"} component={Registration} />
+          <Route exact path={routes.REGISTRATION} component={Registration} />
           <Route
             exact
-            path={"/login"}
+            path={routes.LOGIN}
             render={() => <Login current_user={currentUser} />}
           />
           <Route
-            path="/edit/:id"
-            render={(props) => (
-              <EditTask
-                {...props}
-                updateTaskHandler={updateTaskHandler}
-                formik={formik}
-              />
+            path={routes.EDIT_TASK}
+            render={() => (
+              <EditTask updateTaskHandler={updateTaskHandler} formik={formik} />
             )}
           />
           <Route
             exact
-            path={`/show`}
+            path={routes.SHOW}
             render={() => <TaskDetail tasks={tasks} />}
           />
-          <Route
-            path="/confirmation_email"
-            render={(props) => <ConfirmEmail {...props} />}
-          />
+          <Route path={routes.EMAIL_CONFIRMATION} component={ConfirmEmail} />
           <Route component={PageNotFound} />
         </Switch>
       </BrowserRouter>
