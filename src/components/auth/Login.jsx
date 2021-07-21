@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { routes } from "../../constants/routes";
 import { fetchTasks, setUser } from "../../store/routines";
 
 export const Login = ({ current_user }) => {
@@ -11,7 +12,7 @@ export const Login = ({ current_user }) => {
 
   useEffect(() => {
     if (current_user) {
-      history.push("/");
+      history.push(routes.ROOT);
     }
     dispatch(fetchTasks());
   }, [current_user, history, dispatch]);
