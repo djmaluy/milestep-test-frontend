@@ -8,6 +8,41 @@ import api from "../../api/api";
 import { fetchTasks } from "../../store/routines";
 import { getLoading } from "../../redux/tasksSelector";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { ButtonsGroup } from "./../../components/ButtonsGroup";
+
+import { NavLink } from "react-router-dom";
+import { AddTaskForm } from "../tasks/AddTaskForm";
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    borderRadius: "10px",
+    minHeight: "150px",
+  },
+  cardMedia: {
+    paddingTop: "56.25%", // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+}));
 
 export const HomeContainer = ({
   tasks,
@@ -19,13 +54,31 @@ export const HomeContainer = ({
   onDeleteTask,
   current_user,
 }) => {
+  const classes = useStyles();
+
   const [showTask, setShowTask] = useState(null);
   const [, setIsChecked] = useState(false);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
-  const loading = useSelector(getLoading);
+  const [showActiveTasks, setShowActiveTasks] = useState(true);
+  const [showCompletedTasks, setShowCompletedTasks] = useState(false);
+  // const [image, setImage] = useState(null);
 
+  const loading = useSelector(getLoading);
   const dispatch = useDispatch();
+
+  // const handleFileUpload = (e) => {
+  //   setImage(e.target.files[0]);
+  // };
+
+  // const onSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append("image", image);
+
+  //   const response = await api.post("/tasks", formData);
+  //   console.log(response);
+  // };
 
   // By marking task as completed a particular task moves to appropriate list
   const onToggleStatus = async (task, value) => {
@@ -87,73 +140,93 @@ export const HomeContainer = ({
       })
       .catch((err) => console.log(err));
   };
+  const onCompletedTasksHandler = () => {
+    setShowCompletedTasks(true);
+    setShowActiveTasks(false);
+  };
+  const onActiveTasksHandler = () => {
+    setShowActiveTasks(true);
+    setShowCompletedTasks(false);
+  };
   return (
     <>
-      <div className="tasksTables container ">
-        <h1 className="home__title">Task management system</h1>
-        {!current_user ? (
-          <h2 className="not_authorized">You are not authorized!</h2>
-        ) : (
-          <>
-            <div>
-              <div className="d-flex">
-                <HomePageButtons
-                  deleteTasksByIds={deleteTasksByIds}
-                  handleSubmit={handleSubmit}
-                  handleClickOpen={handleClickOpen}
-                  handleClose={handleClose}
-                  open={open}
-                  formik={formik}
-                  activeTasks={activeTasks}
-                  setIsChecked={setIsChecked}
+      <div className="container ">
+        <div>
+          <ButtonsGroup
+            onCompletedTasksHandler={onCompletedTasksHandler}
+            onActiveTasksHandler={onActiveTasksHandler}
+          />
+        </div>
+        {showActiveTasks ? (
+          <Container className={classes.cardGrid} maxWidth="md">
+            <div className="d-flex">
+              <button
+                type="button"
+                className="btn btn-danger  mb-3"
+                onClick={() => {
+                  deleteTasksByIds();
+                }}
+              >
+                Batch delete
+              </button>
+
+              <div className="home__checkAll">
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    let value = e.target.checked;
+                    setIsChecked(
+                      activeTasks.map((d) => {
+                        d.checked = value;
+                        return d;
+                      })
+                    );
+                  }}
                 />
+                <span className="home__checkAll-text">Check all</span>
               </div>
+              <AddTaskForm
+                handleSubmit={handleSubmit}
+                formik={formik}
+                handleClickOpen={handleClickOpen}
+                handleClose={handleClose}
+                open={open}
+                // handleFileUpload={handleFileUpload}
+                // onSubmit={onSubmit}
+              />
             </div>
-            <div className="row">
-              <div className="col-sm-6">
-                <h3 className="list__title">Active tasks</h3>
-                {loading ? (
-                  <CircularProgress />
-                ) : (
-                  <>
-                    {activeTasks.map((task) => {
-                      return (
-                        <ActiveTasks
-                          key={task.id}
-                          task={task}
-                          setIsChecked={setIsChecked}
-                          activeTasks={activeTasks}
-                          openModal={openModal}
-                          onToggleStatus={onToggleStatus}
-                          onDeleteTask={onDeleteTask}
-                        />
-                      );
-                    })}
-                  </>
-                )}
-              </div>
-              <div className="col-sm-6">
-                <h3 className="list__title">Completed tasks</h3>
-                {loading ? (
-                  <CircularProgress />
-                ) : (
-                  <>
-                    {completedTasks.map((task) => {
-                      return (
-                        <CompletedTasks
-                          key={task.id}
-                          task={task}
-                          openModal={openModal}
-                          onToggleStatus={onToggleStatus}
-                        />
-                      );
-                    })}
-                  </>
-                )}
-              </div>
-            </div>
-          </>
-        )}
+            <Grid container spacing={2}>
+              {activeTasks.map((task) => (
+                <ActiveTasks
+                  task={task}
+                  key={task.id}
+                  setIsChecked={setIsChecked}
+                  activeTasks={activeTasks}
+                  openModal={openModal}
+                  onDeleteTask={onDeleteTask}
+                  onToggleStatus={onToggleStatus}
+                  useStyles={useStyles}
+                />
+              ))}
+            </Grid>
+          </Container>
+        ) : null}
+        {showCompletedTasks ? (
+          <Container className={classes.cardGrid} maxWidth="md">
+            <h3>Completed tasks</h3>
+            <Grid container spacing={2}>
+              {completedTasks.map((task) => (
+                <CompletedTasks
+                  key={task.id}
+                  useStyles={useStyles}
+                  task={task}
+                  onToggleStatus={onToggleStatus}
+                  openModal={openModal}
+                />
+              ))}
+            </Grid>
+          </Container>
+        ) : null}
       </div>
       <>
         {showTask && (

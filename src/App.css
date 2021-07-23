@@ -94,6 +94,9 @@ body {
   font-weight: 500;
   color: blue;
 }
+.card-body__inner--title {
+  margin-left: 15px;
+}
 .card-body__inner {
   display: flex;
   background-color: rgb(226, 234, 241);

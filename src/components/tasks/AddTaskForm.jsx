@@ -12,7 +12,15 @@ import Select from "@material-ui/core/Select";
 import { Grid } from "@material-ui/core";
 
 export const AddTaskForm = React.memo(
-  ({ handleSubmit, formik, handleClickOpen, handleClose, open }) => {
+  ({
+    handleSubmit,
+    formik,
+    handleClickOpen,
+    handleClose,
+    open,
+    // onSubmit,
+    // handleFileUpload,
+  }) => {
     const menuItems = [1, 2, 3, 4, 5];
     return (
       <div>
@@ -72,6 +80,14 @@ export const AddTaskForm = React.memo(
                   }}
                 />
               </Grid>
+              {/* <Grid item>
+                <TextField
+                  type="file"
+                  name="image"
+                  onChange={formik.handleChange}
+                  value={(e) => e.target.files[0]}
+                />
+              </Grid> */}
             </Grid>
           </DialogContent>
           <DialogActions>
