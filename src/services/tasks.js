@@ -43,27 +43,3 @@ export const deleteTaskById = (payload) => {
     }));
   return response;
 };
-
-export const deleteTasksByIds = () => {
-  const ids = [];
-  // tasks.forEach((d) => {
-  //   if (d.checked) {
-  //     ids.push(d.id);
-  //   }
-  // });
-  const response = api
-    .delete(`/tasks/`, {
-      data: {
-        ids: ids,
-      },
-    })
-    .then((res) => ({
-      error: false,
-      data: res.data,
-    }))
-    .catch(() => ({
-      error: true,
-      data: null,
-    }));
-  return response;
-};
