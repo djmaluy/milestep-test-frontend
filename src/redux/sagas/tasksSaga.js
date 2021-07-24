@@ -1,11 +1,12 @@
 import { put, takeLatest, call } from "redux-saga/effects";
 import {
   deleteTaskById,
+  deleteTasksByIds,
   fetchAllTasks,
   updateTaskById,
 } from "../../services/tasks";
 import {
-  // deleteMoreTasks,
+  deleteMoreTasks,
   deleteTask,
   fetchTasks,
   updateTask,
@@ -40,16 +41,18 @@ export function* deleteOneTask({ payload }) {
   }
 }
 
-// export function* deleteButchTasks() {
-//   try {
-//   } catch (error) {
-//     yield put(deleteMoreTasks.failure(error.message));
-//   }
-// }
+export function* deleteButchTasks({ payload }) {
+  try {
+    yield call(deleteTasksByIds, payload);
+    yield put(fetchTasks.trigger());
+  } catch (error) {
+    yield put(deleteMoreTasks.failure(error.message));
+  }
+}
 
 export default function* tasksSagas() {
   yield takeLatest(fetchTasks.TRIGGER, fetchData);
   yield takeLatest(deleteTask.TRIGGER, deleteOneTask);
   yield takeLatest(updateTask.TRIGGER, setUpdatedTask);
-  // yield takeLatest(deleteMoreTasks.TRIGGER, deleteButchTasks);
+  yield takeLatest(deleteMoreTasks.TRIGGER, deleteButchTasks);
 }

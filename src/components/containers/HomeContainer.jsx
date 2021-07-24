@@ -4,12 +4,14 @@ import { ActiveTasks } from "../tasks/ActiveTasks";
 import { CompletedTasks } from "../tasks/CompletedTasks";
 import { AddTaskModal } from "../../modal/AddTaskModal";
 import api from "../../api/api";
+
 import { fetchTasks } from "../../store/routines";
 // import { getLoading } from "../../redux/tasksSelector";
 // import CircularProgress from "@material-ui/core/CircularProgress";
 import { BatchDeleteButton } from "../BatchDeleteButton";
 import { CheckAllTasks } from "../CheckAllTasks";
 import { AddTaskButton } from "../AddTaskButton";
+
 
 export const HomeContainer = ({
   tasks,
@@ -90,16 +92,7 @@ export const HomeContainer = ({
         ids.push(d.id);
       }
     });
-    api
-      .delete(`/tasks/`, {
-        data: {
-          ids: ids,
-        },
-      })
-      .then(() => {
-        dispatch(fetchTasks());
-      })
-      .catch((err) => console.log(err));
+    dispatch(deleteMoreTasks(ids));
   };
   const onCompletedTasksHandler = () => {
     setShowCompletedTasks(true);
