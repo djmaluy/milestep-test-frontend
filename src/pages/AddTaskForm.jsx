@@ -10,12 +10,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { Grid } from "@material-ui/core";
+import SaveIcon from "@material-ui/icons/Save";
 
 export const AddTaskForm = React.memo(
   ({
     handleSubmit,
     formik,
-    handleClickOpen,
     handleClose,
     open,
     // onSubmit,
@@ -24,9 +24,6 @@ export const AddTaskForm = React.memo(
     const menuItems = [1, 2, 3, 4, 5];
     return (
       <div>
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-          Add task
-        </Button>
         <Dialog style={{ minWidth: "60vw" }} open={open} onClose={handleClose}>
           <DialogTitle>Add task</DialogTitle>
           <DialogContent>
@@ -94,7 +91,13 @@ export const AddTaskForm = React.memo(
             <Button onClick={handleClose} color="secondary">
               Cancel
             </Button>
-            <Button onClick={handleSubmit} color="primary">
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              color="primary"
+              size="small"
+              startIcon={<SaveIcon />}
+            >
               Save
             </Button>
           </DialogActions>

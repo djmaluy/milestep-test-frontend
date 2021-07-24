@@ -3,12 +3,12 @@ import { NavLink } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import Tooltip from "@material-ui/core/Tooltip";
+import Fab from "@material-ui/core/Fab";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import Typography from "@material-ui/core/Typography";
 
 export const ActiveTasks = React.memo(
   ({
@@ -18,60 +18,56 @@ export const ActiveTasks = React.memo(
     openModal,
     onDeleteTask,
     onToggleStatus,
-    useStyles,
   }) => {
-    const classes = useStyles();
     return (
-      <Grid item key={task.id} xs={12} sm={6} md={4}>
-        <Card className={classes.card}>
-          <CardContent className={classes.cardContent}>
-            <input
-              type="checkbox"
-              checked={task.checked}
-              onChange={(e) => {
-                let value = e.target.checked;
-                setIsChecked(
-                  activeTasks.map((sd) => {
-                    if (sd.id === task.id) {
-                      sd.checked = value;
-                    }
-                    return sd;
-                  })
-                );
-              }}
-            />
-            <button onClick={() => openModal(task)} className="titleButton">
-              <span className="card-body__inner--title">{task.title}</span>
-            </button>
+      <Card className="cards">
+        <CardActionArea>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              <input
+                className="checkbox__input"
+                type="checkbox"
+                checked={task.checked}
+                onChange={(e) => {
+                  let value = e.target.checked;
+                  setIsChecked(
+                    activeTasks.map((sd) => {
+                      if (sd.id === task.id) {
+                        sd.checked = value;
+                      }
+                      return sd;
+                    })
+                  );
+                }}
+              />
+              <button onClick={() => openModal(task)} className="titleButton">
+                <span className="card-body__inner--title">{task.title}</span>
+              </button>
+            </Typography>
           </CardContent>
-          <CardActions>
-            <NavLink to={{ pathname: `/edit/${task.id}`, state: { task } }}>
-              <Tooltip title="Edit" placement="top-end">
-                <IconButton aria-label="edit" color="primary">
-                  <EditOutlinedIcon />
-                </IconButton>
-              </Tooltip>
-            </NavLink>
-
-            <Tooltip title="Delete" placement="top-end">
-              <IconButton
-                color="secondary"
-                onClick={() => onDeleteTask(task.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Complete" placement="top-end">
-              <IconButton
-                color="primary"
-                onClick={() => onToggleStatus(task, true)}
-              >
-                <CheckCircleOutlineIcon />
-              </IconButton>
-            </Tooltip>
-          </CardActions>
-        </Card>
-      </Grid>
+        </CardActionArea>
+        <CardActions>
+          <NavLink to={{ pathname: `/edit/${task.id}`, state: { task } }}>
+            <Fab color="primary" size="small">
+              <EditOutlinedIcon />
+            </Fab>
+          </NavLink>
+          <Fab
+            color="secondary"
+            size="small"
+            onClick={() => onDeleteTask(task.id)}
+          >
+            <DeleteIcon />
+          </Fab>
+          <Fab
+            size="small"
+            onClick={() => onToggleStatus(task, true)}
+            style={{ background: "green", color: "white" }}
+          >
+            <CheckCircleOutlineIcon />
+          </Fab>
+        </CardActions>
+      </Card>
     );
   }
 );

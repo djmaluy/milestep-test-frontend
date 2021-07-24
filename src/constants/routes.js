@@ -5,4 +5,5 @@ export const routes = {
   EDIT_TASK: "/edit/:id",
   SHOW: `/show`,
   EMAIL_CONFIRMATION: "/confirmation_email",
+  ADD_TASK: "/add_task",
 };

@@ -5,7 +5,7 @@ import { routes } from "../constants/routes";
 
 export const Header = ({ currentUser, logout }) => {
   return (
-    <nav className="navbar navbar-dark bg-dark">
+    <nav className="navbar navbar-dark bg-primary">
       <NavLink to={routes.ROOT} className="navbar-brand">
         Task management
       </NavLink>

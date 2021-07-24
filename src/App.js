@@ -24,6 +24,7 @@ import { routes } from "./constants/routes";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Registration } from "./pages/Registration";
+import { AddTaskForm } from "./pages/AddTaskForm";
 
 export const checkEmail = () =>
   toast.success("Successfully register. Check your email please");
@@ -35,6 +36,7 @@ const App = () => {
   const tasks = useSelector(getTasks);
   const [open, setOpen] = useState(false);
   const currentUser = useSelector(getUser);
+  // const history = useHistory();
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -104,13 +106,9 @@ const App = () => {
             path={routes.ROOT}
             render={() => (
               <HomeContainer
+                handleClickOpen={handleClickOpen}
                 current_user={currentUser}
                 tasks={tasks}
-                handleSubmit={handleSubmit}
-                formik={formik}
-                handleClickOpen={handleClickOpen}
-                handleClose={handleClose}
-                open={open}
                 onDeleteTask={onDeleteTask}
                 setOpen={setOpen}
                 fetchData={fetchTasks}
@@ -122,6 +120,17 @@ const App = () => {
             exact
             path={routes.LOGIN}
             render={() => <Login current_user={currentUser} />}
+          />
+          <Route
+            path={routes.ADD_TASK}
+            render={() => (
+              <AddTaskForm
+                open={open}
+                handleClose={handleClose}
+                formik={formik}
+                handleSubmit={handleSubmit}
+              />
+            )}
           />
           <Route
             path={routes.EDIT_TASK}
