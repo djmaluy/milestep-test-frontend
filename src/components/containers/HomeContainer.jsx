@@ -5,7 +5,7 @@ import { CompletedTasks } from "../tasks/CompletedTasks";
 import { HomePageButtons } from "../HomePageButtons";
 import { AddTaskModal } from "../../modal/AddTaskModal";
 import api from "../../api/api";
-import { fetchTasks } from "../../store/routines";
+import { deleteMoreTasks, fetchTasks } from "../../store/routines";
 import { getLoading } from "../../redux/tasksSelector";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
@@ -129,16 +129,7 @@ export const HomeContainer = ({
         ids.push(d.id);
       }
     });
-    api
-      .delete(`/tasks/`, {
-        data: {
-          ids: ids,
-        },
-      })
-      .then(() => {
-        dispatch(fetchTasks());
-      })
-      .catch((err) => console.log(err));
+    dispatch(deleteMoreTasks(ids));
   };
   const onCompletedTasksHandler = () => {
     setShowCompletedTasks(true);

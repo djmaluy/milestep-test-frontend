@@ -1,5 +1,6 @@
 import {
   clearEntity,
+  deleteMoreTasks,
   deleteTask,
   fetchTasks,
   updateTask,
@@ -27,6 +28,7 @@ export const tasksReducer = (state = initialState, action) => {
       };
     case fetchTasks.FAILURE:
     case updateTask.FAILURE:
+    case deleteMoreTasks.FAILURE:
     case deleteTask.FAILURE: {
       return {
         ...state,
@@ -42,9 +44,11 @@ export const tasksReducer = (state = initialState, action) => {
         }),
       };
     case deleteTask.SUCCESS:
+    case deleteMoreTasks.SUCCESS: {
       return {
         ...state,
       };
+    }
     case clearEntity.SUCCESS:
       return initialState;
 
