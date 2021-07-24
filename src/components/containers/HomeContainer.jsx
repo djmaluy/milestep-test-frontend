@@ -1,61 +1,24 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ActiveTasks } from "../tasks/ActiveTasks";
 import { CompletedTasks } from "../tasks/CompletedTasks";
-import { HomePageButtons } from "../HomePageButtons";
 import { AddTaskModal } from "../../modal/AddTaskModal";
 import api from "../../api/api";
-import { deleteMoreTasks, fetchTasks } from "../../store/routines";
-import { getLoading } from "../../redux/tasksSelector";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { ButtonsGroup } from "./../../components/ButtonsGroup";
 
-import { NavLink } from "react-router-dom";
-import { AddTaskForm } from "../tasks/AddTaskForm";
+import { fetchTasks } from "../../store/routines";
+// import { getLoading } from "../../redux/tasksSelector";
+// import CircularProgress from "@material-ui/core/CircularProgress";
+import { BatchDeleteButton } from "../BatchDeleteButton";
+import { CheckAllTasks } from "../CheckAllTasks";
+import { AddTaskButton } from "../AddTaskButton";
 
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    marginRight: theme.spacing(2),
-  },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    borderRadius: "10px",
-    minHeight: "150px",
-  },
-  cardMedia: {
-    paddingTop: "56.25%", // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-}));
 
 export const HomeContainer = ({
   tasks,
-  formik,
-  handleSubmit,
   handleClickOpen,
-  handleClose,
-  open,
   onDeleteTask,
   current_user,
 }) => {
-  const classes = useStyles();
-
   const [showTask, setShowTask] = useState(null);
   const [, setIsChecked] = useState(false);
   const [completedTasks, setCompletedTasks] = useState([]);
@@ -64,7 +27,7 @@ export const HomeContainer = ({
   const [showCompletedTasks, setShowCompletedTasks] = useState(false);
   // const [image, setImage] = useState(null);
 
-  const loading = useSelector(getLoading);
+  // const loading = useSelector(getLoading);
   const dispatch = useDispatch();
 
   // const handleFileUpload = (e) => {
@@ -141,84 +104,65 @@ export const HomeContainer = ({
   };
   return (
     <>
-      <div className="container ">
+      {current_user ? (
         <div>
-          <ButtonsGroup
-            onCompletedTasksHandler={onCompletedTasksHandler}
-            onActiveTasksHandler={onActiveTasksHandler}
-          />
-        </div>
-        {showActiveTasks ? (
-          <Container className={classes.cardGrid} maxWidth="md">
-            <div className="d-flex">
-              <button
-                type="button"
-                className="btn btn-danger  mb-3"
-                onClick={() => {
-                  deleteTasksByIds();
-                }}
-              >
-                Batch delete
-              </button>
-
-              <div className="home__checkAll">
-                <input
-                  type="checkbox"
-                  onChange={(e) => {
-                    let value = e.target.checked;
-                    setIsChecked(
-                      activeTasks.map((d) => {
-                        d.checked = value;
-                        return d;
-                      })
-                    );
-                  }}
-                />
-                <span className="home__checkAll-text">Check all</span>
+          <div className="tasks__switcher">
+            <button
+              onClick={onActiveTasksHandler}
+              className="tasks__switcher-button"
+            >
+              Active tasks
+            </button>
+            <button
+              onClick={onCompletedTasksHandler}
+              className="tasks__switcher-button"
+            >
+              Completed tasks
+            </button>
+          </div>
+          {showActiveTasks ? (
+            <>
+              <div className="activeTasks__buttons">
+                <div className="home__checkAll">
+                  <CheckAllTasks
+                    setIsChecked={setIsChecked}
+                    activeTasks={activeTasks}
+                  />
+                </div>
+                <BatchDeleteButton deleteTasksByIds={deleteTasksByIds} />
+                <AddTaskButton handleClickOpen={handleClickOpen} />
               </div>
-              <AddTaskForm
-                handleSubmit={handleSubmit}
-                formik={formik}
-                handleClickOpen={handleClickOpen}
-                handleClose={handleClose}
-                open={open}
-                // handleFileUpload={handleFileUpload}
-                // onSubmit={onSubmit}
-              />
-            </div>
-            <Grid container spacing={2}>
-              {activeTasks.map((task) => (
-                <ActiveTasks
-                  task={task}
-                  key={task.id}
-                  setIsChecked={setIsChecked}
-                  activeTasks={activeTasks}
-                  openModal={openModal}
-                  onDeleteTask={onDeleteTask}
-                  onToggleStatus={onToggleStatus}
-                  useStyles={useStyles}
-                />
-              ))}
-            </Grid>
-          </Container>
-        ) : null}
-        {showCompletedTasks ? (
-          <Container className={classes.cardGrid} maxWidth="md">
-            <h3>Completed tasks</h3>
-            <Grid container spacing={2}>
+              <div className="completedTasks">
+                {activeTasks.map((task) => (
+                  <ActiveTasks
+                    task={task}
+                    key={task.id}
+                    setIsChecked={setIsChecked}
+                    activeTasks={activeTasks}
+                    openModal={openModal}
+                    onDeleteTask={onDeleteTask}
+                    onToggleStatus={onToggleStatus}
+                  />
+                ))}
+              </div>
+            </>
+          ) : null}
+          {showCompletedTasks ? (
+            <div className="completedTasks">
               {completedTasks.map((task) => (
                 <CompletedTasks
                   key={task.id}
-                  useStyles={useStyles}
                   task={task}
                   onToggleStatus={onToggleStatus}
                   openModal={openModal}
                 />
               ))}
-            </Grid>
-          </Container>
-        ) : null}
-      </div>
+            </div>
+          ) : null}
+        </div>
+      ) : (
+        <h2 className="not_authorized">You are not authorized!</h2>
+      )}
       <>
         {showTask && (
           <AddTaskModal showTask={showTask} closeModal={closeModal} />
