@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import { routes } from "../constants/routes";
+import { ProfileIcon } from "../pages/profile/ProfileIcon";
 
 export const Header = ({ currentUser, logout }) => {
   return (
@@ -25,7 +25,7 @@ export const Header = ({ currentUser, logout }) => {
       ) : (
         <ul className="navbar-nav links ">
           <li className="d-flex ">
-            <PersonOutlineIcon className="avatar" />
+            <ProfileIcon />
             <span className="login">
               {currentUser.current_user?.email || currentUser.email}
             </span>

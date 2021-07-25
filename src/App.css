@@ -48,6 +48,12 @@ body {
 .links > li {
   margin-right: 25px;
 }
+.profile__icon {
+  color: #000;
+}
+.profile__icon:hover {
+  text-decoration: none;
+}
 .home__title {
   text-align: center;
   margin-top: 25px;
