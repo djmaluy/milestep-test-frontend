@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { routes } from "../constants/routes";
-import { setConfirmEmail } from "../store/routines";
+import { routes } from "../../constants/routes";
+import { setConfirmEmail } from "../../store/routines";
 
 export const ConfirmEmail = () => {
   const dispatch = useDispatch();

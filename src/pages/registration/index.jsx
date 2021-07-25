@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import api from "../api/api";
-import { checkEmail } from "../App";
+import api from "../../api/api";
+import { checkEmail } from "../../App";
 
 export const Registration = React.memo(() => {
   const [email, setEmail] = useState("");

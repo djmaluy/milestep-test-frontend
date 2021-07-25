@@ -10,9 +10,9 @@ import { TaskDetail } from "./components/tasks/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks } from "./redux/tasksSelector";
 import { getUser } from "./redux/authSelector";
-import { PageNotFound } from "./pages/PageNotFound";
+import { PageNotFound } from "./pages/pageNotFound";
 import { HomeContainer } from "./components/containers/HomeContainer";
-import { ConfirmEmail } from "./pages/ConfirmEmail";
+import { ConfirmEmail } from "./pages/confirmEmail";
 import {
   deleteTask,
   fetchCurrentUser,
@@ -23,8 +23,8 @@ import {
 import { routes } from "./constants/routes";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Registration } from "./pages/Registration";
-import { AddTaskForm } from "./pages/AddTaskForm";
+import { Registration } from "./pages/registration";
+import { AddTaskForm } from "./pages/addTaskForm";
 
 export const checkEmail = () =>
   toast.success("Successfully register. Check your email please");
@@ -36,7 +36,6 @@ const App = () => {
   const tasks = useSelector(getTasks);
   const [open, setOpen] = useState(false);
   const currentUser = useSelector(getUser);
-  // const history = useHistory();
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -104,7 +103,7 @@ const App = () => {
           <Route
             exact
             path={routes.ROOT}
-            render={() => (
+            component={() => (
               <HomeContainer
                 handleClickOpen={handleClickOpen}
                 current_user={currentUser}
@@ -119,11 +118,11 @@ const App = () => {
           <Route
             exact
             path={routes.LOGIN}
-            render={() => <Login current_user={currentUser} />}
+            component={() => <Login current_user={currentUser} />}
           />
           <Route
             path={routes.ADD_TASK}
-            render={() => (
+            component={() => (
               <AddTaskForm
                 open={open}
                 handleClose={handleClose}
@@ -134,14 +133,14 @@ const App = () => {
           />
           <Route
             path={routes.EDIT_TASK}
-            render={() => (
+            component={() => (
               <EditTask updateTaskHandler={updateTaskHandler} formik={formik} />
             )}
           />
           <Route
             exact
             path={routes.SHOW}
-            render={() => <TaskDetail tasks={tasks} />}
+            component={() => <TaskDetail tasks={tasks} />}
           />
           <Route path={routes.EMAIL_CONFIRMATION} component={ConfirmEmail} />
           <Route component={PageNotFound} />
