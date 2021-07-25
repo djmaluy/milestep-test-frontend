@@ -6,4 +6,5 @@ export const routes = {
   SHOW: `/show`,
   EMAIL_CONFIRMATION: "/confirmation_email",
   ADD_TASK: "/add_task",
+  PROFILE: "/profile",
 };

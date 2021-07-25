@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Registration } from "./pages/registration";
 import { AddTaskForm } from "./pages/addTaskForm";
+import { Profile } from "./pages/profile/Profile";
 
 export const checkEmail = () =>
   toast.success("Successfully register. Check your email please");
@@ -67,7 +68,6 @@ const App = () => {
         description,
         priority,
         due_date: dueDate,
-        is_done: false,
       },
     };
     const response = await api.post(`/tasks`, request);
@@ -143,6 +143,10 @@ const App = () => {
             component={() => <TaskDetail tasks={tasks} />}
           />
           <Route path={routes.EMAIL_CONFIRMATION} component={ConfirmEmail} />
+          <Route
+            path={routes.PROFILE}
+            component={() => <Profile currentUser={currentUser} />}
+          />
           <Route component={PageNotFound} />
         </Switch>
       </BrowserRouter>
