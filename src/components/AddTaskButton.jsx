@@ -10,7 +10,7 @@ export const AddTaskButton = ({ handleClickOpen }) => {
         variant="contained"
         color="primary"
         onClick={handleClickOpen}
-        style={{ backgroundColor: "green", marginLeft: "15px" }}
+        style={{ backgroundColor: "green", margin: "10px 15px " }}
       >
         Add task
       </Button>

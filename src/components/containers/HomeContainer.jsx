@@ -4,14 +4,10 @@ import { ActiveTasks } from "../tasks/ActiveTasks";
 import { CompletedTasks } from "../tasks/CompletedTasks";
 import { AddTaskModal } from "../../modal/AddTaskModal";
 import api from "../../api/api";
-
-import { fetchTasks } from "../../store/routines";
-// import { getLoading } from "../../redux/tasksSelector";
-// import CircularProgress from "@material-ui/core/CircularProgress";
+import { deleteMoreTasks, fetchTasks } from "../../store/routines";
 import { BatchDeleteButton } from "../BatchDeleteButton";
 import { CheckAllTasks } from "../CheckAllTasks";
 import { AddTaskButton } from "../AddTaskButton";
-
 
 export const HomeContainer = ({
   tasks,
@@ -23,11 +19,8 @@ export const HomeContainer = ({
   const [, setIsChecked] = useState(false);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
-  const [showActiveTasks, setShowActiveTasks] = useState(true);
-  const [showCompletedTasks, setShowCompletedTasks] = useState(false);
-  // const [image, setImage] = useState(null);
 
-  // const loading = useSelector(getLoading);
+  // const [image, setImage] = useState(null);
   const dispatch = useDispatch();
 
   // const handleFileUpload = (e) => {
@@ -94,71 +87,48 @@ export const HomeContainer = ({
     });
     dispatch(deleteMoreTasks(ids));
   };
-  const onCompletedTasksHandler = () => {
-    setShowCompletedTasks(true);
-    setShowActiveTasks(false);
-  };
-  const onActiveTasksHandler = () => {
-    setShowActiveTasks(true);
-    setShowCompletedTasks(false);
-  };
+
   return (
     <>
+      <div className="activeTasks__buttons">
+        <div className="home__checkAll">
+          <CheckAllTasks
+            setIsChecked={setIsChecked}
+            activeTasks={activeTasks}
+          />
+        </div>
+        <BatchDeleteButton deleteTasksByIds={deleteTasksByIds} />
+      </div>
       {current_user ? (
-        <div>
-          <div className="tasks__switcher">
-            <button
-              onClick={onActiveTasksHandler}
-              className="tasks__switcher-button"
-            >
-              Active tasks
-            </button>
-            <button
-              onClick={onCompletedTasksHandler}
-              className="tasks__switcher-button"
-            >
-              Completed tasks
-            </button>
+        <div className="tasks_columns">
+          <div className="active_tasks__column">
+            <h4 className="tasks_columns-title">Active tasks</h4>
+
+            {activeTasks.map((task) => (
+              <ActiveTasks
+                task={task}
+                key={task.id}
+                setIsChecked={setIsChecked}
+                activeTasks={activeTasks}
+                openModal={openModal}
+                onDeleteTask={onDeleteTask}
+                onToggleStatus={onToggleStatus}
+              />
+            ))}
+            <AddTaskButton handleClickOpen={handleClickOpen} />
           </div>
-          {showActiveTasks ? (
-            <>
-              <div className="activeTasks__buttons">
-                <div className="home__checkAll">
-                  <CheckAllTasks
-                    setIsChecked={setIsChecked}
-                    activeTasks={activeTasks}
-                  />
-                </div>
-                <BatchDeleteButton deleteTasksByIds={deleteTasksByIds} />
-                <AddTaskButton handleClickOpen={handleClickOpen} />
-              </div>
-              <div className="completedTasks">
-                {activeTasks.map((task) => (
-                  <ActiveTasks
-                    task={task}
-                    key={task.id}
-                    setIsChecked={setIsChecked}
-                    activeTasks={activeTasks}
-                    openModal={openModal}
-                    onDeleteTask={onDeleteTask}
-                    onToggleStatus={onToggleStatus}
-                  />
-                ))}
-              </div>
-            </>
-          ) : null}
-          {showCompletedTasks ? (
-            <div className="completedTasks">
-              {completedTasks.map((task) => (
-                <CompletedTasks
-                  key={task.id}
-                  task={task}
-                  onToggleStatus={onToggleStatus}
-                  openModal={openModal}
-                />
-              ))}
-            </div>
-          ) : null}
+
+          <div className="completedTasks">
+            <h4 className="tasks_columns-title">Completed tasks</h4>
+            {completedTasks.map((task) => (
+              <CompletedTasks
+                key={task.id}
+                task={task}
+                onToggleStatus={onToggleStatus}
+                openModal={openModal}
+              />
+            ))}
+          </div>
         </div>
       ) : (
         <h2 className="not_authorized">You are not authorized!</h2>
