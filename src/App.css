@@ -64,10 +64,14 @@ body {
   transform: scale(1.8);
   opacity: 0.9;
   cursor: pointer;
-  margin-bottom: -10px;
+  margin-left: 10px;
+  margin-top: 10px;
 }
 .home__checkAll-text {
   margin-left: 15px;
+}
+.active-tasks__actions {
+  display: flex;
 }
 
 .titleButton {
@@ -100,11 +104,11 @@ body {
   margin-top: 5px;
   border-radius: 25px;
 }
-.card-body__inner--title:hover {
+.card-body__title:hover {
   font-weight: 500;
   color: blue;
 }
-.card-body__inner--title {
+.card-body__title {
   margin-left: 15px;
 }
 .card-body__inner {
@@ -168,9 +172,7 @@ body {
   margin-top: 1px;
   padding: 15px;
 }
-.completedTasks {
-  margin-top: 15px;
-}
+
 .not_authorized {
   text-align: center;
   font-size: 55px;
@@ -195,41 +197,53 @@ body {
 }
 .completedTasks {
   display: flex;
-  /* justify-content: space-between; */
+  flex-direction: column;
   flex-wrap: wrap;
   margin-left: 15px;
+  background-color: #ccc;
+  max-width: 400px;
+  height: 100%;
+  padding: 30px 0;
+  width: 30%;
+  margin-top: 0;
+  border-radius: 15px;
+}
+.active_tasks__column {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-left: 15px;
+  background-color: #ccc;
+  max-width: 400px;
+  height: 100%;
+  padding: 25px 0;
+  border-radius: 15px;
+}
+.tasks_columns {
+  display: flex;
+  flex-direction: row;
+}
+.tasks_columns-title {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
 }
 .cards {
-  width: 100%;
+  width: auto;
   margin-left: 15px;
   min-height: 150px;
-  max-width: 345px;
+  max-width: 90%;
   margin-top: 15px;
 }
-.tasks__switcher {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 25px;
-}
-.tasks__switcher-button {
-  padding: 10px 15px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: #000;
-  font-size: 25px;
-  font-weight: bold;
-  letter-spacing: 1px;
+.inner_title {
+  text-align: center;
+  margin-top: 15px;
   font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
 }
-.tasks__switcher-button:active,
-.tasks__switcher-button:focus {
-  outline: none;
-}
-.tasks__switcher-button:hover {
-  color: rgb(121, 119, 115);
-}
+
 .activeTasks__buttons {
   display: flex;
+  margin-top: 10px;
 }

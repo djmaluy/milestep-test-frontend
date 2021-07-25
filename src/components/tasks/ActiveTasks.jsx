@@ -2,13 +2,10 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Fab from "@material-ui/core/Fab";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Typography from "@material-ui/core/Typography";
 
 export const ActiveTasks = React.memo(
   ({
@@ -21,32 +18,29 @@ export const ActiveTasks = React.memo(
   }) => {
     return (
       <Card className="cards">
-        <CardActionArea>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              <input
-                className="checkbox__input"
-                type="checkbox"
-                checked={task.checked}
-                onChange={(e) => {
-                  let value = e.target.checked;
-                  setIsChecked(
-                    activeTasks.map((sd) => {
-                      if (sd.id === task.id) {
-                        sd.checked = value;
-                      }
-                      return sd;
-                    })
-                  );
-                }}
-              />
-              <button onClick={() => openModal(task)} className="titleButton">
-                <span className="card-body__inner--title">{task.title}</span>
-              </button>
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
+        <div className="active-tasks__actions">
+          <input
+            className="checkbox__input"
+            type="checkbox"
+            checked={task.checked}
+            onChange={(e) => {
+              let value = e.target.checked;
+              setIsChecked(
+                activeTasks.map((sd) => {
+                  if (sd.id === task.id) {
+                    sd.checked = value;
+                  }
+                  return sd;
+                })
+              );
+            }}
+          />
+          <div onClick={() => openModal(task)} className="titleButton">
+            <span className="card-body__title">{task.title}</span>
+          </div>
+        </div>
+
+        <CardActions style={{ marginTop: "35px" }}>
           <NavLink to={{ pathname: `/edit/${task.id}`, state: { task } }}>
             <Fab color="primary" size="small">
               <EditOutlinedIcon />
