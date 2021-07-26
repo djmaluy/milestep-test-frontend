@@ -4,6 +4,7 @@ import {
   createSession,
   deleteSession,
   getCurrentUser,
+  getUpdatedUser,
 } from "../../services/session";
 import {
   clearEntity,
@@ -11,6 +12,7 @@ import {
   logoutUser,
   setConfirmEmail,
   setUser,
+  updateUser,
 } from "../../store/routines";
 
 export function* login({ payload }) {
@@ -35,6 +37,15 @@ export function* setCurrentUser() {
     yield put(fetchCurrentUser.failure(error.message));
   }
 }
+export function* updateCurrentUser({ payload }) {
+  try {
+    const response = yield call(getUpdatedUser, payload);
+    yield put(updateUser.success(response));
+    yield put(fetchCurrentUser.success());
+  } catch (error) {
+    yield put(updateUser.failure(error.message));
+  }
+}
 export function* confirmEmail({ payload }) {
   try {
     const response = yield call(confirmAccount, payload);
@@ -54,4 +65,5 @@ export default function* userSagas() {
   yield takeLatest(fetchCurrentUser.TRIGGER, setCurrentUser);
   yield takeLatest(logoutUser.TRIGGER, logout);
   yield takeLatest(setConfirmEmail.TRIGGER, confirmEmail);
+  yield takeLatest(updateUser.TRIGGER, updateCurrentUser);
 }

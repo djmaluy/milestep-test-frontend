@@ -7,4 +7,5 @@ export const routes = {
   EMAIL_CONFIRMATION: "/confirmation_email",
   ADD_TASK: "/add_task",
   PROFILE: "/profile",
+  EDIT_PROFILE: "/edit_profile",
 };
