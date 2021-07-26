@@ -13,6 +13,7 @@ export const EditTask = React.memo(({ updateTaskHandler, formik }) => {
   const history = useHistory();
   const { id, title, description, priority, due_date } =
     useLocation().state.task;
+
   const menuItems = [1, 2, 3, 4, 5];
   const [state, setState] = useState({
     id,

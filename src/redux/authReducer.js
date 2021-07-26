@@ -3,6 +3,7 @@ import {
   fetchCurrentUser,
   setConfirmEmail,
   setUser,
+  updateUser,
 } from "../store/routines";
 
 const initialState = {
@@ -30,8 +31,14 @@ export const authReducer = (state = initialState, action) => {
         current_user: action.payload,
         loading: false,
       };
-
+    case updateUser.SUCCESS:
+      return {
+        ...state,
+        current_user: action.payload,
+        loading: false,
+      };
     case setUser.FAILURE:
+    case updateUser.FAILURE:
     case fetchCurrentUser.FAILURE:
     case setConfirmEmail.FAILURE: {
       return {
