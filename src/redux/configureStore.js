@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import { logger } from "redux-logger";
 import { authReducer } from "./authReducer";
 import rootSaga from "./sagas";
+import { createBrowserHistory } from "history";
 import { tasksReducer } from "./tasksReducer";
 
 let rootReducer = combineReducers({
@@ -11,6 +12,8 @@ let rootReducer = combineReducers({
 });
 
 const sagaMiddleware = createSagaMiddleware();
+
+export const history = createBrowserHistory();
 
 const store = createStore(
   rootReducer,

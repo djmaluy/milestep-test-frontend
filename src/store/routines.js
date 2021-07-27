@@ -1,6 +1,7 @@
 import { createRoutine } from "redux-saga-routines";
 
 export const fetchTasks = createRoutine("TASKS");
+export const addTaskAC = createRoutine("ADD_TASK");
 export const updateTask = createRoutine("UPDATE_TASK");
 export const deleteTask = createRoutine("DELETE_TASK");
 export const deleteMoreTasks = createRoutine("DELETE_MORE_TASKS");

@@ -20,21 +20,7 @@ export const HomeContainer = ({
   const [completedTasks, setCompletedTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
 
-  // const [image, setImage] = useState(null);
   const dispatch = useDispatch();
-
-  // const handleFileUpload = (e) => {
-  //   setImage(e.target.files[0]);
-  // };
-
-  // const onSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append("image", image);
-
-  //   const response = await api.post("/tasks", formData);
-  //   console.log(response);
-  // };
 
   // By marking task as completed a particular task moves to appropriate list
   const onToggleStatus = async (task, value) => {
@@ -90,46 +76,48 @@ export const HomeContainer = ({
 
   return (
     <>
-      <div className="activeTasks__buttons">
-        <div className="home__checkAll">
-          <CheckAllTasks
-            setIsChecked={setIsChecked}
-            activeTasks={activeTasks}
-          />
-        </div>
-        <BatchDeleteButton deleteTasksByIds={deleteTasksByIds} />
-      </div>
       {current_user ? (
-        <div className="tasks_columns">
-          <div className="active_tasks__column">
-            <h4 className="tasks_columns-title">Active tasks</h4>
-
-            {activeTasks.map((task) => (
-              <ActiveTasks
-                task={task}
-                key={task.id}
+        <>
+          <div className="activeTasks__buttons">
+            <div className="home__checkAll">
+              <CheckAllTasks
                 setIsChecked={setIsChecked}
                 activeTasks={activeTasks}
-                openModal={openModal}
-                onDeleteTask={onDeleteTask}
-                onToggleStatus={onToggleStatus}
               />
-            ))}
-            <AddTaskButton handleClickOpen={handleClickOpen} />
+            </div>
+            <BatchDeleteButton deleteTasksByIds={deleteTasksByIds} />
           </div>
+          <div className="tasks_columns">
+            <div className="active_tasks__column">
+              <h4 className="tasks_columns-title">Active tasks</h4>
 
-          <div className="completedTasks">
-            <h4 className="tasks_columns-title">Completed tasks</h4>
-            {completedTasks.map((task) => (
-              <CompletedTasks
-                key={task.id}
-                task={task}
-                onToggleStatus={onToggleStatus}
-                openModal={openModal}
-              />
-            ))}
+              {activeTasks.map((task) => (
+                <ActiveTasks
+                  task={task}
+                  key={task.id}
+                  setIsChecked={setIsChecked}
+                  activeTasks={activeTasks}
+                  openModal={openModal}
+                  onDeleteTask={onDeleteTask}
+                  onToggleStatus={onToggleStatus}
+                />
+              ))}
+              <AddTaskButton handleClickOpen={handleClickOpen} />
+            </div>
+
+            <div className="completedTasks">
+              <h4 className="tasks_columns-title">Completed tasks</h4>
+              {completedTasks.map((task) => (
+                <CompletedTasks
+                  key={task.id}
+                  task={task}
+                  onToggleStatus={onToggleStatus}
+                  openModal={openModal}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       ) : (
         <h2 className="not_authorized">You are not authorized!</h2>
       )}
