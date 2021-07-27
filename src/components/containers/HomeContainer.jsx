@@ -20,21 +20,7 @@ export const HomeContainer = ({
   const [completedTasks, setCompletedTasks] = useState([]);
   const [activeTasks, setActiveTasks] = useState([]);
 
-  // const [image, setImage] = useState(null);
   const dispatch = useDispatch();
-
-  // const handleFileUpload = (e) => {
-  //   setImage(e.target.files[0]);
-  // };
-
-  // const onSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append("image", image);
-
-  //   const response = await api.post("/tasks", formData);
-  //   console.log(response);
-  // };
 
   // By marking task as completed a particular task moves to appropriate list
   const onToggleStatus = async (task, value) => {

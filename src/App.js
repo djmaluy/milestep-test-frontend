@@ -26,7 +26,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { Registration } from "./pages/registration";
 import { AddTaskForm } from "./pages/addTaskForm";
 import { Profile } from "./pages/profile/Profile";
-// import { EditProfile } from "./pages/profile/EditProfile";
 
 const EditProfileSuspense = React.lazy(() =>
   import("./pages/profile/EditProfile")
@@ -153,12 +152,7 @@ const App = () => {
             component={() => <Profile currentUser={currentUser} />}
           />
           <Suspense fallback={<div>Загрузка...</div>}>
-            <Route
-              path={routes.EDIT_PROFILE}
-              component={() => (
-                <EditProfileSuspense currentUser={currentUser} />
-              )}
-            />
+            <Route path={routes.EDIT_PROFILE} component={EditProfileSuspense} />
           </Suspense>
           <Route component={PageNotFound} />
         </Switch>
