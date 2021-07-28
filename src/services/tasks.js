@@ -60,3 +60,16 @@ export const deleteTasksByIds = (payload) => {
     }));
   return response;
 };
+export const addingTask = (payload) => {
+  const response = api
+    .post(`/tasks`, payload)
+    .then((res) => ({
+      error: false,
+      data: res.data,
+    }))
+    .catch(() => ({
+      error: true,
+      data: null,
+    }));
+  return response;
+};

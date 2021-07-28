@@ -1,16 +1,20 @@
 import { put, takeLatest, call } from "redux-saga/effects";
+import { routes } from "../../constants/routes";
 import {
+  addingTask,
   deleteTaskById,
   deleteTasksByIds,
   fetchAllTasks,
   updateTaskById,
 } from "../../services/tasks";
 import {
+  addTaskAC,
   deleteMoreTasks,
   deleteTask,
   fetchTasks,
   updateTask,
 } from "../../store/routines";
+import { history } from "../configureStore";
 
 export function* fetchData() {
   try {
@@ -19,6 +23,16 @@ export function* fetchData() {
     yield put(fetchTasks.success(response.data));
   } catch (error) {
     yield put(fetchTasks.failure(error.message));
+  }
+}
+export function* addTask({ payload }) {
+  try {
+    const response = yield call(addingTask, payload);
+    yield put(addTaskAC.success(response));
+    yield put(fetchTasks.trigger());
+    history.push(routes.ROOT);
+  } catch (error) {
+    yield put(addTaskAC.failure(error.message));
   }
 }
 
@@ -55,4 +69,5 @@ export default function* tasksSagas() {
   yield takeLatest(deleteTask.TRIGGER, deleteOneTask);
   yield takeLatest(updateTask.TRIGGER, setUpdatedTask);
   yield takeLatest(deleteMoreTasks.TRIGGER, deleteButchTasks);
+  yield takeLatest(addTaskAC.TRIGGER, addTask);
 }

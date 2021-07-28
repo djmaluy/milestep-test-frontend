@@ -1,4 +1,5 @@
 import {
+  addTaskAC,
   clearEntity,
   deleteMoreTasks,
   deleteTask,
@@ -28,6 +29,7 @@ export const tasksReducer = (state = initialState, action) => {
       };
     case fetchTasks.FAILURE:
     case updateTask.FAILURE:
+    case addTaskAC.FAILURE:
     case deleteMoreTasks.FAILURE:
     case deleteTask.FAILURE: {
       return {
@@ -36,6 +38,11 @@ export const tasksReducer = (state = initialState, action) => {
         error: action.payload,
       };
     }
+    case addTaskAC.SUCCESS:
+      return {
+        ...state,
+        tasks: [...state.tasks, action.payload],
+      };
     case updateTask.SUCCESS:
       return {
         ...state,
