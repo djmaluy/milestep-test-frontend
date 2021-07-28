@@ -4,12 +4,9 @@ import { Link, useHistory } from "react-router-dom";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { getUser } from "../../redux/authSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../../store/routines";
-// import CircularProgress from "@material-ui/core/CircularProgress";
-// import { getCurrentUser } from "../../services/session";
-// import { fetchCurrentUser } from "../../store/routines";
+import { fetchCurrentUser, updateUser } from "../../store/routines";
 
-const EditProfile = ({ currentUser }) => {
+const EditProfile = () => {
   const current_user = useSelector(getUser);
   const history = useHistory();
 
@@ -17,12 +14,25 @@ const EditProfile = ({ currentUser }) => {
   const [last_name, setLastName] = useState(current_user?.last_name);
   const [phone, setPhone] = useState(current_user?.phone || "");
   const [address, setAddress] = useState(current_user?.address || "");
+  const [image, setImage] = useState(null);
   const dispatch = useDispatch();
 
-  const handleFormSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser({ first_name, last_name, phone, address }));
+    const formData = new FormData();
+    formData.set("first_name", first_name);
+    formData.set("last_name", last_name);
+    formData.set("phone", phone);
+    formData.set("address", address);
+    formData.append("image", image);
+
+    dispatch(updateUser(formData));
     history.push(routes.PROFILE);
+    dispatch(fetchCurrentUser());
+  };
+
+  const handleFileUpload = (e) => {
+    setImage(e.target.files[0]);
   };
   return (
     <div className="container">
@@ -36,18 +46,18 @@ const EditProfile = ({ currentUser }) => {
                 </Link>
                 <div className="d-flex flex-column align-items-center text-center">
                   <img
-                    src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                    src={current_user?.image.url}
                     alt="avatar"
                     className="rounded-circle"
                     width="150"
                   />
                   <div className="mt-3">
                     <div className="currentUser__fullname">
-                      {currentUser?.first_name} {currentUser?.last_name}
+                      {current_user?.first_name} {current_user?.last_name}
                     </div>
-                    <p className="text-secondary mb-1">{currentUser?.email}</p>
+                    <p className="text-secondary mb-1">{current_user?.email}</p>
                     <p className="text-muted font-size-sm">
-                      {currentUser?.address}
+                      {current_user?.address}
                     </p>
                   </div>
                 </div>
@@ -56,7 +66,7 @@ const EditProfile = ({ currentUser }) => {
           </div>
           <div className="col-md-8">
             <div className="profile mb-3">
-              <form onSubmit={handleFormSubmit} className="profile-body">
+              <form onSubmit={handleSubmit} className="profile-body">
                 <div className="form-group">
                   <label htmlFor="firstName">First name</label>
                   <input
@@ -100,6 +110,15 @@ const EditProfile = ({ currentUser }) => {
                     placeholder="Address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="image">Change avatar</label>
+                  <input
+                    accept="image/*"
+                    name="image"
+                    type="file"
+                    onChange={handleFileUpload}
                   />
                 </div>
                 <button type="submit">Update</button>

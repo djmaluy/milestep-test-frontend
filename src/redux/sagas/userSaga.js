@@ -40,8 +40,7 @@ export function* setCurrentUser() {
 export function* updateCurrentUser({ payload }) {
   try {
     const response = yield call(getUpdatedUser, payload);
-    yield put(updateUser.success(response));
-    yield put(fetchCurrentUser.success());
+    yield put(updateUser.success(response.data));
   } catch (error) {
     yield put(updateUser.failure(error.message));
   }
