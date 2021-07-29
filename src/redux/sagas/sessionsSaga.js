@@ -1,6 +1,5 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { createSession, deleteSession } from "../../services/session";
-import { confirmAccount } from "../../services/users";
 import { clearEntity, logoutUser, setUser } from "../../store/routines";
 
 export function* login({ payload }) {
@@ -10,7 +9,7 @@ export function* login({ payload }) {
     if (user.email_confirmed === true) {
       yield put(setUser.success(user));
     } else {
-      confirmAccount();
+      console.log("Confirm account");
     }
   } catch (error) {
     yield put(setUser.failure(error.message));
@@ -22,7 +21,7 @@ export function* logout() {
   yield put(clearEntity.success());
 }
 
-export default function* userSagas() {
+export default function* sessionsSagas() {
   yield takeLatest(setUser.TRIGGER, login);
   yield takeLatest(logoutUser.TRIGGER, logout);
 }
