@@ -7,8 +7,6 @@ export const Registration = React.memo(() => {
   const [password_confirmation, setPassword_confirmation] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,8 +15,6 @@ export const Registration = React.memo(() => {
         first_name: firstName,
         last_name: lastName,
         email: email,
-        phone: phone,
-        address: address,
         password: password,
         password_confirmation: password_confirmation,
       },
@@ -65,22 +61,7 @@ export const Registration = React.memo(() => {
           className="form-control"
           required
         />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="form-control"
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="form-control"
-        />
+
         <input
           type="password"
           name="password"

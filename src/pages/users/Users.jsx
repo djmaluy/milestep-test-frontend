@@ -33,8 +33,9 @@ export const Users = () => {
               <TableRow>
                 <TableCell>FirstName</TableCell>
                 <TableCell>LastName</TableCell>
-                <TableCell>Phone</TableCell>
+                <TableCell>Email</TableCell>
                 <TableCell>Address</TableCell>
+                <TableCell>Phone</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -44,6 +45,7 @@ export const Users = () => {
                   <TableCell>{user.last_name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.address}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

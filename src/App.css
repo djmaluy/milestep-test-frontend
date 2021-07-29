@@ -60,11 +60,15 @@ body {
 .links > li {
   margin-right: 25px;
 }
+
 .profile__icon {
-  color: #000;
+  color: rgb(255, 255, 255);
+  margin-top: 7px;
+  margin-right: 15px;
 }
 .profile__icon:hover {
   text-decoration: none;
+  color: #ccc;
 }
 .home__title {
   text-align: center;
