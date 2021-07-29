@@ -8,6 +8,8 @@ export const deleteMoreTasks = createRoutine("DELETE_MORE_TASKS");
 export const clearEntity = createRoutine("CLEAR_ENTITY");
 
 export const setUser = createRoutine("SET_USER");
+export const setUsers = createRoutine("SET_USERS");
+export const setPages = createRoutine("SET_PAGES");
 export const updateUser = createRoutine("UPDATE_USER");
 export const logoutUser = createRoutine("LOGOUT");
 export const fetchCurrentUser = createRoutine("FETCH_CURRENT_USER");

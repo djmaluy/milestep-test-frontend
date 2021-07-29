@@ -5,10 +5,12 @@ import { authReducer } from "./authReducer";
 import rootSaga from "./sagas";
 import { createBrowserHistory } from "history";
 import { tasksReducer } from "./tasksReducer";
+import { usersReducer } from "./usersReducer";
 
 let rootReducer = combineReducers({
   tasksReducer,
   authReducer,
+  usersReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

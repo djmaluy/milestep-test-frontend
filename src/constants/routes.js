@@ -8,4 +8,5 @@ export const routes = {
   ADD_TASK: "/add_task",
   PROFILE: "/profile",
   EDIT_PROFILE: "/edit_profile",
+  USERS: "/users",
 };
