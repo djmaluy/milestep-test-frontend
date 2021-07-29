@@ -21,20 +21,15 @@ import {
   updateTask,
 } from "./store/routines";
 import { routes } from "./constants/routes";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Registration } from "./pages/registration";
 import { AddTaskForm } from "./pages/addTaskForm";
 import { Profile } from "./pages/profile/Profile";
+import { Users } from "./pages/users/Users";
 
 const EditProfileSuspense = React.lazy(() =>
   import("./pages/profile/EditProfile")
 );
-
-export const checkEmail = () =>
-  toast.success("Successfully register. Check your email please");
-export const confirmAccount = () =>
-  toast.warn("Check your email and confirm your account");
 
 const App = () => {
   const dispatch = useDispatch();
@@ -63,6 +58,7 @@ const App = () => {
     const now = new Date();
     return now.toISOString().slice(0, 10);
   };
+
   // getting data from AddTaskForm and sending to database
   const handleSubmit = () => {
     const { title, description, priority, dueDate } = formik.values;
@@ -91,10 +87,12 @@ const App = () => {
       dueDate: getCurrentDate(),
     },
   });
+
   //deleting only one task
   const onDeleteTask = (id) => {
     dispatch(deleteTask(id));
   };
+
   //Updating task
   const updateTaskHandler = (task) => {
     dispatch(updateTask(task));
@@ -150,12 +148,11 @@ const App = () => {
           path={routes.PROFILE}
           component={() => <Profile currentUser={currentUser} />}
         />
-        <Suspense fallback={<div>Загрузка...</div>}>
-          <Route
-            path={routes.EDIT_PROFILE}
-            component={() => <EditProfileSuspense currentUser={currentUser} />}
-          />
-        </Suspense>
+        <Route
+          path={routes.EDIT_PROFILE}
+          component={() => <EditProfileSuspense currentUser={currentUser} />}
+        />
+        <Route exact path={routes.USERS} component={Users} />
         <Route component={PageNotFound} />
       </Switch>
     </Suspense>

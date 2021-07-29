@@ -44,7 +44,19 @@ body {
   display: flex;
   flex-direction: row;
 }
-
+.nav__links {
+  display: flex;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  margin-left: 20px;
+  font-size: 20px;
+  font-weight: normal;
+}
+.nav__links:hover {
+  color: #c6caca;
+  text-decoration: none;
+}
 .links > li {
   margin-right: 25px;
 }
@@ -252,4 +264,7 @@ body {
 .activeTasks__buttons {
   display: flex;
   margin-top: 10px;
+}
+.users__table {
+  min-width: 650px;
 }

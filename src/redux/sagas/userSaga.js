@@ -1,31 +1,25 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { confirmAccount } from "../../App";
 import {
-  createSession,
-  deleteSession,
+  confirmAccount,
   getCurrentUser,
   getUpdatedUser,
-} from "../../services/session";
+  getUsers,
+} from "../../services/users";
 import {
-  clearEntity,
   fetchCurrentUser,
-  logoutUser,
   setConfirmEmail,
-  setUser,
+  setPages,
+  setUsers,
   updateUser,
 } from "../../store/routines";
 
-export function* login({ payload }) {
+export function* fetchUsers({ payload }) {
   try {
-    const response = yield call(createSession, payload);
-    const user = response.data;
-    if (user.email_confirmed === true) {
-      yield put(setUser.success(user));
-    } else {
-      confirmAccount();
-    }
+    const response = yield call(getUsers, payload);
+    yield put(setPages.success(response.data.pages));
+    yield put(setUsers.success(response.data.users));
   } catch (error) {
-    yield put(setUser.failure(error.message));
+    yield put(setUsers.failure(error.message));
   }
 }
 export function* setCurrentUser() {
@@ -54,15 +48,9 @@ export function* confirmEmail({ payload }) {
   }
 }
 
-export function* logout() {
-  yield call(deleteSession);
-  yield put(clearEntity.success());
-}
-
 export default function* userSagas() {
-  yield takeLatest(setUser.TRIGGER, login);
   yield takeLatest(fetchCurrentUser.TRIGGER, setCurrentUser);
-  yield takeLatest(logoutUser.TRIGGER, logout);
   yield takeLatest(setConfirmEmail.TRIGGER, confirmEmail);
   yield takeLatest(updateUser.TRIGGER, updateCurrentUser);
+  yield takeLatest(setUsers.TRIGGER, fetchUsers);
 }
