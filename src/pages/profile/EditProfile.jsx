@@ -5,6 +5,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { getUser } from "../../redux/authSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentUser, updateUser } from "../../store/routines";
+import userPhoto from "../../assets/images/user.png";
 
 const EditProfile = () => {
   const current_user = useSelector(getUser);
@@ -47,7 +48,7 @@ const EditProfile = () => {
                   </Link>
                   <div className="d-flex flex-column align-items-center text-center">
                     <img
-                      src={current_user?.image.url}
+                      src={current_user?.image?.url || userPhoto}
                       alt="avatar"
                       className="rounded-circle"
                       width="150"
