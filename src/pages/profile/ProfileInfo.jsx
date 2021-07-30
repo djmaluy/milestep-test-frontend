@@ -2,6 +2,7 @@ import React from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import { routes } from "../../constants/routes";
 import { Link } from "react-router-dom";
+import userPhoto from "../../assets/images/user.png";
 
 export const ProfileInfo = ({ currentUser, setEditMode }) => {
   return (
@@ -19,7 +20,7 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                 </Link>
                 <div className="d-flex flex-column align-items-center text-center">
                   <img
-                    src={currentUser?.image.url}
+                    src={currentUser?.image?.url || userPhoto}
                     alt="avatar"
                     className="rounded-circle"
                     width="150"
