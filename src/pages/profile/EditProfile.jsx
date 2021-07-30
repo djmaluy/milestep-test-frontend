@@ -36,97 +36,103 @@ const EditProfile = () => {
   };
   return (
     <div className="container">
-      <div className="main-body">
-        <div className="row gutters-sm">
-          <div className="col-md-4 mb-3">
-            <div className="profile">
-              <div className="profile-body">
-                <Link to={routes.PROFILE} className="edit__button">
-                  <ArrowBackIcon />
-                </Link>
-                <div className="d-flex flex-column align-items-center text-center">
-                  <img
-                    src={current_user?.image.url}
-                    alt="avatar"
-                    className="rounded-circle"
-                    width="150"
-                  />
-                  <div className="mt-3">
-                    <div className="currentUser__fullname">
-                      {current_user?.first_name} {current_user?.last_name}
+      {current_user ? (
+        <div className="main-body">
+          <div className="row gutters-sm">
+            <div className="col-md-4 mb-3">
+              <div className="profile">
+                <div className="profile-body">
+                  <Link to={routes.PROFILE} className="edit__button">
+                    <ArrowBackIcon />
+                  </Link>
+                  <div className="d-flex flex-column align-items-center text-center">
+                    <img
+                      src={current_user?.image.url}
+                      alt="avatar"
+                      className="rounded-circle"
+                      width="150"
+                    />
+                    <div className="mt-3">
+                      <div className="currentUser__fullname">
+                        {current_user?.first_name} {current_user?.last_name}
+                      </div>
+                      <p className="text-secondary mb-1">
+                        {current_user?.email}
+                      </p>
+                      <p className="text-muted font-size-sm">
+                        {current_user?.address}
+                      </p>
                     </div>
-                    <p className="text-secondary mb-1">{current_user?.email}</p>
-                    <p className="text-muted font-size-sm">
-                      {current_user?.address}
-                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="col-md-8">
-            <div className="profile mb-3">
-              <form onSubmit={handleSubmit} className="profile-body">
-                <div className="form-group">
-                  <label htmlFor="firstName">First name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="firstName"
-                    placeholder="First name"
-                    value={first_name}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="lastName">Last name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="lastName"
-                    placeholder="Last name"
-                    value={last_name}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </div>
+            <div className="col-md-8">
+              <div className="profile mb-3">
+                <form onSubmit={handleSubmit} className="profile-body">
+                  <div className="form-group">
+                    <label htmlFor="firstName">First name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="firstName"
+                      placeholder="First name"
+                      value={first_name}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="lastName">Last name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="lastName"
+                      placeholder="Last name"
+                      value={last_name}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="phone"
-                    placeholder="Phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="address">Address</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="address"
-                    placeholder="Address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="image">Change avatar</label>
-                  <input
-                    accept="image/*"
-                    name="image"
-                    type="file"
-                    onChange={handleFileUpload}
-                  />
-                </div>
-                <button type="submit">Update</button>
-              </form>
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="phone"
+                      placeholder="Phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="address">Address</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="address"
+                      placeholder="Address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="image">Change avatar</label>
+                    <input
+                      accept="image/*"
+                      name="image"
+                      type="file"
+                      onChange={handleFileUpload}
+                    />
+                  </div>
+                  <button type="submit">Update</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <h4>Please wait</h4>
+      )}
     </div>
   );
 };
