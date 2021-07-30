@@ -8,7 +8,7 @@ export const Profile = ({ currentUser }) => {
 
   return (
     <div className="container">
-      {editMode ? (
+      {editMode && currentUser ? (
         <EditProfile setEditMode={setEditMode} currentUser={currentUser} />
       ) : (
         <ProfileInfo setEditMode={setEditMode} currentUser={currentUser} />
