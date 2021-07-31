@@ -20,7 +20,7 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                 </Link>
                 <div className="d-flex flex-column align-items-center text-center">
                   <img
-                    src={currentUser?.image?.url || userPhoto}
+                    src={currentUser.image ? currentUser.image.url : userPhoto}
                     alt="avatar"
                     className="rounded-circle"
                     width="150"
