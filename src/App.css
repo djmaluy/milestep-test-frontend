@@ -63,12 +63,17 @@ body {
 
 .profile__icon {
   color: rgb(255, 255, 255);
-  margin-top: 10px;
-  margin-right: 15px;
 }
-.profile__icon:hover {
+.profile__icon > button:active,
+.profile__icon > button:focus {
+  outline: none;
+}
+.profile__icon-link {
+  color: rgb(107, 104, 104);
+}
+.profile__icon-link:hover {
+  color: #000;
   text-decoration: none;
-  color: #ccc;
 }
 .home__title {
   text-align: center;

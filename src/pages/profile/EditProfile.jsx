@@ -21,11 +21,14 @@ const EditProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.set("first_name", first_name);
-    formData.set("last_name", last_name);
-    formData.set("phone", phone);
-    formData.set("address", address);
-    formData.append("image", image);
+    if (image) {
+      formData.append("image", image);
+    } else {
+      formData.set("first_name", first_name);
+      formData.set("last_name", last_name);
+      formData.set("phone", phone);
+      formData.set("address", address);
+    }
 
     dispatch(updateUser(formData));
     history.push(routes.PROFILE);
