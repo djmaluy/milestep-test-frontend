@@ -27,11 +27,11 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                   />
                   <div className="mt-3">
                     <div className="currentUser__fullname">
-                      {currentUser?.first_name} {currentUser?.last_name}
+                      {currentUser.first_name} {currentUser.last_name}
                     </div>
-                    <p className="text-secondary mb-1">{currentUser?.email}</p>
+                    <p className="text-secondary mb-1">{currentUser.email}</p>
                     <p className="text-muted font-size-sm">
-                      {currentUser?.address}
+                      {currentUser.address}
                     </p>
                   </div>
                 </div>
@@ -46,7 +46,7 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                     <h6 className="mb-0">First Name</h6>
                   </div>
                   <div className="col-sm-9 text-secondary">
-                    {currentUser?.first_name}
+                    {currentUser.first_name}
                   </div>
                 </div>
                 <hr />
@@ -55,7 +55,7 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                     <h6 className="mb-0">Last Name</h6>
                   </div>
                   <div className="col-sm-9 text-secondary">
-                    {currentUser?.last_name}
+                    {currentUser.last_name}
                   </div>
                 </div>
                 <hr />
@@ -64,7 +64,7 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                     <h6 className="mb-0">Email</h6>
                   </div>
                   <div className="col-sm-9 text-secondary">
-                    {currentUser?.email}
+                    {currentUser.email}
                   </div>
                 </div>
                 <hr />
@@ -73,7 +73,7 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                     <h6 className="mb-0">Phone</h6>
                   </div>
                   <div className="col-sm-9 text-secondary">
-                    {currentUser?.phone}
+                    {currentUser.phone}
                   </div>
                 </div>
                 <hr />
@@ -82,7 +82,7 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                     <h6 className="mb-0">Address</h6>
                   </div>
                   <div className="col-sm-9 text-secondary">
-                    {currentUser?.address}
+                    {currentUser.address}
                   </div>
                 </div>
                 <hr />

@@ -25,6 +25,7 @@ export const ProfileIcon = () => {
         aria-haspopup="true"
         onClick={handleMenu}
         color="inherit"
+        style={{ outline: "none" }}
       >
         <AccountCircle />
       </IconButton>
