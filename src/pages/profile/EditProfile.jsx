@@ -23,12 +23,11 @@ const EditProfile = () => {
     const formData = new FormData();
     if (image) {
       formData.append("image", image);
-    } else {
-      formData.set("first_name", first_name);
-      formData.set("last_name", last_name);
-      formData.set("phone", phone);
-      formData.set("address", address);
     }
+    formData.set("first_name", first_name);
+    formData.set("last_name", last_name);
+    formData.set("phone", phone);
+    formData.set("address", address);
 
     dispatch(updateUser(formData));
     history.push(routes.PROFILE);
