@@ -13,9 +13,10 @@ export const fetchAllTasks = () => {
     }));
   return response;
 };
+
 export const updateTaskById = (payload) => {
   const response = api
-    .put(`/tasks/${payload.id}`, payload)
+    .put(`/tasks/${payload.id}`, payload.formData)
     .then((res) => ({
       error: false,
       data: res.data,
