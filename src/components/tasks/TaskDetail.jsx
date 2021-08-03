@@ -2,6 +2,7 @@ import React from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 export const TaskDetail = React.memo(({ showTask }) => {
   return (
@@ -34,6 +35,17 @@ export const TaskDetail = React.memo(({ showTask }) => {
         >
           <span>Due_date: </span>
           {showTask.due_date}
+        </Typography>
+        <Typography style={{ marginTop: "15px" }} variant="h5">
+          <a
+            href={showTask.some_file.pdf}
+            target="_blank"
+            rel="noreferrer"
+            className="download__link"
+          >
+            <GetAppIcon fontSize="large" />
+            <span>Download</span>
+          </a>
         </Typography>
       </CardContent>
     </Card>

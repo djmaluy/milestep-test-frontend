@@ -18,7 +18,6 @@ import {
   fetchCurrentUser,
   fetchTasks,
   logoutUser,
-  updateTask,
 } from "./store/routines";
 import { routes } from "./constants/routes";
 import "react-toastify/dist/ReactToastify.css";
@@ -93,11 +92,6 @@ const App = () => {
     dispatch(deleteTask(id));
   };
 
-  //Updating task
-  const updateTaskHandler = (task) => {
-    dispatch(updateTask(task));
-  };
-
   return (
     <Suspense fallback={<div className="loadingSuspense">Loading...</div>}>
       <Header currentUser={currentUser} logout={logout} />
@@ -134,9 +128,7 @@ const App = () => {
         />
         <Route
           path={routes.EDIT_TASK}
-          component={() => (
-            <EditTask updateTaskHandler={updateTaskHandler} formik={formik} />
-          )}
+          component={() => <EditTask formik={formik} />}
         />
         <Route
           exact
