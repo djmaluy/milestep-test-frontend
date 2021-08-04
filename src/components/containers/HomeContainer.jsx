@@ -81,10 +81,12 @@ export const HomeContainer = ({
   // Search tasks by title
   const filterDataByTitle = useCallback(
     (term) => {
-      const newDataArray = tasks.filter((task) =>
-        task.title.toLowerCase().includes(term)
-      );
-      return setFilteredData(newDataArray);
+      if (tasks) {
+        const newDataArray = tasks.filter((task) =>
+          task.title.toLowerCase().includes(term)
+        );
+        return setFilteredData(newDataArray);
+      }
     },
     [tasks]
   );

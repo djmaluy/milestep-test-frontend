@@ -6,7 +6,7 @@ import Menu from "@material-ui/core/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 
-export const ProfileIcon = () => {
+export const ProfileIcon = ({ logout }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -44,8 +44,8 @@ export const ProfileIcon = () => {
         open={open}
         onClose={handleClose}
       >
-        <Link to={routes.PROFILE} className="profile__icon-link">
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <Link to={routes.LOGIN} onClick={logout} className="profile__icon-link">
+          <MenuItem onClick={handleClose}>Logout</MenuItem>
         </Link>
       </Menu>
     </div>
