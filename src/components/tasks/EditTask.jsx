@@ -13,7 +13,7 @@ import { updateTask } from "../../store/routines";
 export const EditTask = React.memo(({ formik }) => {
   const { id, title, description, priority, due_date } =
     useLocation().state.task;
-  const [someFile, setSomeFile] = useState(null);
+  const [attachment, setAttachment] = useState(null);
   const [titleForm, setTitleForm] = useState(title);
   const [descriptionForm, setDescriptionForm] = useState(description);
   const [priorityForm, setPriorityForm] = useState(priority);
@@ -27,8 +27,8 @@ export const EditTask = React.memo(({ formik }) => {
   const editTask = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    if (someFile) {
-      formData.append("some_file", someFile);
+    if (attachment) {
+      formData.append("some_file", attachment);
     }
     formData.set("title", titleForm);
     formData.set("description", descriptionForm);
@@ -39,7 +39,7 @@ export const EditTask = React.memo(({ formik }) => {
   };
 
   const handleUpload = (e) => {
-    setSomeFile(e.target.files[0]);
+    setAttachment(e.target.files[0]);
   };
   return (
     <form onSubmit={editTask} className="editForm">

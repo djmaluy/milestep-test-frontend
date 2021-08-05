@@ -40,6 +40,12 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.logo {
+  font-weight: 600;
+  color: #ebf3f3;
+  font-size: 35px;
+  cursor: pointer;
+}
 .links {
   display: flex;
   flex-direction: row;
@@ -47,20 +53,25 @@ body {
 .nav__links {
   display: flex;
   align-items: center;
-  color: white;
-  cursor: pointer;
-  margin-left: 20px;
-  font-size: 20px;
-  font-weight: normal;
-}
-.nav__links:hover {
-  color: #c6caca;
-  text-decoration: none;
-}
-.links > li {
-  margin-right: 25px;
+  margin: 0 auto;
 }
 
+.nav__links-item {
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 30px;
+  letter-spacing: 1.3px;
+}
+.nav__links-item:hover {
+  text-decoration: none;
+  color: gold;
+}
+.nav__link-selected {
+  font-weight: bolder;
+  color: gold;
+}
 .profile__icon {
   color: rgb(255, 255, 255);
 }
