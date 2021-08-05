@@ -20,6 +20,10 @@
   min-height: 1px;
   padding: 1rem;
 }
+.profile__image {
+  width: 350px;
+  height: 350px;
+}
 .currentUser__fullname {
   color: #000;
   font-weight: bolder;
@@ -28,4 +32,8 @@
 }
 .edit__button {
   display: flex;
+}
+.preview__img {
+  max-width: 340px;
+  max-height: 350px;
 }

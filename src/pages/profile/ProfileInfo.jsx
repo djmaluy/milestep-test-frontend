@@ -4,7 +4,7 @@ import { routes } from "../../constants/routes";
 import { Link } from "react-router-dom";
 import userPhoto from "../../assets/images/user.png";
 
-export const ProfileInfo = ({ currentUser, setEditMode }) => {
+export const ProfileInfo = ({ currentUser, setEditMode, croppedImageUrl }) => {
   return (
     <div className="main-body">
       {currentUser ? (
@@ -20,7 +20,7 @@ export const ProfileInfo = ({ currentUser, setEditMode }) => {
                 </Link>
                 <div className="d-flex flex-column align-items-center text-center">
                   <img
-                    src={currentUser.image ? currentUser.image.url : userPhoto}
+                    src={croppedImageUrl || currentUser.image.url || userPhoto}
                     alt="avatar"
                     className="rounded-circle"
                     width="150"
