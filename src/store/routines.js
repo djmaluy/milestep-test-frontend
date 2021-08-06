@@ -6,6 +6,7 @@ export const updateTask = createRoutine("UPDATE_TASK");
 export const deleteTask = createRoutine("DELETE_TASK");
 export const deleteMoreTasks = createRoutine("DELETE_MORE_TASKS");
 export const clearEntity = createRoutine("CLEAR_ENTITY");
+export const toggleStatusRoutine = createRoutine("TOGGLE_STATUS");
 
 export const setUser = createRoutine("SET_USER");
 export const setUsers = createRoutine("SET_USERS");

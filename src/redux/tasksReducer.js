@@ -4,6 +4,7 @@ import {
   deleteMoreTasks,
   deleteTask,
   fetchTasks,
+  toggleStatusRoutine,
   updateTask,
 } from "../store/routines";
 
@@ -31,6 +32,7 @@ export const tasksReducer = (state = initialState, action) => {
     case updateTask.FAILURE:
     case addTaskAC.FAILURE:
     case deleteMoreTasks.FAILURE:
+    case toggleStatusRoutine.FAILURE:
     case deleteTask.FAILURE: {
       return {
         ...state,
@@ -44,12 +46,15 @@ export const tasksReducer = (state = initialState, action) => {
         tasks: [...state.tasks, action.payload],
       };
     case updateTask.SUCCESS:
+    case toggleStatusRoutine.SUCCESS: {
       return {
         ...state,
         tasks: state.tasks.map((task) => {
           return task.id === action.payload.id ? { ...action.payload } : task;
         }),
       };
+    }
+
     case deleteTask.SUCCESS:
     case deleteMoreTasks.SUCCESS: {
       return {
