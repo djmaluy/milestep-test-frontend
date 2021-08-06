@@ -1,0 +1,272 @@
+$font-family: Arial, Helvetica, sans-serif;
+$primary-color: #fff;
+$background-body: #e7eff8;
+
+%signin-input {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+%notification {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 150px;
+  font-size: 45px;
+  font-family: $font-family;
+}
+%tasksColumn {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-left: 15px;
+  background-color: #ccc;
+  max-width: 400px;
+  height: 100%;
+  padding: 30px 0;
+  width: 30%;
+  border-radius: 15px;
+}
+body {
+  background-color: $background-body;
+}
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="firstName"] {
+  margin-bottom: -1px;
+  @extend %signin-input;
+}
+.form-signin input[type="lastName"] {
+  margin-bottom: -1px;
+  @extend %signin-input;
+}
+.form-signin input[type="email"] {
+  @extend %signin-input;
+}
+.form-signin input[type="password"] {
+  margin-bottom: -1px;
+  @extend %signin-input;
+}
+.form-signin input[type="password_confirmation"] {
+  @extend %signin-input;
+}
+.logo {
+  font-weight: 600;
+  color: $primary-color;
+  font-size: 35px;
+  cursor: pointer;
+}
+.links {
+  display: flex;
+  flex-direction: row;
+}
+.nav {
+  &__links {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    &-item {
+      color: $primary-color;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 500;
+      margin-left: 30px;
+      letter-spacing: 1.3px;
+      &:hover {
+        text-decoration: none;
+        color: gold;
+      }
+    }
+  }
+  &__link-selected {
+    font-weight: bolder;
+    color: gold;
+  }
+}
+
+.profile__icon {
+  color: $primary-color;
+  &-link {
+    color: rgb(107, 104, 104);
+    &:hover {
+      color: #000;
+      text-decoration: none;
+    }
+  }
+}
+
+.home {
+  &__title {
+    text-align: center;
+    margin-top: 25px;
+  }
+  &__checkAll {
+    margin-top: 5px;
+    margin-right: 15px;
+    margin-left: 25px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    &-text {
+      margin-left: 15px;
+    }
+  }
+}
+.checkbox__input {
+  transform: scale(1.8);
+  opacity: 0.9;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.active-tasks__actions {
+  display: flex;
+}
+
+.card {
+  margin-top: 5px;
+  border-radius: 25px;
+  &-body {
+    &__title {
+      margin-left: 15px;
+      &:hover {
+        font-weight: 500;
+        color: blue;
+      }
+    }
+    &__button {
+      background-color: Transparent;
+      background-repeat: no-repeat;
+      border: none;
+      cursor: pointer;
+      overflow: hidden;
+      color: rgb(55, 59, 61);
+      font-size: 25px;
+      font-weight: 600;
+      &:active,
+      &:focus {
+        outline: none;
+      }
+    }
+    &__inner {
+      display: flex;
+      background-color: $primary-color;
+      align-items: center;
+      padding: 30px 10px;
+      border-radius: 25px;
+      &:hover {
+        display: flex;
+      }
+    }
+  }
+}
+
+.ReactModal {
+  &__Overlay {
+    z-index: 99;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: $primary-color;
+  }
+  &__Content {
+    position: absolute;
+    left: 2.5rem;
+    right: 2.5rem;
+    top: 2.5rem;
+    bottom: 2.5rem;
+    background-color: $primary-color;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 97, 0.5);
+    overflow: auto;
+    border-radius: 4px;
+    outline: none;
+  }
+}
+
+.taskDetail {
+  max-width: 600px;
+  margin: auto;
+  margin-top: 70px;
+  &__content {
+    background: #d5f7f7;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 97, 0.5);
+    margin: auto;
+    text-align: center;
+  }
+}
+
+.login {
+  color: $primary-color;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.avatar {
+  align-items: center;
+  margin-right: 8px;
+  margin-top: 9px;
+  color: $primary-color;
+}
+
+.not_authorized {
+  text-align: center;
+  font-size: 55px;
+  color: rgb(49, 45, 45);
+  margin-top: 50px;
+  font-family: $font-family;
+  font-weight: 600;
+}
+.pageNotFound {
+  @extend %notification;
+}
+.loadingSuspense {
+  @extend %notification;
+}
+.completedTasks {
+  @extend %tasksColumn;
+}
+.active_tasks {
+  &__column {
+    @extend %tasksColumn;
+  }
+  &__buttons {
+    display: flex;
+    margin-top: 10px;
+  }
+}
+
+.tasks_columns {
+  display: flex;
+  flex-direction: row;
+  &-title {
+    text-align: center;
+    font-family: $font-family;
+    font-weight: bolder;
+  }
+}
+
+.cards {
+  width: auto;
+  margin-left: 15px;
+  min-height: 150px;
+  max-width: 90%;
+  margin-top: 15px;
+}
+
+.users__table {
+  min-width: 650px;
+}

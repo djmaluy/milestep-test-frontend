@@ -1,0 +1,54 @@
+.editForm {
+  margin: 0 auto;
+  max-width: 500px;
+  margin-top: 50px;
+  background-color: #f2f2f2;
+  padding: 35px 20px;
+  border-radius: 10px;
+  &__title {
+    text-align: center;
+  }
+  &__button {
+    max-width: 100px;
+    border-radius: 5px;
+    background: #5a84d8;
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin: 0 auto;
+    &:hover {
+      background: #245ed1;
+    }
+  }
+}
+
+.list__header {
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid #245ed1;
+  padding: 15px;
+  border-radius: 5px;
+  width: 500px;
+  &_title {
+    margin: auto;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #13161d;
+  }
+}
+
+.download__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #13161d;
+  text-decoration: none;
+  &:hover {
+    color: #245ed1;
+    text-decoration: none;
+  }
+}

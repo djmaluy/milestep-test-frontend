@@ -1,5 +1,5 @@
 import { Route, Switch } from "react-router-dom";
-import "./App.css";
+import "./App.scss";
 import { Login } from "./components/auth/Login";
 import React, { useEffect, useState, Suspense } from "react";
 import { Header } from "./components/Header";
