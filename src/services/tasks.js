@@ -74,3 +74,16 @@ export const addingTask = (payload) => {
     }));
   return response;
 };
+export const toggleTaskStatus = (payload) => {
+  const response = api
+    .put(`/tasks/${payload.task.id}`, { is_done: payload.value })
+    .then((res) => ({
+      error: false,
+      data: res.data,
+    }))
+    .catch(() => ({
+      error: true,
+      data: null,
+    }));
+  return response;
+};

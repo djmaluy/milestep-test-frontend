@@ -37,15 +37,19 @@ export const TaskDetail = React.memo(({ showTask }) => {
           {showTask.due_date}
         </Typography>
         <Typography style={{ marginTop: "15px" }} variant="h5">
-          <a
-            href={showTask.some_file.pdf}
-            target="_blank"
-            rel="noreferrer"
-            className="download__link"
-          >
-            <GetAppIcon fontSize="large" />
-            <span>Download</span>
-          </a>
+          {showTask.some_file ? (
+            <>
+              <a
+                href={showTask?.some_file?.pdf}
+                target="_blank"
+                rel="noreferrer"
+                className="download__link"
+              >
+                <GetAppIcon fontSize="large" />
+                <span>Download</span>
+              </a>
+            </>
+          ) : null}
         </Typography>
       </CardContent>
     </Card>

@@ -5,6 +5,7 @@ import {
   deleteTaskById,
   deleteTasksByIds,
   fetchAllTasks,
+  toggleTaskStatus,
   updateTaskById,
 } from "../../services/tasks";
 import {
@@ -12,6 +13,7 @@ import {
   deleteMoreTasks,
   deleteTask,
   fetchTasks,
+  toggleStatusRoutine,
   updateTask,
 } from "../../store/routines";
 import { history } from "../configureStore";
@@ -30,6 +32,7 @@ export function* addTask({ payload }) {
     const response = yield call(addingTask, payload);
     yield put(addTaskAC.success(response));
     yield put(fetchTasks.trigger());
+    yield put(fetchTasks.success());
     history.push(routes.ROOT);
   } catch (error) {
     yield put(addTaskAC.failure(error.message));
@@ -63,6 +66,15 @@ export function* deleteButchTasks({ payload }) {
     yield put(deleteMoreTasks.failure(error.message));
   }
 }
+export function* toggleStatus({ payload }) {
+  try {
+    yield call(toggleTaskStatus, payload);
+    yield put(fetchTasks.trigger());
+    yield put(fetchTasks.success());
+  } catch (error) {
+    yield put(toggleStatusRoutine.failure(error.message));
+  }
+}
 
 export default function* tasksSagas() {
   yield takeLatest(fetchTasks.TRIGGER, fetchData);
@@ -70,4 +82,5 @@ export default function* tasksSagas() {
   yield takeLatest(updateTask.TRIGGER, setUpdatedTask);
   yield takeLatest(deleteMoreTasks.TRIGGER, deleteButchTasks);
   yield takeLatest(addTaskAC.TRIGGER, addTask);
+  yield takeLatest(toggleStatusRoutine.TRIGGER, toggleStatus);
 }
