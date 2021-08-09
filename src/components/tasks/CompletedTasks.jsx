@@ -5,7 +5,7 @@ import CardActions from "@material-ui/core/CardActions";
 export const CompletedTasks = memo(({ task, onToggleStatus, openModal }) => {
   return (
     <Card className="cards">
-      <div onClick={() => openModal(task)} className="titleButton">
+      <div onClick={() => openModal(task)} className="card-body__button">
         <span className="card-body__title">{task.title}</span>
       </div>
 

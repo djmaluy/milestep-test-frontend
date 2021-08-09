@@ -6,7 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
-import "./Tasks.css";
+import "./Tasks.scss";
 import { useDispatch } from "react-redux";
 import { updateTask } from "../../store/routines";
 
@@ -43,7 +43,7 @@ export const EditTask = React.memo(({ formik }) => {
   };
   return (
     <form onSubmit={editTask} className="editForm">
-      <h3>Edit task</h3>
+      <h3 className="editForm__title">Edit task</h3>
       <Grid container direction="column" spacing={2}>
         <Grid item style={{ marginLeft: "80px" }}>
           <TextField
@@ -104,7 +104,7 @@ export const EditTask = React.memo(({ formik }) => {
             onChange={handleUpload}
           />
         </Grid>
-        <button className="editButton">Update</button>
+        <button className="editForm__button">Update</button>
       </Grid>
     </form>
   );

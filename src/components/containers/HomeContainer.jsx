@@ -105,7 +105,7 @@ export const HomeContainer = ({
     <>
       {current_user ? (
         <>
-          <div className="activeTasks__buttons">
+          <div className="active_tasks__buttons">
             <div className="home__checkAll">
               <CheckAllTasks
                 setIsChecked={setIsChecked}

@@ -35,7 +35,7 @@ export const ActiveTasks = React.memo(
               );
             }}
           />
-          <div onClick={() => openModal(task)} className="titleButton">
+          <div onClick={() => openModal(task)} className="card-body__button">
             <span className="card-body__title">{task.title}</span>
           </div>
         </div>

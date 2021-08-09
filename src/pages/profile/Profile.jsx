@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import EditProfile from "./EditProfile";
-import "./Profile.css";
+import "./Profile.scss";
 import { ProfileInfo } from "./ProfileInfo";
 
 export const Profile = ({ currentUser }) => {
