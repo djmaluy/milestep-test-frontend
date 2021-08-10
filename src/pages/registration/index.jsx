@@ -1,27 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import api from "../../api/api";
 
 export const Registration = React.memo(() => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password_confirmation, setPassword_confirmation] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const { register, handleSubmit } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const data = {
+  const onSubmit = (data) => {
+    const { firstName, lastName, password, email, password_confirmation } =
+      data;
+    const result = {
       user: {
         first_name: firstName,
         last_name: lastName,
-        email: email,
-        password: password,
-        password_confirmation: password_confirmation,
+        email,
+        password,
+        password_confirmation,
       },
     };
-
     api
-      .post("/users", data)
+      .post("/users", result)
       .then((res) => {
         console.log(res);
       })
@@ -33,52 +30,42 @@ export const Registration = React.memo(() => {
   return (
     <div className="text-center">
       <h1 className="h3 mb-1 font-weight-normal">Sign up</h1>
-      <form onSubmit={handleSubmit} className="form-signin">
+      <form onSubmit={handleSubmit(onSubmit)} className="form-signin">
         <input
-          type="firstName"
+          {...register("firstName")}
+          variant="outlined"
           name="firstName"
           placeholder="Enter first name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
           className="form-control"
-          required
         />
         <input
-          type="lastName"
+          {...register("lastName")}
+          variant="outlined"
           name="lastName"
           placeholder="Enter last name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
           className="form-control"
-          required
         />
         <input
-          type="email"
+          {...register("email")}
+          variant="outlined"
           name="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           className="form-control"
-          required
+          type="email"
         />
-
         <input
+          {...register("password")}
           type="password"
           name="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className="form-control"
-          required
         />
         <input
+          {...register("password_confirmation")}
           type="password"
           name="password_confirmation"
           placeholder="Password_confirmation"
-          value={password_confirmation}
-          onChange={(e) => setPassword_confirmation(e.target.value)}
           className="form-control"
-          required
         />
         <button className="btn btn-lg btn-primary btn-block mt-3" type="submit">
           Sign up

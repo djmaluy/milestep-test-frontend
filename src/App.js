@@ -3,7 +3,6 @@ import "./App.scss";
 import { Login } from "./components/auth/Login";
 import React, { useEffect, useState, Suspense } from "react";
 import { Header } from "./components/Header";
-import { useFormik } from "formik";
 import { EditTask } from "./components/tasks/EditTask";
 import { TaskDetail } from "./components/tasks/TaskDetail";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +12,6 @@ import { PageNotFound } from "./pages/pageNotFound";
 import { HomeContainer } from "./components/containers/HomeContainer";
 import { ConfirmEmail } from "./pages/confirmEmail";
 import {
-  addTaskAC,
   deleteTask,
   fetchCurrentUser,
   fetchTasks,
@@ -53,40 +51,6 @@ const App = () => {
     setOpen(false);
   };
 
-  const getCurrentDate = () => {
-    const now = new Date();
-    return now.toISOString().slice(0, 10);
-  };
-
-  // getting data from AddTaskForm and sending to database
-  const handleSubmit = () => {
-    const { title, description, priority, dueDate } = formik.values;
-    const request = {
-      task: {
-        title,
-        description,
-        priority,
-        due_date: dueDate,
-      },
-    };
-    dispatch(addTaskAC(request));
-    dispatch(fetchTasks());
-    setOpen(false);
-
-    formik.values.title = "";
-    formik.values.description = "";
-    formik.values.due_date = "";
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      priority: 1,
-      dueDate: getCurrentDate(),
-    },
-  });
-
   //deleting only one task
   const onDeleteTask = (id) => {
     dispatch(deleteTask(id));
@@ -121,15 +85,11 @@ const App = () => {
             <AddTaskForm
               open={open}
               handleClose={handleClose}
-              formik={formik}
-              handleSubmit={handleSubmit}
+              setOpen={setOpen}
             />
           )}
         />
-        <Route
-          path={routes.EDIT_TASK}
-          component={() => <EditTask formik={formik} />}
-        />
+        <Route path={routes.EDIT_TASK} component={() => <EditTask />} />
         <Route
           exact
           path={routes.SHOW}

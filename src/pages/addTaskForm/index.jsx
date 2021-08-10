@@ -5,89 +5,101 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import { Grid } from "@material-ui/core";
+import { FormControl, Grid } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { addTaskAC, fetchTasks } from "../../store/routines";
 
-export const AddTaskForm = React.memo(
-  ({ handleSubmit, formik, handleClose, open }) => {
-    const menuItems = [1, 2, 3, 4, 5];
-    return (
-      <div>
-        <Dialog style={{ minWidth: "60vw" }} open={open} onClose={handleClose}>
-          <DialogTitle>Add task</DialogTitle>
-          <DialogContent>
-            <Grid container direction="column" spacing={2}>
-              <Grid item>
-                <TextField
-                  label="title"
-                  name="title"
-                  onChange={formik.handleChange}
-                  value={formik.values.title}
-                  variant="outlined"
-                  required={true}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="description"
-                  name="description"
-                  variant="outlined"
-                  onChange={formik.handleChange}
-                  value={formik.values.description}
-                />
-              </Grid>
-              <Grid item>
-                <FormControl variant="filled" style={{ width: "100%" }}>
-                  <InputLabel>Priority</InputLabel>
-                  <Select
-                    name="priority"
-                    onChange={formik.handleChange}
-                    value={formik.values.priority}
+export const AddTaskForm = ({ handleClose, open, setOpen }) => {
+  const { register, handleSubmit, setValue } = useForm();
+  const menuItems = [1, 2, 3, 4, 5];
+  const dispatch = useDispatch();
+
+  const onSubmit = (data) => {
+    const { title, description, priority, dueDate } = data;
+    const request = {
+      task: {
+        title,
+        description,
+        priority,
+        due_date: dueDate,
+      },
+    };
+    dispatch(addTaskAC(request));
+    dispatch(fetchTasks());
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Dialog style={{ minWidth: "60vw" }} open={open} onClose={handleClose}>
+        <DialogTitle>Add task</DialogTitle>
+        <DialogContent>
+          <Grid container direction="column" spacing={2}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl>
+                <Grid item>
+                  <TextField
+                    {...register("title")}
+                    placeholder="Title"
+                    variant="outlined"
+                    name="title"
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    variant="outlined"
+                    name="description"
+                    {...register("description")}
+                    placeholder="Description"
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    select
+                    {...register("priority")}
+                    defaultValue={1}
+                    onChange={(e) => setValue("priority", e.target.value)}
                   >
                     {menuItems.map((item) => {
                       return (
-                        <MenuItem key={item} value={item}>
+                        <MenuItem value={item} key={item}>
                           {item}
                         </MenuItem>
                       );
                     })}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item>
-                <TextField
-                  style={{ width: "100%" }}
-                  type="date"
-                  name="dueDate"
-                  onChange={formik.handleChange}
-                  value={formik.values.dueDate}
-                  InputProps={{
-                    inputProps: { min: formik.values.dueDate },
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="secondary">
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              variant="contained"
-              color="primary"
-              size="small"
-              startIcon={<SaveIcon />}
-            >
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    );
-  }
-);
+                  </TextField>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    style={{ width: "100%" }}
+                    type="date"
+                    name="dueDate"
+                    {...register("dueDate")}
+                  />
+                </Grid>
+              </FormControl>
+
+              <DialogActions>
+                <Button onClick={handleClose} color="secondary">
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  size="small"
+                  startIcon={<SaveIcon />}
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </form>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
