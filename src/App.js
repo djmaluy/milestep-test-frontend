@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import "./App.scss";
 import { Login } from "./components/auth/Login";
 import React, { useEffect, useState, Suspense } from "react";
@@ -30,6 +30,8 @@ const EditProfileSuspense = React.lazy(() =>
 
 const App = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const tasks = useSelector(getTasks);
   const [open, setOpen] = useState(false);
   const currentUser = useSelector(getUser);
@@ -49,6 +51,7 @@ const App = () => {
   };
   const handleClose = () => {
     setOpen(false);
+    history.push(routes.ROOT);
   };
 
   //deleting only one task

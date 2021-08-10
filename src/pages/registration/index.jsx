@@ -1,20 +1,28 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import api from "../../api/api";
+import { userSchema } from "../../validations/userValidations";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export const Registration = React.memo(() => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(userSchema),
+  });
 
   const onSubmit = (data) => {
-    const { firstName, lastName, password, email, password_confirmation } =
-      data;
+    const { firstName, lastName, password, email, passwordConfirmation } = data;
+
     const result = {
       user: {
         first_name: firstName,
         last_name: lastName,
         email,
         password,
-        password_confirmation,
+        password_confirmation: passwordConfirmation,
       },
     };
     api
@@ -38,6 +46,7 @@ export const Registration = React.memo(() => {
           placeholder="Enter first name"
           className="form-control"
         />
+        <p>{errors.firstName?.message} </p>
         <input
           {...register("lastName")}
           variant="outlined"
@@ -45,6 +54,7 @@ export const Registration = React.memo(() => {
           placeholder="Enter last name"
           className="form-control"
         />
+        <p>{errors.lastName?.message} </p>
         <input
           {...register("email")}
           variant="outlined"
@@ -53,6 +63,7 @@ export const Registration = React.memo(() => {
           className="form-control"
           type="email"
         />
+        <p>{errors.email?.message} </p>
         <input
           {...register("password")}
           type="password"
@@ -60,11 +71,12 @@ export const Registration = React.memo(() => {
           placeholder="Password"
           className="form-control"
         />
+        <p>{errors.password?.message} </p>
         <input
-          {...register("password_confirmation")}
+          {...register("passwordConfirmation")}
           type="password"
-          name="password_confirmation"
-          placeholder="Password_confirmation"
+          name="passwordConfirmation"
+          placeholder="Password confirmation"
           className="form-control"
         />
         <button className="btn btn-lg btn-primary btn-block mt-3" type="submit">

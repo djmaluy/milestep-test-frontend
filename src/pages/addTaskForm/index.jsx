@@ -11,14 +11,23 @@ import SaveIcon from "@material-ui/icons/Save";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { addTaskAC, fetchTasks } from "../../store/routines";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { taskSchema } from "../../validations/taskValidations";
 
 export const AddTaskForm = ({ handleClose, open, setOpen }) => {
-  const { register, handleSubmit, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(taskSchema),
+  });
   const menuItems = [1, 2, 3, 4, 5];
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     const { title, description, priority, dueDate } = data;
+
     const request = {
       task: {
         title,
@@ -45,23 +54,24 @@ export const AddTaskForm = ({ handleClose, open, setOpen }) => {
                     {...register("title")}
                     placeholder="Title"
                     variant="outlined"
-                    name="title"
                   />
+                  <p>{errors.title?.message}</p>
                 </Grid>
                 <Grid item>
                   <TextField
                     variant="outlined"
-                    name="description"
                     {...register("description")}
                     placeholder="Description"
                   />
+                  <p>{errors.description?.message}</p>
                 </Grid>
                 <Grid item>
                   <TextField
+                    style={{ width: "50%" }}
                     select
                     {...register("priority")}
-                    defaultValue={1}
-                    onChange={(e) => setValue("priority", e.target.value)}
+                    defaultValue=""
+                    label="priority"
                   >
                     {menuItems.map((item) => {
                       return (
@@ -71,14 +81,15 @@ export const AddTaskForm = ({ handleClose, open, setOpen }) => {
                       );
                     })}
                   </TextField>
+                  <p>{errors.priority?.message}</p>
                 </Grid>
                 <Grid item>
                   <TextField
                     style={{ width: "100%" }}
                     type="date"
-                    name="dueDate"
                     {...register("dueDate")}
                   />
+                  <p>{errors.dueDate?.message}</p>
                 </Grid>
               </FormControl>
 
