@@ -13,8 +13,9 @@ import { useDispatch } from "react-redux";
 import { addTaskAC, fetchTasks } from "../../store/routines";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { taskSchema } from "../../validations/taskValidations";
+import { SelectCategories } from "./SelectCategories";
 
-export const AddTaskForm = ({ handleClose, open, setOpen }) => {
+export const AddTaskForm = ({ handleClose, open, setOpen, categories }) => {
   const {
     register,
     handleSubmit,
@@ -23,11 +24,11 @@ export const AddTaskForm = ({ handleClose, open, setOpen }) => {
     resolver: yupResolver(taskSchema),
   });
   const menuItems = [1, 2, 3, 4, 5];
+
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     const { title, description, priority, dueDate } = data;
-
     const request = {
       task: {
         title,
@@ -83,6 +84,7 @@ export const AddTaskForm = ({ handleClose, open, setOpen }) => {
                   </TextField>
                   <p>{errors.priority?.message}</p>
                 </Grid>
+                <SelectCategories categories={categories} />
                 <Grid item>
                   <TextField
                     style={{ width: "100%" }}

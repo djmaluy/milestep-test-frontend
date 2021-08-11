@@ -23,6 +23,7 @@ import { Registration } from "./pages/registration";
 import { AddTaskForm } from "./pages/addTaskForm";
 import { Profile } from "./pages/profile/Profile";
 import { Users } from "./pages/users/Users";
+import api from "./api/api";
 
 const EditProfileSuspense = React.lazy(() =>
   import("./pages/profile/EditProfile")
@@ -35,6 +36,21 @@ const App = () => {
   const tasks = useSelector(getTasks);
   const [open, setOpen] = useState(false);
   const currentUser = useSelector(getUser);
+
+  const [categories, setCategories] = useState([]);
+
+  const getCategories = async () => {
+    try {
+      const response = await api.get("/categories");
+      setCategories(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -89,6 +105,7 @@ const App = () => {
               open={open}
               handleClose={handleClose}
               setOpen={setOpen}
+              categories={categories}
             />
           )}
         />
